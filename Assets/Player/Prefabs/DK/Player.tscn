@@ -1,0 +1,112 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://Assets/Player/Scripts/Player.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Player/Scripts/PlayerAnimationController.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Player/Visuals/DK/Jab3.anim" type="Animation" id=3]
+[ext_resource path="res://Assets/Player/Visuals/DK/Jab1.anim" type="Animation" id=4]
+[ext_resource path="res://Assets/Player/Visuals/DK/ForwardTilt1.anim" type="Animation" id=5]
+[ext_resource path="res://Assets/Player/Visuals/DK/Idle.anim" type="Animation" id=6]
+[ext_resource path="res://Assets/Player/Visuals/DK/Crouch.anim" type="Animation" id=7]
+[ext_resource path="res://Assets/Player/Visuals/DK/DashAttack.anim" type="Animation" id=8]
+[ext_resource path="res://Assets/Player/Visuals/DK/DownTilt1.anim" type="Animation" id=9]
+[ext_resource path="res://Assets/Player/Visuals/DK/Hit1.anim" type="Animation" id=10]
+[ext_resource path="res://Assets/Player/Visuals/DK/Jab2.anim" type="Animation" id=11]
+[ext_resource path="res://Assets/Player/Visuals/DK/UpTilt1.anim" type="Animation" id=12]
+[ext_resource path="res://Assets/Player/Visuals/DK/Walk.anim" type="Animation" id=13]
+[ext_resource path="res://Assets/Player/Visuals/DK/DK_sprite sheet test.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Player/Scripts/AttackController.cs" type="Script" id=15]
+
+[sub_resource type="Animation" id=4]
+resource_name = "Jump"
+length = 0.2
+loop = true
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 7 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 7 ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "Taunt_1"
+length = 2.4
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 44, 44 ]
+}
+
+[sub_resource type="BoxShape" id=6]
+extents = Vector3( 1.06463, 1, 1.95054 )
+
+[node name="Player" type="KinematicBody"]
+axis_lock_motion_z = true
+move_lock_z = true
+script = ExtResource( 1 )
+MOVE_SPEED = 60.673
+RUNSPEED = 146.168
+total_jabs = 3
+JUMP_HEIGHT = 14.415
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( -1, 0, 0, 0, 1, 8.74228e-08, 0, 8.74228e-08, -1, -0.23327, 2.24397, 0 )
+offset = Vector2( 210, 175 )
+texture = ExtResource( 14 )
+hframes = 8
+vframes = 7
+frame = 7
+script = ExtResource( 2 )
+default_frame = 26
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite3D"]
+anims/Crouch = ExtResource( 7 )
+anims/DashAttack1 = ExtResource( 8 )
+anims/DownTilt1 = ExtResource( 9 )
+anims/ForwardTilt1 = ExtResource( 5 )
+anims/Hit1 = ExtResource( 10 )
+anims/Idle = ExtResource( 6 )
+anims/Jab1 = ExtResource( 4 )
+anims/Jab2 = ExtResource( 11 )
+anims/Jab3 = ExtResource( 3 )
+anims/Jump = SubResource( 4 )
+anims/RESET = SubResource( 5 )
+anims/Taunt_1 = SubResource( 2 )
+anims/UpTilt1 = ExtResource( 12 )
+anims/Walk = ExtResource( 13 )
+
+[node name="AttackController" type="Node" parent="."]
+script = ExtResource( 15 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.23327, 2.24397, 0 )
+shape = SubResource( 6 )

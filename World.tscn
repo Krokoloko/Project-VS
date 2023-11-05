@@ -1,0 +1,106 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Assets/Player/Prefabs/DK/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/BackGround.png" type="Texture" id=16]
+[ext_resource path="res://Assets/GroundTexture.png" type="Texture" id=17]
+
+[sub_resource type="CubeMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=5]
+
+[sub_resource type="BoxShape" id=6]
+
+[sub_resource type="BoxShape" id=7]
+
+[sub_resource type="Shader" id=9]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.5.1.stable.mono's SpatialMaterial.
+
+shader_type spatial;
+render_mode async_visible,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
+uniform vec4 albedo : hint_color;
+uniform sampler2D texture_albedo : hint_albedo;
+uniform float specular;
+uniform float metallic;
+uniform float roughness : hint_range(0,1);
+uniform float point_size : hint_range(0,128);
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+
+void vertex() {
+	UV=UV*uv1_scale.xy+uv1_offset.xy;
+}
+
+
+
+
+void fragment() {
+	vec2 base_uv = UV;
+	vec4 albedo_tex = texture(texture_albedo,base_uv);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+	METALLIC = metallic;
+	ROUGHNESS = roughness;
+	SPECULAR = specular;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=10]
+shader = SubResource( 9 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/specular = 0.5
+shader_param/metallic = 0.0
+shader_param/roughness = 1.0
+shader_param/point_size = 1.0
+shader_param/uv1_scale = Vector3( 3.001, 1, 1 )
+shader_param/uv1_offset = Vector3( 0, 0, 0 )
+shader_param/uv2_scale = Vector3( 1, 1, 1 )
+shader_param/uv2_offset = Vector3( 0, 0, 0 )
+shader_param/texture_albedo = ExtResource( 17 )
+
+[sub_resource type="BoxShape" id=8]
+
+[node name="World" type="Spatial"]
+
+[node name="Level" type="Spatial" parent="."]
+
+[node name="GoThroughPlatformRight" type="CSGMesh" parent="Level"]
+transform = Transform( 1.068, 0, 0, 0, 0.058, 0, 0, 0, 1, 4.81886, 0.220235, 0 )
+mesh = SubResource( 4 )
+material = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="Level/GoThroughPlatformRight"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Level/GoThroughPlatformRight/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="GoThroughPlatformLeft" type="CSGMesh" parent="Level"]
+transform = Transform( 1.068, 0, 0, 0, 0.058, 0, 0, 0, 1, -4.81671, 0.219591, 0 )
+mesh = SubResource( 4 )
+material = SubResource( 5 )
+
+[node name="StaticBody" type="StaticBody" parent="Level/GoThroughPlatformLeft"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Level/GoThroughPlatformLeft/StaticBody"]
+shape = SubResource( 7 )
+
+[node name="MainLevelPlatform" type="CSGMesh" parent="Level"]
+transform = Transform( 3.752, 0, 0, 0, 2.032, 0, 0, 0, 1, 0, -1.75369, 0 )
+mesh = SubResource( 4 )
+material = SubResource( 10 )
+
+[node name="StaticBody" type="StaticBody" parent="Level/MainLevelPlatform"]
+input_ray_pickable = false
+
+[node name="CollisionShape" type="CollisionShape" parent="Level/MainLevelPlatform/StaticBody"]
+shape = SubResource( 8 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Level"]
+transform = Transform( 8.09389, 0, 0, 0, 8.09389, 0, 0, 0, 1, 3.00301, 6.12739, -28.4512 )
+texture = ExtResource( 16 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26193, 1.80388, 6.81425 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
