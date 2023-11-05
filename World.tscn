@@ -104,3 +104,6 @@ texture = ExtResource( 16 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26193, 1.80388, 6.81425 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+AIR_ACCELERATION = 0.63
+AIR_SPEED = 8.451
+NEUTRAL_FALL_SPEED = 0.5

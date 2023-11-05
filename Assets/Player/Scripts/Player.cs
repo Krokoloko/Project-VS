@@ -50,6 +50,11 @@ public class Player : KinematicBody
 	[Export(PropertyHint.Range,"0.01, 50")]
 	public float JUMP_HEIGHT = 5.0f;
 	
+	[Export(PropertyHint.Range, "0.01, 100")]
+	public float AIR_ACCELERATION = 10.0f;
+
+	[Export(PropertyHint.Range, "0.01,100")]
+	public float AIR_SPEED = 30.0f;
 	public const float GRAVITY = 1.0f;
 	
 	[Export(PropertyHint.Range,"0.01, 50")]
@@ -61,11 +66,13 @@ public class Player : KinematicBody
 	[Export(PropertyHint.Range,"0.01, 50")]
 	public float WEIGHT = 1.0f;
 
+	private float weight_divisor;
 	private float facing_direction; 
 	private float falling_speed;
 	private float treshold;
 	private float track_time;
 	private float accumalator;
+	private float air_drift;
 
 	private PlayerState state;
 	private PlayerAnimationController anim_controller;
@@ -73,6 +80,8 @@ public class Player : KinematicBody
 
 	public override void _Ready()
 	{
+		air_drift = 0.0f;
+		weight_divisor = 1/WEIGHT;
 		facing_direction = 1.0f;
 		anim_controller = GetNode<PlayerAnimationController>(this.GetPath() + "/Sprite3D");
 		state = PlayerState.IDLE;
@@ -219,7 +228,7 @@ public class Player : KinematicBody
 		// }
 
 		if(state == PlayerState.WALKING || state == PlayerState.RUN)
-		{
+		{			
 			if(left_pressed)
 			{
 				anim_controller.FlipSprite(true);
@@ -247,6 +256,24 @@ public class Player : KinematicBody
 				}
 			}
 		}   
+		if(state == PlayerState.AIRBORNE)
+			{
+				if(left_hold)
+				{
+					air_drift = Mathf.Max(air_drift - AIR_ACCELERATION, -AIR_SPEED);
+					motion = new Vector3(air_drift, motion.y, 0);
+				}
+				else if(right_hold)
+				{
+					air_drift = Mathf.Min(air_drift + AIR_ACCELERATION, AIR_SPEED);
+					motion = new Vector3(air_drift, motion.y, 0);
+				}else
+				{
+					float traction = AIR_ACCELERATION*0.5f;
+					air_drift -= traction*Mathf.Sign(air_drift);
+					motion = new Vector3(air_drift, motion.y, 0);
+				}
+			}
 	}
 
 	public void HandleAction(float deltaTime)
@@ -349,8 +376,9 @@ public class Player : KinematicBody
 	{
 			motion = Vector3.Zero;
 			treshold = 0f;
-			track_time = 0;
+			track_time = 0f;
 			accumalator = 0f;            
+			air_drift = 0f;
 			anim_controller.SetAnimationSpeed(1.0f);
 	}
 }
