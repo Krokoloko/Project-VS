@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing.Text;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
@@ -99,7 +100,7 @@ public class Player : KinematicBody
 	public override void _PhysicsProcess(float deltaTime)
 	{
 		MoveAndCollide(motion*deltaTime);
-		MoveAndSlide(Vector3.Zero, Vector3.Up);
+		MoveAndSlide(Vector3.Zero, Vector3.Up, true);
 	}
 
 	public void HandleInput()
@@ -111,6 +112,14 @@ public class Player : KinematicBody
 		bool left_pressed = Input.IsActionJustPressed("Player_Left");
 		bool left_hold = Input.IsActionPressed("Player_Left");
 		bool left_released = Input.IsActionJustReleased("Player_Left");
+
+		bool down_hold = Input.IsActionPressed("Player_Down");
+
+		bool jump_pressed = Input.IsActionJustPressed("Player_Jump");
+
+		bool up_pressed = Input.IsActionJustPressed("Player_Up");
+		bool up_hold = Input.IsActionPressed("Player_Up");
+
 		//Move Left or right
 		if(left_hold && state == PlayerState.IDLE)
 		{
@@ -120,57 +129,85 @@ public class Player : KinematicBody
 		{
 			state = PlayerState.WALKING;
 		}
-		if(Input.IsActionPressed("Player_Down"))
+		if(down_hold && (state == PlayerState.IDLE || state == PlayerState.WALKING || state == PlayerState.CROUCHING))
 		{
 			state = PlayerState.CROUCHING;
 		}
-		if(Input.IsActionJustReleased("Player_Down") && state == PlayerState.CROUCHING)
+		if(!down_hold && state == PlayerState.CROUCHING)
 		{
 			state = PlayerState.IDLE;
 		}
-		bool attack_preformed = false;
-		if(Input.IsActionJustPressed("Player_Jump"))
+		
+		if(up_pressed && !IsStateAerial())
 		{
 			state = PlayerState.JUMP;
 		}
+
+		bool attack_preformed = false;
+
 		if(Input.IsActionJustPressed("Player_Attack"))
 		{
-			//Handle Jab attacks
-			if(!attack_preformed && Input.IsActionPressed("Player_Up"))
+			if(state == PlayerState.AIRBORNE)
 			{
-				state = PlayerState.TILT_ATTACK_UP;
-				attack_preformed = true;
+				state = PlayerState.AERIAL_ATTACK_NEUTRAL;
+				if(up_hold)
+				{
+					state = PlayerState.AERIAL_ATTACK_UP;
+				}
+				if(down_hold)
+				{
+					state = PlayerState.AERIAL_ATTACK_DOWN;
+				}
+				if(left_hold)
+				{
+					state = (facing_direction > 0) ? PlayerState.AERIAL_ATTACK_BEHIND : PlayerState.AERIAL_ATTACK_FORWARD;
+				}
+				if(right_hold)
+				{
+					state = (facing_direction > 0) ? PlayerState.AERIAL_ATTACK_FORWARD : PlayerState.AERIAL_ATTACK_BEHIND;
+				}
 			}
-			if(state == PlayerState.IDLE)
+			if(IsStateGrounded())
 			{
-				state = PlayerState.JAB_ATTACK1;
-				treshold = 1.0f;
-				attack_preformed = true;
-			}
-			else if(state == PlayerState.JAB_ATTACK1 && total_jabs > 1)
-			{
-				state = PlayerState.JAB_ATTACK2;
-			}
-			else if(state == PlayerState.JAB_ATTACK2 && total_jabs > 2)
-			{
-				state = PlayerState.JAB_ATTACK3;
-			}
+				if(up_hold)
+				{
+					state = PlayerState.TILT_ATTACK_UP;
+					attack_preformed = true;
+				}
+				if(!attack_preformed && state == PlayerState.WALKING)
+				{
+					state = PlayerState.TILT_ATTACK_FORWARD;
+					attack_preformed = true;
+					motion = Vector3.Zero;
+				}
+				if(!attack_preformed && state == PlayerState.RUN)
+				{
+					state = PlayerState.DASH_ATTACK;
+					anim_controller.SetAnimationSpeed(1.0f);
+					attack_preformed = true;
+				}
+				if(!attack_preformed && state == PlayerState.CROUCHING)
+				{
+					state = PlayerState.TILT_ATTACK_DOWN;
+					attack_preformed = true;
+				}
 
-			if(!attack_preformed && state == PlayerState.WALKING)
-			{
-				state = PlayerState.TILT_ATTACK_FORWARD;
-				attack_preformed = true;
-			}
-			if(!attack_preformed && state == PlayerState.RUN)
-			{
-				state = PlayerState.DASH_ATTACK;
-				anim_controller.SetAnimationSpeed(1.0f);
-				attack_preformed = true;
-			}
-			if(!attack_preformed && state == PlayerState.CROUCHING)
-			{
-				state = PlayerState.TILT_ATTACK_DOWN;
-				attack_preformed = true;
+				//Handle Jab attacks
+				if(!attack_preformed && state == PlayerState.IDLE)
+				{
+					state = PlayerState.JAB_ATTACK1;
+					treshold = 1.0f;
+					attack_preformed = true;
+				}
+				else if(state == PlayerState.JAB_ATTACK1 && total_jabs > 1)
+				{
+					state = PlayerState.JAB_ATTACK2;
+				}
+				else if(state == PlayerState.JAB_ATTACK2 && total_jabs > 2)
+				{
+					state = PlayerState.JAB_ATTACK3;
+				}
+
 			}
 		}
 
@@ -216,16 +253,6 @@ public class Player : KinematicBody
 		{
 			state = PlayerState.TAUNT1;
 		}
-
-		// if(Input.IsActionJustPressed("TAUNT_2") && (state == PlayerState.IDLE || state == PlayerState.WALKING || state == PlayerState.WALKING_TO_RUN))
-		// {
-		//     state = PlayerState.TAUNT2;
-		// }
-
-		//  if(Input.IsActionJustPressed("TAUNT_3") && (state == PlayerState.IDLE || state == PlayerState.WALKING || state == PlayerState.WALKING_TO_RUN))
-		// {
-		//     state = PlayerState.TAUNT3;
-		// }
 
 		if(state == PlayerState.WALKING || state == PlayerState.RUN)
 		{			
@@ -284,6 +311,17 @@ public class Player : KinematicBody
 			state = PlayerState.IDLE;
 			anim_controller.Rotation = new Vector3(0,0,0);
 		}
+		if(anim_controller.GetState() == PlayerAnimationController.AnimationState.AERIAL_TO_JUMP)
+		{
+			state = PlayerState.AIRBORNE;
+		}
+		if(anim_controller.GetState() == PlayerAnimationController.AnimationState.CROUCHATTACK_TO_CROUCH)
+		{
+			if(state == PlayerState.TILT_ATTACK_DOWN)
+			{
+				state = PlayerState.CROUCHING;
+			}
+		}
 		PlayerAnimationController.AnimationProgress animation_progress;
 		switch(state)
 		{
@@ -341,6 +379,7 @@ public class Player : KinematicBody
 					ResetParameters();
 				}
 				break;
+
 			case PlayerState.JUMP:
 				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JUMP);
 				motion += Vector3.Up * JUMP_HEIGHT;
@@ -349,6 +388,31 @@ public class Player : KinematicBody
 
 			case PlayerState.AIRBORNE:
 				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JUMP);
+				motion -= Vector3.Up * GRAVITY * falling_speed;
+				break;
+
+			case PlayerState.AERIAL_ATTACK_NEUTRAL:
+				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_NEUTRAL);
+				motion -= Vector3.Up * GRAVITY * falling_speed;
+				break;
+			
+			case PlayerState.AERIAL_ATTACK_FORWARD:
+				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_FORWARD);
+				motion -= Vector3.Up * GRAVITY * falling_speed;
+				break;
+
+			case PlayerState.AERIAL_ATTACK_BEHIND:
+				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_BEHIND);
+				motion -= Vector3.Up * GRAVITY * falling_speed;
+				break;
+
+			case PlayerState.AERIAL_ATTACK_UP:
+				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_UP);
+				motion -= Vector3.Up * GRAVITY * falling_speed;
+				break;
+
+			case PlayerState.AERIAL_ATTACK_DOWN:
+				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_DOWN);
 				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
@@ -361,7 +425,10 @@ public class Player : KinematicBody
 				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.TAUNT1);
 				break;
 		}
-		if(state == PlayerState.AIRBORNE && IsOnFloor())
+		if((state == PlayerState.AIRBORNE || state == PlayerState.AERIAL_ATTACK_BEHIND 
+		|| state == PlayerState.AERIAL_ATTACK_NEUTRAL || state == PlayerState.AERIAL_ATTACK_DOWN 
+		|| state == PlayerState.AERIAL_ATTACK_FORWARD || state == PlayerState.AERIAL_ATTACK_UP) 
+		&& IsOnFloor())
 		{
 			state = PlayerState.IDLE;
 			ResetParameters();
@@ -374,11 +441,29 @@ public class Player : KinematicBody
 
 	private void ResetParameters()
 	{
-			motion = Vector3.Zero;
-			treshold = 0f;
-			track_time = 0f;
-			accumalator = 0f;            
-			air_drift = 0f;
-			anim_controller.SetAnimationSpeed(1.0f);
+		motion = Vector3.Zero;
+		treshold = 0f;
+		track_time = 0f;
+		accumalator = 0f;            
+		air_drift = 0f;
+		anim_controller.SetAnimationSpeed(1.0f);
+	}
+
+	private bool IsStateGrounded()
+	{
+		bool grounded = false;
+		if(state == PlayerState.IDLE || state == PlayerState.CROUCHING || state == PlayerState.WALKING || state == PlayerState.WALKING_TO_RUN || state == PlayerState.RUN
+			|| state == PlayerState.JAB_ATTACK1 || state == PlayerState.JAB_ATTACK2 || state == PlayerState.JAB_ATTACK3 || state == PlayerState.JAB_RAPID) grounded = true;
+		return grounded;
+	}
+
+	private bool IsStateAerial()
+	{
+		bool aerial = false;
+		if(state == PlayerState.AERIAL_ATTACK_BEHIND || state == PlayerState.AERIAL_ATTACK_DOWN || state == PlayerState.AERIAL_ATTACK_FORWARD || state == PlayerState.AERIAL_ATTACK_NEUTRAL || state == PlayerState.AERIAL_ATTACK_UP || state == PlayerState.AIRBORNE || state == PlayerState.JUMP)
+		{
+			aerial = true;
+		}
+		return aerial;
 	}
 }
