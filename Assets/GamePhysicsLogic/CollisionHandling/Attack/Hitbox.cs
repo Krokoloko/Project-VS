@@ -10,11 +10,12 @@ public enum EHITBOXTYPE
 }
 public struct Hitbox
 {
-    Vector2 size;
-    Vector2 offset;
-    float damage;
-    float knockback;
-    Vector2 knockback_angle;
-    int active_frames;
-
+   public Vector2 size;
+   public Vector2 offset;
+   public float base_damage;
+   public float base_knockback;
+   public float growth_knockback;
+   public Vector2 knockback_angle;
+   public int active_frames;
+   public Node relative_node;
 }

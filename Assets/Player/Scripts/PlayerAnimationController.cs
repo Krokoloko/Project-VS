@@ -43,6 +43,16 @@ public class PlayerAnimationController : Sprite3D
 
     [Export(PropertyHint.Range, "0,1000")]
     public int default_frame;
+
+    [Export]
+    public int FPS;
+    private float FPS_in_ms;
+
+    public int current_frame {get{return p_current_frame;}}
+    private int p_current_frame;
+
+    private int frames_animation;
+
     private AnimationPlayer animation_player;
     private bool flip;
     private AnimationState state;
@@ -52,6 +62,9 @@ public class PlayerAnimationController : Sprite3D
         animation_player = GetNode<AnimationPlayer>(this.GetPath() + "/AnimationPlayer");
         Frame = default_frame;
         state = AnimationState.NONE;
+        p_current_frame = 0;
+        frames_animation = 0;
+        FPS_in_ms = 1000.0f/FPS;
     }
 
     public AnimationState GetState()
@@ -162,6 +175,7 @@ public class PlayerAnimationController : Sprite3D
 
     public override void _Process(float delta)
     {
+        p_current_frame = (int)((animation_player.CurrentAnimationLength/animation_player.CurrentAnimationPosition)/FPS_in_ms);
         switch(state)
         {
             case AnimationState.JAB1:
@@ -170,18 +184,21 @@ public class PlayerAnimationController : Sprite3D
                     state = AnimationState.NONE;
                 }
                 break;
+
             case AnimationState.JAB2:
                 if(!animation_player.IsPlaying())
                 {
                     state = AnimationState.NONE;
                 }
                 break;
+
             case AnimationState.JAB3:
                 if(!animation_player.IsPlaying())
                 {
                     state = AnimationState.NONE;
                 }
                 break;
+
             case AnimationState.AERIAL_NEUTRAL:
                 if(!animation_player.IsPlaying())
                 {
@@ -223,24 +240,28 @@ public class PlayerAnimationController : Sprite3D
                     state = AnimationState.CROUCHATTACK_TO_CROUCH;
                 }
                 break;
+
             case AnimationState.FORWARD_TILT:
                 if(!animation_player.IsPlaying())
                 {
                     state = AnimationState.NONE;
                 }
                 break;
+
             case AnimationState.UP_TILT:
                 if(!animation_player.IsPlaying())
                 {
                     state = AnimationState.NONE;
                 }
                 break;
+
             case AnimationState.DASH_ATTACK:
                 if(!animation_player.IsPlaying())
                 {
                     state = AnimationState.NONE;
                 }
                 break;
+
             case AnimationState.TAUNT1:
                 if(!animation_player.IsPlaying())
                 {

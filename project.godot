@@ -11,13 +11,23 @@ config_version=4
 [application]
 
 config/name="PortBros"
-run/main_scene="res://World.tscn"
+run/main_scene="res://Assets/UI/CharacterSelectScreen/CharacterSelectScene.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+DebugDrawCS="*res://addons/debug_draw_3d/DebugDrawCS.cs"
+DebugDraw="*res://addons/debug_draw_3d/debug_draw.gd"
+HitboxHandler="*res://Assets/GamePhysicsLogic/CollisionHandling/HitboxHandler.cs"
 
 [debug]
 
 settings/fps/force_fps=60
 settings/stdout/print_fps=true
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/debug_draw_3d/plugin.cfg" )
 
 [gui]
 

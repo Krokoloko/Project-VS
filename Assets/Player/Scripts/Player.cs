@@ -76,7 +76,9 @@ public class Player : KinematicBody
 	private float air_drift;
 
 	private PlayerState state;
-	private PlayerAnimationController anim_controller;
+	public PlayerAnimationController anim_controller{get {return p_anim_controller;}}
+	private PlayerAnimationController p_anim_controller;
+	private AttackController attack_controller;
 
 
 	public override void _Ready()
@@ -84,7 +86,8 @@ public class Player : KinematicBody
 		air_drift = 0.0f;
 		weight_divisor = 1/WEIGHT;
 		facing_direction = 1.0f;
-		anim_controller = GetNode<PlayerAnimationController>(this.GetPath() + "/Sprite3D");
+		p_anim_controller = GetNode<PlayerAnimationController>(this.GetPath() + "/Sprite3D");
+		attack_controller = GetNode<AttackController>(this.GetPath() + "/AttackController");
 		state = PlayerState.IDLE;
 		accumalator = 0.0f;
 		track_time = 0.0f;
@@ -167,6 +170,7 @@ public class Player : KinematicBody
 					state = (facing_direction > 0) ? PlayerState.AERIAL_ATTACK_FORWARD : PlayerState.AERIAL_ATTACK_BEHIND;
 				}
 			}
+			
 			if(IsStateGrounded())
 			{
 				if(up_hold)
@@ -183,7 +187,7 @@ public class Player : KinematicBody
 				if(!attack_preformed && state == PlayerState.RUN)
 				{
 					state = PlayerState.DASH_ATTACK;
-					anim_controller.SetAnimationSpeed(1.0f);
+					p_anim_controller.SetAnimationSpeed(1.0f);
 					attack_preformed = true;
 				}
 				if(!attack_preformed && state == PlayerState.CROUCHING)
@@ -198,6 +202,7 @@ public class Player : KinematicBody
 					state = PlayerState.JAB_ATTACK1;
 					treshold = 1.0f;
 					attack_preformed = true;
+					attack_controller.PreformAction(EACTION_TYPE.JAB1);
 				}
 				else if(state == PlayerState.JAB_ATTACK1 && total_jabs > 1)
 				{
@@ -241,12 +246,12 @@ public class Player : KinematicBody
 		if(right_pressed && (state == PlayerState.WALKING_TO_RUN || state == PlayerState.RUN))
 		{
 			state = PlayerState.RUN;
-			anim_controller.SetAnimationSpeed(2.0f);
+			p_anim_controller.SetAnimationSpeed(2.0f);
 		}
 		if(left_pressed && (state == PlayerState.WALKING_TO_RUN || state == PlayerState.RUN))
 		{
 			state = PlayerState.RUN;
-			anim_controller.SetAnimationSpeed(2.0f);
+			p_anim_controller.SetAnimationSpeed(2.0f);
 		}
 
 		if(Input.IsActionJustPressed("TAUNT_1") && (state == PlayerState.IDLE || state == PlayerState.WALKING || state == PlayerState.WALKING_TO_RUN))
@@ -258,19 +263,19 @@ public class Player : KinematicBody
 		{			
 			if(left_pressed)
 			{
-				anim_controller.FlipSprite(true);
+				p_anim_controller.FlipSprite(true);
 				facing_direction = -1.0f;
 			}
 			if(right_pressed)
 			{
-				anim_controller.FlipSprite(false);
+				p_anim_controller.FlipSprite(false);
 				facing_direction = 1.0f;
 			}
 			if(left_released)
 			{
 				if(right_hold)
 				{
-					anim_controller.FlipSprite(false);
+					p_anim_controller.FlipSprite(false);
 					facing_direction = 1.0f;
 				}
 			}
@@ -278,7 +283,7 @@ public class Player : KinematicBody
 			{
 				if(left_hold)
 				{
-					anim_controller.FlipSprite(true);
+					p_anim_controller.FlipSprite(true);
 					facing_direction = -1.0f;
 				}
 			}
@@ -306,16 +311,16 @@ public class Player : KinematicBody
 	public void HandleAction(float deltaTime)
 	{
 		accumalator += track_time * deltaTime;
-		if(anim_controller.GetState() == PlayerAnimationController.AnimationState.NONE)
+		if(p_anim_controller.GetState() == PlayerAnimationController.AnimationState.NONE)
 		{
 			state = PlayerState.IDLE;
-			anim_controller.Rotation = new Vector3(0,0,0);
+			p_anim_controller.Rotation = new Vector3(0,0,0);
 		}
-		if(anim_controller.GetState() == PlayerAnimationController.AnimationState.AERIAL_TO_JUMP)
+		if(p_anim_controller.GetState() == PlayerAnimationController.AnimationState.AERIAL_TO_JUMP)
 		{
 			state = PlayerState.AIRBORNE;
 		}
-		if(anim_controller.GetState() == PlayerAnimationController.AnimationState.CROUCHATTACK_TO_CROUCH)
+		if(p_anim_controller.GetState() == PlayerAnimationController.AnimationState.CROUCHATTACK_TO_CROUCH)
 		{
 			if(state == PlayerState.TILT_ATTACK_DOWN)
 			{
@@ -326,49 +331,51 @@ public class Player : KinematicBody
 		switch(state)
 		{
 			case PlayerState.IDLE:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.IDLE);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.IDLE);
 				motion = Vector3.Zero;
 				break;
 			
 			case PlayerState.WALKING:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.WALKING);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.WALKING);
 				motion = new Vector3(MOVE_SPEED * deltaTime * facing_direction,motion.y,0);
 				break;
+
 			case PlayerState.CROUCHING:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.CROUCHING);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.CROUCHING);
 				break;
+
 			case PlayerState.JAB_ATTACK1:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JAB1);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JAB1);
 				break;
 			
 			case PlayerState.JAB_ATTACK2:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JAB2);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JAB2);
 				break;
 
 			case PlayerState.JAB_ATTACK3:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JAB3);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JAB3);
 				break;
 
 			case PlayerState.JAB_RAPID:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.RAPID_JAB);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.RAPID_JAB);
 				break;
 			
 			case PlayerState.TILT_ATTACK_DOWN:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.DOWN_TILT);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.DOWN_TILT);
 				break;
 			
 			case PlayerState.TILT_ATTACK_FORWARD:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.FORWARD_TILT);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.FORWARD_TILT);
 				break;
 			
 			case PlayerState.TILT_ATTACK_UP:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.UP_TILT);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.UP_TILT);
 				break;
 
 			case PlayerState.DASH_ATTACK:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.DASH_ATTACK);
-				animation_progress = anim_controller.GetAnimationProgress();
-				anim_controller.Rotation = new Vector3(0,0,0*(1 - animation_progress.position/animation_progress.animation_length) + facing_direction*-1*2.0f*Mathf.Pi * animation_progress.position/animation_progress.animation_length);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.DASH_ATTACK);
+				animation_progress = p_anim_controller.GetAnimationProgress();
+				p_anim_controller.Rotation = new Vector3(0,0,0*(1 - animation_progress.position/animation_progress.animation_length) + facing_direction*-1*2.0f*Mathf.Pi * animation_progress.position/animation_progress.animation_length);
 				motion = new Vector3(facing_direction * RUNSPEED,motion.y,0);
 				break;
 
@@ -381,50 +388,51 @@ public class Player : KinematicBody
 				break;
 
 			case PlayerState.JUMP:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JUMP);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JUMP);
 				motion += Vector3.Up * JUMP_HEIGHT;
 				falling_speed = NEUTRAL_FALL_SPEED;
 				break;
 
 			case PlayerState.AIRBORNE:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JUMP);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JUMP);
 				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.AERIAL_ATTACK_NEUTRAL:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_NEUTRAL);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_NEUTRAL);
 				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 			
 			case PlayerState.AERIAL_ATTACK_FORWARD:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_FORWARD);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_FORWARD);
 				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.AERIAL_ATTACK_BEHIND:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_BEHIND);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_BEHIND);
 				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.AERIAL_ATTACK_UP:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_UP);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_UP);
 				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.AERIAL_ATTACK_DOWN:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_DOWN);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_DOWN);
 				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.RUN:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.WALKING);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.WALKING);
 				motion = new Vector3(deltaTime * facing_direction * RUNSPEED,motion.y,0);
 				break;
 
 			case PlayerState.TAUNT1:
-				anim_controller.SetAnimation(PlayerAnimationController.AnimationState.TAUNT1);
+				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.TAUNT1);
 				break;
 		}
+
 		if((state == PlayerState.AIRBORNE || state == PlayerState.AERIAL_ATTACK_BEHIND 
 		|| state == PlayerState.AERIAL_ATTACK_NEUTRAL || state == PlayerState.AERIAL_ATTACK_DOWN 
 		|| state == PlayerState.AERIAL_ATTACK_FORWARD || state == PlayerState.AERIAL_ATTACK_UP) 
@@ -446,7 +454,7 @@ public class Player : KinematicBody
 		track_time = 0f;
 		accumalator = 0f;            
 		air_drift = 0f;
-		anim_controller.SetAnimationSpeed(1.0f);
+		p_anim_controller.SetAnimationSpeed(1.0f);
 	}
 
 	private bool IsStateGrounded()

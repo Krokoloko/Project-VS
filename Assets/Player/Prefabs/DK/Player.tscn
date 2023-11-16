@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Player.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Scripts/PlayerAnimationController.cs" type="Script" id=2]
@@ -14,7 +14,8 @@
 [ext_resource path="res://Assets/Player/Visuals/DK/UpTilt1.anim" type="Animation" id=12]
 [ext_resource path="res://Assets/Player/Visuals/DK/Walk.anim" type="Animation" id=13]
 [ext_resource path="res://Assets/Player/Visuals/DK/DK_sprite sheet test.png" type="Texture" id=14]
-[ext_resource path="res://Assets/Player/Scripts/AttackController.cs" type="Script" id=15]
+[ext_resource path="res://Assets/Player/Scripts/CharacterSpecificScripts/SampleAttackController.cs" type="Script" id=15]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Moveset_DK.tres" type="Resource" id=16]
 
 [sub_resource type="Animation" id=7]
 resource_name = "BehindAerial1"
@@ -196,7 +197,8 @@ anims/Walk = ExtResource( 13 )
 
 [node name="AttackController" type="Node" parent="."]
 script = ExtResource( 15 )
+moveset = ExtResource( 16 )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
+[node name="EnvironmentCollision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.23327, 2.24397, 0 )
 shape = SubResource( 6 )

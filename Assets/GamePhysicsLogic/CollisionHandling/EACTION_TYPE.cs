@@ -4,14 +4,22 @@ using Godot;
 public enum EACTION_TYPE
 {
     NONE,
-    JAB,
+    JAB1,
+    JAB2,
+    JAB3,
+    RAPIDJAB,
+    DASHATTACK,
     FORWARD_TILT,
     DOWN_TILT,
     UP_TILT,
-    SPECIAL,
+    NEUTRAL_AERIAL,
+    FORWARD_AERIAL,
+    BACK_AERIAL,
+    UP_AERIAL,
+    DOWN_AERIAL,
+    NEUTRAL_SPECIAL,
     FORWARD_SPECIAL,
     DOWN_SPECIAL,
     UP_SPECIAL,
-    SHIELD,
-    JUMP    
+
 }

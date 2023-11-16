@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Player/Prefabs/DK/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Gescande_afbeelding_5.jpg" type="Texture" id=2]
 [ext_resource path="res://Assets/BackGround.png" type="Texture" id=16]
 [ext_resource path="res://Assets/GroundTexture.png" type="Texture" id=17]
 
@@ -107,3 +108,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26193, 3.42684, 8.00238 )
 AIR_ACCELERATION = 0.63
 AIR_SPEED = 8.451
 NEUTRAL_FALL_SPEED = 0.5
+
+[node name="ReferenceScale(Mimikyu)" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9746, 0, 0 )
+visible = false
+texture = ExtResource( 2 )
