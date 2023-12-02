@@ -14,7 +14,7 @@ Todos:
 	- Menu go back 
 	- Failure 
 	- Success (applause)
-	- Target destroy
+	DONE - Target destroy
 	- Lottery pull
 	- Unique trophy unlock
 	- Duplicate trophy unlock
@@ -27,7 +27,7 @@ Todos:
 
 	- Wooper
 	- Wario
-	- DK
+	DONE - DK
 	- Klobber and Kloak
 	- Cpt. Falcon
 	- Kirby
@@ -53,7 +53,7 @@ Load in the player and their character to a default position.
 			
 		- Place the target assets in the level.
 			
-	- Camera
+	DONE - Camera
 		
 		- Camera should follow the player at all times.
 		
@@ -69,13 +69,13 @@ Load in the player and their character to a default position.
 
 		- Gets all the existing targets in the scene to track how many targets are alive.
 		
-	- Target
+	DONE - Target
 	
 		- Program so that the target will destroy itself when its hurtbox got hit.
 
 		- When getting destroyed, play sound effect and a particle effect.
 
-- Game mechanics
+DONE - Game mechanics
 
 	- When a hitbox and a hurtbox overlap, call a function that tells the owner of the hurtbox it got hit.
 
@@ -89,6 +89,7 @@ Load in the player and their character to a default position.
 - UI
 
 	- Trophy
+
 		- Have a resource class that contains this data.
 			- Texture of the trophy
 			- Name
@@ -141,8 +142,8 @@ Plan
 	- Making all the character frame data. eta: 4 hours
 	- Making all the animation files. eta: 6 hours
 	- Set all the character parameters, test them once and iterate them. eta: 4 hours
-	- Program hurtbox. eta: 1.5 hours
-	- Program target. eta: 2 hours
+	DONE - Program hurtbox. eta: 1.5 hours
+	DONE - Program target. eta: 2 hours
 	- Program the UI cursor implementation in the menu's. eta: 2.5 hours
 	- Program and make the CharacterSelect screen. eta: 3 hours
 	- Program the trophy resource. eta: 0.5 hours

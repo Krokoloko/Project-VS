@@ -3,6 +3,9 @@ using System;
 
 public class Target : Node
 {
+	[Signal]
+	public delegate void OnDestroy(Node target);
+
 	[Export]
 	NodePath hurtbox_node;
 
@@ -45,12 +48,6 @@ public class Target : Node
 		}
 	}
 
-	private void Destroy()
-	{
-		this.QueueFree();
-		//GD.Print("Target destroyed");
-	}
-
 	public override void _Process(float delta)
 	{
 		if(dying)
@@ -58,6 +55,7 @@ public class Target : Node
 			//GD.Print(audio_player.GetPlaybackPosition() + delta, " >= ", audio_player.Stream.GetLength());
 			if(audio_player.GetPlaybackPosition() + delta*3 >= audio_player.Stream.GetLength())
 			{
+				EmitSignal("OnDestroy", this);
 				this.QueueFree();
 				//GD.Print("Target destroyed");
 			}
