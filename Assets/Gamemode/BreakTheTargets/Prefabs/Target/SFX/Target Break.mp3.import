@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Target Break.mp3-b48f1baf8d6894e2e8caff8c18e1356c.mp3str"
+
+[deps]
+
+source_file="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/SFX/Target Break.mp3"
+dest_files=[ "res://.import/Target Break.mp3-b48f1baf8d6894e2e8caff8c18e1356c.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

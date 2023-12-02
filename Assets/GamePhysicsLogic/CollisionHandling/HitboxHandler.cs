@@ -13,12 +13,15 @@ public class HitboxHandler : Node
     private Dictionary<int, float> timers;
     private Dictionary<int, int> frame_counters;
     private Dictionary<int, int> frame_tresholds; 
-    private Hitbox[] hitboxes;
+    private HitboxProps[] hitboxes;
 
     private int global_index_counter;
 
+    private PackedScene hitbox_node;
+
     public override void _Ready()
     {
+        hitbox_node = GD.Load<PackedScene>("res://Assets/GamePhysicsLogic/HitBoxData/Hitbox.tscn");
         global_index_counter = 0;
         sequences = new Dictionary<int, HitboxSequence>();
         nodepaths = new Dictionary<int, NodePath>();
@@ -56,9 +59,14 @@ public class HitboxHandler : Node
                     Color color = new Color(1.0f,0,0);
                     float flip = GetNode<Player>(nodepaths[key]).anim_controller.GetFlip()?-1:1;
                     
-                    AABB box = new AABB(new Vector3(player_position + new Vector3(flip*collider.offset.x,collider.offset.y,0.1f)),new Vector3(flip*collider.size.x,collider.size.y,0));
-                    DebugDrawCS.DrawAabb(box, color, INTERVAL_PER_TICK);
-                    DebugDrawCS.DrawLine(box.Position,box.End, color, INTERVAL_PER_TICK);
+                    Hitbox hitbox = hitbox_node.Instance<Hitbox>();
+                    hitbox.frames = 1;
+                    hitbox.Translation = new Vector3(collider.offset.x*flip,collider.offset.y,0);
+                    StaticBody physicsbody = hitbox.GetChild<StaticBody>(0);
+                    CollisionShape hitbox_collider = physicsbody.GetChild<CollisionShape>(0);
+                    hitbox_collider.Scale = new Vector3(collider.size.x, collider.size.y, 1.0f);
+
+                    GetNode<Node>(nodepaths[key]).AddChild(hitbox);
                 }
             }
         }
@@ -97,7 +105,7 @@ public class HitboxHandler : Node
     {
         foreach(CollisionData collisions in data.composition)
         {
-            Hitbox hitbox = new Hitbox();
+            HitboxProps hitbox = new HitboxProps();
             hitbox.active_frames = data.frames;
             hitbox.base_damage = collisions.base_damage;
             hitbox.growth_knockback = collisions.growth_knockback;

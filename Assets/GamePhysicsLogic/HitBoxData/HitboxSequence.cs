@@ -13,6 +13,7 @@ public partial class HitboxSequence : Resource
 	
 	public HitboxSequence(HitboxData[] p_sequence)
 	{
+		p_total_frames = 0;
 		sequence = p_sequence;
 		if(sequence == null) return;
 		p_total_frames = p_sequence.Length;

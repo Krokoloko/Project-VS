@@ -35,6 +35,9 @@ public class Player : KinematicBody
 		TAUNT2,
 		TAUNT3
 	}
+	[Export]
+	public Vector3 sprite_offset;
+
 	[Export(PropertyHint.Range,"0,100")]
 	public float MOVE_SPEED = 10.0f;
 	private const float FPS = 1.0f / 60.0f;
@@ -88,6 +91,8 @@ public class Player : KinematicBody
 		facing_direction = 1.0f;
 		p_anim_controller = GetNode<PlayerAnimationController>(this.GetPath() + "/Sprite3D");
 		attack_controller = GetNode<AttackController>(this.GetPath() + "/AttackController");
+		Sprite3D sprite = GetNode<Sprite3D>(this.GetPath() + "/Sprite3D");
+		sprite.Translation = sprite_offset;
 		state = PlayerState.IDLE;
 		accumalator = 0.0f;
 		track_time = 0.0f;
@@ -327,7 +332,7 @@ public class Player : KinematicBody
 				state = PlayerState.CROUCHING;
 			}
 		}
-		PlayerAnimationController.AnimationProgress animation_progress;
+		//PlayerAnimationController.AnimationProgress animation_progress;
 		switch(state)
 		{
 			case PlayerState.IDLE:
@@ -374,9 +379,9 @@ public class Player : KinematicBody
 
 			case PlayerState.DASH_ATTACK:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.DASH_ATTACK);
-				animation_progress = p_anim_controller.GetAnimationProgress();
-				p_anim_controller.Rotation = new Vector3(0,0,0*(1 - animation_progress.position/animation_progress.animation_length) + facing_direction*-1*2.0f*Mathf.Pi * animation_progress.position/animation_progress.animation_length);
-				motion = new Vector3(facing_direction * RUNSPEED,motion.y,0);
+				//animation_progress = p_anim_controller.GetAnimationProgress();
+				//p_anim_controller.Rotation = new Vector3(0,0,0*(1 - animation_progress.position/animation_progress.animation_length) + facing_direction*-1*2.0f*Mathf.Pi * animation_progress.position/animation_progress.animation_length);
+				motion = new Vector3(facing_direction * deltaTime * RUNSPEED,motion.y,0);
 				break;
 
 			case PlayerState.WALKING_TO_RUN:

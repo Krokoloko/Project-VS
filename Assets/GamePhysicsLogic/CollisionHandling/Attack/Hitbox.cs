@@ -8,7 +8,7 @@ public enum EHITBOXTYPE
     MULTIHIT
 
 }
-public struct Hitbox
+public struct HitboxProps
 {
    public Vector2 size;
    public Vector2 offset;

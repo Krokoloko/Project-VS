@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/Script/Target.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/Visuals/RingTarget.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/SFX/Target Break.mp3" type="AudioStream" id=3]
+[ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/Hurtbox.tscn" type="PackedScene" id=4]
+
+[node name="Target" type="Spatial"]
+script = ExtResource( 1 )
+hurtbox_node = NodePath("Hurtbox")
+audioplayer_node = NodePath("AudioStreamPlayer3D")
+sprite_node = NodePath("Sprite3D")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( 0.16228, 0, 0, 0, 0.16228, 0, 0, 0, 1, 0, 0, 0 )
+texture = ExtResource( 2 )
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="Hurtbox" parent="." instance=ExtResource( 4 )]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 1, 0, 0, 0 )

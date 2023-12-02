@@ -175,7 +175,7 @@ public class PlayerAnimationController : Sprite3D
 
     public override void _Process(float delta)
     {
-        p_current_frame = (int)((animation_player.CurrentAnimationLength/animation_player.CurrentAnimationPosition)/FPS_in_ms);
+        //p_current_frame = (int)((animation_player.CurrentAnimationLength/animation_player.CurrentAnimationPosition)/FPS_in_ms);
         switch(state)
         {
             case AnimationState.JAB1:

@@ -27,7 +27,7 @@ public partial class CollisionData : Resource
 
     private Vector2 knockback_angle_vec2;
 
-    public CollisionData(): this(Vector2.Zero, Vector2.Zero, 0.0f, 0.0f, 0.0f, 0.0f) {}
+    public CollisionData() : this(Vector2.Zero, Vector2.Zero, 0.0f, 0.0f, 0.0f, 0.0f) {}
     public CollisionData(Vector2 p_offset, Vector2 p_size, float p_base_damage, float p_base_knockback, float p_growth_knockback, float p_knockback_angle)
     {
         offset = p_offset;

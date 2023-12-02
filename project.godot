@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="PortBros"
-run/main_scene="res://Assets/UI/CharacterSelectScreen/CharacterSelectScene.tscn"
+run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -24,6 +24,7 @@ HitboxHandler="*res://Assets/GamePhysicsLogic/CollisionHandling/HitboxHandler.cs
 
 settings/fps/force_fps=60
 settings/stdout/print_fps=true
+shapes/collision/shape_color=Color( 0.827451, 0.921569, 0, 1 )
 
 [editor_plugins]
 
