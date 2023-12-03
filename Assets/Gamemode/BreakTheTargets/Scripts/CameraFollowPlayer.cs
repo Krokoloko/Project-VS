@@ -9,12 +9,20 @@ public class CameraFollowPlayer : Spatial
     public Vector3 camera_offset;
 
     [Export]
-    private NodePath player_node;
+    private NodePath player_root_node;
     private Player player;
     public override void _Ready()
     {
         start = GlobalTranslation;
-        player = GetNode<Player>(player_node);
+        
+        Node root = GetNode<Node>(player_root_node);
+        for (int i = 0; i < root.GetChildCount(); i++)
+        {
+            if(root.GetChild(i).Name == "Player")
+            {
+                player = root.GetChild<Player>(i);
+            }
+        }
     }
 
     public override void _Process(float delta)

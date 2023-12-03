@@ -35,8 +35,6 @@ public class Player : KinematicBody
 		TAUNT2,
 		TAUNT3
 	}
-	[Export]
-	public Vector3 sprite_offset;
 
 	[Export(PropertyHint.Range,"0,100")]
 	public float MOVE_SPEED = 10.0f;
@@ -83,16 +81,17 @@ public class Player : KinematicBody
 	private PlayerAnimationController p_anim_controller;
 	private AttackController attack_controller;
 
+	private bool floored;
 
 	public override void _Ready()
 	{
+		floored = true;
 		air_drift = 0.0f;
 		weight_divisor = 1/WEIGHT;
 		facing_direction = 1.0f;
 		p_anim_controller = GetNode<PlayerAnimationController>(this.GetPath() + "/Sprite3D");
 		attack_controller = GetNode<AttackController>(this.GetPath() + "/AttackController");
 		Sprite3D sprite = GetNode<Sprite3D>(this.GetPath() + "/Sprite3D");
-		sprite.Translation = sprite_offset;
 		state = PlayerState.IDLE;
 		accumalator = 0.0f;
 		track_time = 0.0f;
@@ -107,8 +106,8 @@ public class Player : KinematicBody
 
 	public override void _PhysicsProcess(float deltaTime)
 	{
-		MoveAndCollide(motion*deltaTime);
-		MoveAndSlide(Vector3.Zero, Vector3.Up, true);
+		MoveAndSlide(motion, Vector3.Up, true);
+		floored = IsOnFloor();
 	}
 
 	public void HandleInput()
@@ -441,7 +440,7 @@ public class Player : KinematicBody
 		if((state == PlayerState.AIRBORNE || state == PlayerState.AERIAL_ATTACK_BEHIND 
 		|| state == PlayerState.AERIAL_ATTACK_NEUTRAL || state == PlayerState.AERIAL_ATTACK_DOWN 
 		|| state == PlayerState.AERIAL_ATTACK_FORWARD || state == PlayerState.AERIAL_ATTACK_UP) 
-		&& IsOnFloor())
+		&& floored)
 		{
 			state = PlayerState.IDLE;
 			ResetParameters();
@@ -450,6 +449,7 @@ public class Player : KinematicBody
 		{
 			state = PlayerState.AIRBORNE;
 		}
+		GD.Print(state);
 	}
 
 	private void ResetParameters()

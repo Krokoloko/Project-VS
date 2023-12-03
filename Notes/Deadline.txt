@@ -27,7 +27,7 @@ Todos:
 
 	- Wooper
 	- Wario
-	DONE - DK
+	- DK
 	- Klobber and Kloak
 	- Cpt. Falcon
 	- Kirby
@@ -59,15 +59,15 @@ Load in the player and their character to a default position.
 		
 	- Gamemode
 	
-		- When the player falls from below a certain treshold, they die and exit to the character select screen.
+		[DONE 1/2] - When the player falls from below a certain treshold, they die and exit to the character select screen.
 		
 		- Show win screen when you've broken all the targets within time limit.
 		
 			- Show amount of coins you've earned.
 		
-		- Show failure screen when time is up or you've fallen out of bounds.
+		[DONE 1/2] - Show failure screen when time is up or you've fallen out of bounds.
 
-		- Gets all the existing targets in the scene to track how many targets are alive.
+		DONE- Gets all the existing targets in the scene to track how many targets are alive.
 		
 	DONE - Target
 	
@@ -135,10 +135,10 @@ DONE - Game mechanics
 	
 Plan
 
-	- Make the character resource file. eta: 1 hour
+	[SCRAPPED] - Make the character resource file. eta: 1 hour
 	- Sprite sheets are done. eta: 6 hours
 	DONE - Dash attack code is changed to basic animation instead of the donkey kong specific script. (for simplicity sake) eta: 1 hour
-	- Character data that gets configured in the player prefab based on the character resource file. eta: 1.5 hours
+	[SCRAPPED] - Character data that gets configured in the player prefab based on the character resource file. eta: 1.5 hours
 	- Making all the character frame data. eta: 4 hours
 	- Making all the animation files. eta: 6 hours
 	- Set all the character parameters, test them once and iterate them. eta: 4 hours
@@ -159,7 +159,7 @@ Plan
 	- Implement the music for the menu's. eta: 1 hours
 	- Implement the sound effects. eta: 2.5 hours
 	
-Total: 56
+Total: 53.5
 
 [28/11 - 3/12] Woensdag avond (20:00 - 22:00) + Vrijdag (9:00 - 17:00) - 1 uur pauze + Zaterdag (14:00 - 00:00) - 1.5 uur pauze + Zondag (14:00 - 22:00) - 1.5 uur pauze 
 

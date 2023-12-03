@@ -53,8 +53,11 @@ public class HitboxHandler : Node
                 int frame = frame_counters[key];
                 if(frame >= sequences[key].sequence.Length) continue;
                 HitboxData hitboxData = sequences[key].sequence[frame];
-                foreach(CollisionData collider in hitboxData.composition)
+                if(hitboxData == null) continue;
+                for (int j = 0; j < hitboxData.composition.Length; j++)
                 {
+                    CollisionData collider = hitboxData.composition[j];
+                    if(collider == null) continue;
                     Vector3 player_position = GetNode<Spatial>(nodepaths[key]).Transform.origin;
                     Color color = new Color(1.0f,0,0);
                     float flip = GetNode<Player>(nodepaths[key]).anim_controller.GetFlip()?-1:1;

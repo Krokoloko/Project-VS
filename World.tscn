@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://Assets/Player/Prefabs/DK/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Player/Prefabs/Kirby/Character_Kirby.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/Target.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/CameraFollowPlayer.cs" type="Script" id=4]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/TargetsGamemode.cs" type="Script" id=5]
@@ -68,7 +68,7 @@ shader_param/texture_albedo = ExtResource( 17 )
 script = ExtResource( 5 )
 target_nodes = NodePath("All_Targets")
 timer_node = NodePath("GameTimer")
-player_node = NodePath("Player")
+player_root_node = NodePath(".")
 bottom_blast_zone = -16.0
 
 [node name="Level" type="Spatial" parent="."]
@@ -112,12 +112,7 @@ texture = ExtResource( 16 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26193, 3.42684, 8.00238 )
 script = ExtResource( 4 )
 camera_offset = Vector3( 0, 3, 8 )
-player_node = NodePath("../Player")
-
-[node name="Player" parent="." instance=ExtResource( 1 )]
-AIR_ACCELERATION = 0.63
-AIR_SPEED = 8.451
-NEUTRAL_FALL_SPEED = 0.5
+player_root_node = NodePath("..")
 
 [node name="All_Targets" type="Spatial" parent="."]
 
@@ -133,3 +128,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.366609, -7.99717, 0 )
 [node name="GameTimer" type="Timer" parent="."]
 wait_time = 10.0
 autostart = true
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
