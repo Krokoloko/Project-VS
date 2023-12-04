@@ -1,0 +1,93 @@
+[gd_scene load_steps=26 format=2]
+
+[ext_resource path="res://Assets/Player/Scripts/Player.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Player/Scripts/PlayerAnimationController.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Player/Visuals/DK/Jab3.anim" type="Animation" id=3]
+[ext_resource path="res://Assets/Player/Visuals/Wario/UpAerial1.anim" type="Animation" id=4]
+[ext_resource path="res://Assets/Player/Visuals/Wario/ForwardAerial1.anim" type="Animation" id=5]
+[ext_resource path="res://Assets/Player/Visuals/Wario/DownTilt1.anim" type="Animation" id=6]
+[ext_resource path="res://Assets/Player/Visuals/Wario/BehindAerial1.anim" type="Animation" id=7]
+[ext_resource path="res://Assets/Player/Visuals/Wario/DownAerial1.anim" type="Animation" id=8]
+[ext_resource path="res://Assets/Player/Visuals/Wario/Crouch.anim" type="Animation" id=9]
+[ext_resource path="res://Assets/Player/Visuals/DK/Hit1.anim" type="Animation" id=10]
+[ext_resource path="res://Assets/Player/Visuals/DK/Jab2.anim" type="Animation" id=11]
+[ext_resource path="res://Assets/Player/Visuals/Wario/NeutralAerial1.anim" type="Animation" id=12]
+[ext_resource path="res://Assets/Player/Visuals/Wario/Taunt_1.anim" type="Animation" id=13]
+[ext_resource path="res://Assets/Player/Visuals/Wario/Wario_sprite sheet test.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Player/Scripts/CharacterSpecificScripts/SampleAttackController.cs" type="Script" id=15]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Moveset_Wario.tres" type="Resource" id=16]
+[ext_resource path="res://Assets/Player/Visuals/Wario/DashAttack1.anim" type="Animation" id=17]
+[ext_resource path="res://Assets/Player/Visuals/Wario/UpTilt1.anim" type="Animation" id=18]
+[ext_resource path="res://Assets/Player/Visuals/Wario/ForwardTilt1.anim" type="Animation" id=19]
+[ext_resource path="res://Assets/Player/Visuals/Wario/Jump.anim" type="Animation" id=20]
+[ext_resource path="res://Assets/Player/Visuals/Wario/Jab1.anim" type="Animation" id=21]
+[ext_resource path="res://Assets/Player/Visuals/Wario/Walk.anim" type="Animation" id=22]
+[ext_resource path="res://Assets/Player/Visuals/Wario/Idle.anim" type="Animation" id=23]
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 7 ]
+}
+
+[sub_resource type="BoxShape" id=6]
+extents = Vector3( 1.06463, 1, 1.0276 )
+
+[node name="Player" type="KinematicBody"]
+axis_lock_motion_z = true
+move_lock_z = true
+script = ExtResource( 1 )
+MOVE_SPEED = 60.673
+RUNSPEED = 146.168
+total_jabs = 1
+JUMP_HEIGHT = 32.447
+AIR_ACCELERATION = 9.171
+AIR_SPEED = 9.172
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( -1, 0, 0, 0, 1, 8.74228e-08, 0, 8.74228e-08, -1, -0.0431314, 2.24397, 0 )
+offset = Vector2( 220.545, 175 )
+texture = ExtResource( 14 )
+hframes = 8
+vframes = 7
+frame = 7
+script = ExtResource( 2 )
+default_frame = 26
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite3D"]
+anims/BehindAerial1 = ExtResource( 7 )
+anims/Crouch = ExtResource( 9 )
+anims/DashAttack1 = ExtResource( 17 )
+anims/DownAerial1 = ExtResource( 8 )
+anims/DownTilt1 = ExtResource( 6 )
+anims/ForwardAerial1 = ExtResource( 5 )
+anims/ForwardTilt1 = ExtResource( 19 )
+anims/Hit1 = ExtResource( 10 )
+anims/Idle = ExtResource( 23 )
+anims/Jab1 = ExtResource( 21 )
+anims/Jab2 = ExtResource( 11 )
+anims/Jab3 = ExtResource( 3 )
+anims/Jump = ExtResource( 20 )
+anims/NeutralAerial1 = ExtResource( 12 )
+anims/RESET = SubResource( 5 )
+anims/Taunt_1 = ExtResource( 13 )
+anims/UpAerial1 = ExtResource( 4 )
+anims/UpTilt1 = ExtResource( 18 )
+anims/Walk = ExtResource( 22 )
+
+[node name="AttackController" type="Node" parent="."]
+script = ExtResource( 15 )
+moveset = ExtResource( 16 )
+
+[node name="EnvironmentCollision" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.35902, 0 )
+shape = SubResource( 6 )

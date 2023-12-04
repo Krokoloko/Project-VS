@@ -1,153 +1,25 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Player.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Scripts/PlayerAnimationController.cs" type="Script" id=2]
-[ext_resource path="res://Assets/Player/Visuals/DK/Jab3.anim" type="Animation" id=3]
-[ext_resource path="res://Assets/Player/Visuals/DK/Jab1.anim" type="Animation" id=4]
-[ext_resource path="res://Assets/Player/Visuals/DK/ForwardTilt1.anim" type="Animation" id=5]
-[ext_resource path="res://Assets/Player/Visuals/DK/Idle.anim" type="Animation" id=6]
-[ext_resource path="res://Assets/Player/Visuals/DK/Crouch.anim" type="Animation" id=7]
-[ext_resource path="res://Assets/Player/Visuals/DK/DashAttack.anim" type="Animation" id=8]
-[ext_resource path="res://Assets/Player/Visuals/DK/DownTilt1.anim" type="Animation" id=9]
-[ext_resource path="res://Assets/Player/Visuals/DK/Hit1.anim" type="Animation" id=10]
-[ext_resource path="res://Assets/Player/Visuals/DK/Jab2.anim" type="Animation" id=11]
-[ext_resource path="res://Assets/Player/Visuals/DK/UpTilt1.anim" type="Animation" id=12]
-[ext_resource path="res://Assets/Player/Visuals/DK/Walk.anim" type="Animation" id=13]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/Crouch.anim" type="Animation" id=4]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/DownTilt1.anim" type="Animation" id=5]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/Walk.anim" type="Animation" id=6]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/BehindAerial1.anim" type="Animation" id=7]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/DownAerial1.anim" type="Animation" id=8]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/UpAerial1.anim" type="Animation" id=9]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/ForwardAerial1.anim" type="Animation" id=12]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/Jump.anim" type="Animation" id=13]
 [ext_resource path="res://Assets/Player/Visuals/Kirby/Kirby_sprite sheet test.png" type="Texture" id=14]
 [ext_resource path="res://Assets/Player/Scripts/CharacterSpecificScripts/SampleAttackController.cs" type="Script" id=15]
 [ext_resource path="res://Assets/Player/Data/Kirby/Moves/Moveset_Kirby.tres" type="Resource" id=16]
-
-[sub_resource type="Animation" id=7]
-resource_name = "BehindAerial1"
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 36, 37, 38, 39, 40 ]
-}
-
-[sub_resource type="Animation" id=8]
-resource_name = "DownAerial1"
-length = 0.8
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 28, 29, 30, 31 ]
-}
-
-[sub_resource type="Animation" id=9]
-resource_name = "ForwardAerial1"
-length = 0.8
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 32, 33, 34, 35 ]
-}
-
-[sub_resource type="Animation" id=4]
-resource_name = "Jump"
-length = 0.4
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ 8, 9 ]
-}
-
-[sub_resource type="Animation" id=10]
-resource_name = "NeutralAerial1"
-length = 0.6
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ 23, 23, 23 ]
-}
-
-[sub_resource type="Animation" id=5]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ 7 ]
-}
-
-[sub_resource type="Animation" id=2]
-resource_name = "Taunt_1"
-length = 2.4
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 2.2 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ 46, 46 ]
-}
-
-[sub_resource type="Animation" id=11]
-resource_name = "UpAerial1"
-step = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 41, 42, 43, 44, 45 ]
-}
+[ext_resource path="res://Assets/Player/Visuals/Kirby/DashAttack.anim" type="Animation" id=17]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/Taunt_1.anim" type="Animation" id=18]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/ForwardTilt1.anim" type="Animation" id=19]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/NeutralAerial1.anim" type="Animation" id=20]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/UpTilt1.anim" type="Animation" id=21]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/Jab1.anim" type="Animation" id=22]
+[ext_resource path="res://Assets/Player/Visuals/Kirby/Idle.anim" type="Animation" id=23]
 
 [sub_resource type="BoxShape" id=6]
 extents = Vector3( 1.06463, 1, 1.0276 )
@@ -169,30 +41,26 @@ offset = Vector2( 234.71, 175 )
 texture = ExtResource( 14 )
 hframes = 8
 vframes = 7
-frame = 7
+frame = 2
 script = ExtResource( 2 )
 default_frame = 26
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite3D"]
-anims/BehindAerial1 = SubResource( 7 )
-anims/Crouch = ExtResource( 7 )
-anims/DashAttack1 = ExtResource( 8 )
-anims/DownAerial1 = SubResource( 8 )
-anims/DownTilt1 = ExtResource( 9 )
-anims/ForwardAerial1 = SubResource( 9 )
-anims/ForwardTilt1 = ExtResource( 5 )
-anims/Hit1 = ExtResource( 10 )
-anims/Idle = ExtResource( 6 )
-anims/Jab1 = ExtResource( 4 )
-anims/Jab2 = ExtResource( 11 )
-anims/Jab3 = ExtResource( 3 )
-anims/Jump = SubResource( 4 )
-anims/NeutralAerial1 = SubResource( 10 )
-anims/RESET = SubResource( 5 )
-anims/Taunt_1 = SubResource( 2 )
-anims/UpAerial1 = SubResource( 11 )
-anims/UpTilt1 = ExtResource( 12 )
-anims/Walk = ExtResource( 13 )
+anims/BehindAerial1 = ExtResource( 7 )
+anims/Crouch = ExtResource( 4 )
+anims/DashAttack1 = ExtResource( 17 )
+anims/DownAerial1 = ExtResource( 8 )
+anims/DownTilt1 = ExtResource( 5 )
+anims/ForwardAerial1 = ExtResource( 12 )
+anims/ForwardTilt1 = ExtResource( 19 )
+anims/Idle = ExtResource( 23 )
+anims/Jab1 = ExtResource( 22 )
+anims/Jump = ExtResource( 13 )
+anims/NeutralAerial1 = ExtResource( 20 )
+anims/Taunt_1 = ExtResource( 18 )
+anims/UpAerial1 = ExtResource( 9 )
+anims/UpTilt1 = ExtResource( 21 )
+anims/Walk = ExtResource( 6 )
 
 [node name="AttackController" type="Node" parent="."]
 script = ExtResource( 15 )

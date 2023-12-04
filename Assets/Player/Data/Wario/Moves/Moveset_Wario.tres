@@ -1,3 +1,8 @@
-[gd_resource type="Resource" format=2]
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Jab1/HBS_Wario_Jab1.tres" type="Resource" id=1]
+[ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/Moveset.cs" type="Script" id=2]
 
 [resource]
+script = ExtResource( 2 )
+Jab1 = ExtResource( 1 )

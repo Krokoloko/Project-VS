@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://Assets/Player/Prefabs/Kirby/Character_Kirby.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Sounds/TargetsTestSong.mp3" type="AudioStream" id=1]
+[ext_resource path="res://Assets/Player/Prefabs/Wario/Character_Wario.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/Target.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/CameraFollowPlayer.cs" type="Script" id=4]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/TargetsGamemode.cs" type="Script" id=5]
@@ -128,5 +129,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.366609, -7.99717, 0 )
 [node name="GameTimer" type="Timer" parent="."]
 wait_time = 10.0
 autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -14.042
+autoplay = true
 
 [node name="Player" parent="." instance=ExtResource( 2 )]

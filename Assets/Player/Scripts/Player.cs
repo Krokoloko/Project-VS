@@ -144,7 +144,6 @@ public class Player : KinematicBody
 		{
 			state = PlayerState.IDLE;
 		}
-		
 		if(up_pressed && !IsStateAerial())
 		{
 			state = PlayerState.JUMP;

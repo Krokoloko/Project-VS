@@ -24,7 +24,7 @@ public class Hitbox : Spatial
         //GD.Print(collider.Shape.ResourceName);
         //DebugDrawCS.DrawBox(Transform.origin, collider.Scale, Color.Color8(255,0,0,255), true, delta);
 		int frames_passed = (int)(timer/time_per_frame);
-		if(frames < frames_passed) 
+		if(frames <= frames_passed) 
 		{
 			//GD.Print("Delete hitbox");
 			this.QueueFree();

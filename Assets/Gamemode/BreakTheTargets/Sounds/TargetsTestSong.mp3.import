@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/TargetsTestSong.mp3-7207747905764213526297465fb187d5.mp3str"
+
+[deps]
+
+source_file="res://Assets/Gamemode/BreakTheTargets/Sounds/TargetsTestSong.mp3"
+dest_files=[ "res://.import/TargetsTestSong.mp3-7207747905764213526297465fb187d5.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
