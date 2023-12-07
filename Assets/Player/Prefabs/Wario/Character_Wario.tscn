@@ -54,7 +54,7 @@ AIR_ACCELERATION = 9.171
 AIR_SPEED = 9.172
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform( -1, 0, 0, 0, 1, 8.74228e-08, 0, 8.74228e-08, -1, -0.0431314, 2.24397, 0 )
+transform = Transform( -0.685001, 0, 0, 0, 0.685001, 5.98847e-08, 0, 8.74228e-08, -1, 0.129999, 1.66865, 0 )
 offset = Vector2( 220.545, 175 )
 texture = ExtResource( 14 )
 hframes = 8

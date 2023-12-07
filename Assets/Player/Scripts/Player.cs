@@ -317,7 +317,6 @@ public class Player : KinematicBody
 		if(p_anim_controller.GetState() == PlayerAnimationController.AnimationState.NONE)
 		{
 			state = PlayerState.IDLE;
-			p_anim_controller.Rotation = new Vector3(0,0,0);
 		}
 		if(p_anim_controller.GetState() == PlayerAnimationController.AnimationState.AERIAL_TO_JUMP)
 		{
@@ -335,12 +334,12 @@ public class Player : KinematicBody
 		{
 			case PlayerState.IDLE:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.IDLE);
-				motion = Vector3.Zero;
+				motion = Vector3.Down;
 				break;
 			
 			case PlayerState.WALKING:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.WALKING);
-				motion = new Vector3(MOVE_SPEED * deltaTime * facing_direction,motion.y,0);
+				motion = new Vector3(MOVE_SPEED * deltaTime * facing_direction,-0.1f,0);
 				break;
 
 			case PlayerState.CROUCHING:
@@ -398,37 +397,31 @@ public class Player : KinematicBody
 
 			case PlayerState.AIRBORNE:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JUMP);
-				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.AERIAL_ATTACK_NEUTRAL:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_NEUTRAL);
-				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 			
 			case PlayerState.AERIAL_ATTACK_FORWARD:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_FORWARD);
-				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.AERIAL_ATTACK_BEHIND:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_BEHIND);
-				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.AERIAL_ATTACK_UP:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_UP);
-				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.AERIAL_ATTACK_DOWN:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.AERIAL_DOWN);
-				motion -= Vector3.Up * GRAVITY * falling_speed;
 				break;
 
 			case PlayerState.RUN:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.WALKING);
-				motion = new Vector3(deltaTime * facing_direction * RUNSPEED,motion.y,0);
+				motion = new Vector3(deltaTime * facing_direction * RUNSPEED,-0.1f,0);
 				break;
 
 			case PlayerState.TAUNT1:
@@ -436,13 +429,20 @@ public class Player : KinematicBody
 				break;
 		}
 
-		if((state == PlayerState.AIRBORNE || state == PlayerState.AERIAL_ATTACK_BEHIND 
-		|| state == PlayerState.AERIAL_ATTACK_NEUTRAL || state == PlayerState.AERIAL_ATTACK_DOWN 
-		|| state == PlayerState.AERIAL_ATTACK_FORWARD || state == PlayerState.AERIAL_ATTACK_UP) 
-		&& floored)
+		if(IsStateAerial())
 		{
-			state = PlayerState.IDLE;
-			ResetParameters();
+			motion -= Vector3.Up * GRAVITY * falling_speed;
+			if(floored)
+			{
+				state = PlayerState.IDLE;
+				ResetParameters();
+				motion = Vector3.Down;
+			}
+		}
+		if(IsStateGrounded() && !floored)
+		{
+			state = PlayerState.AIRBORNE;
+			falling_speed = NEUTRAL_FALL_SPEED;
 		}
 		if(state == PlayerState.JUMP)
 		{
@@ -472,7 +472,7 @@ public class Player : KinematicBody
 	private bool IsStateAerial()
 	{
 		bool aerial = false;
-		if(state == PlayerState.AERIAL_ATTACK_BEHIND || state == PlayerState.AERIAL_ATTACK_DOWN || state == PlayerState.AERIAL_ATTACK_FORWARD || state == PlayerState.AERIAL_ATTACK_NEUTRAL || state == PlayerState.AERIAL_ATTACK_UP || state == PlayerState.AIRBORNE || state == PlayerState.JUMP)
+		if(state == PlayerState.AERIAL_ATTACK_BEHIND || state == PlayerState.AERIAL_ATTACK_DOWN || state == PlayerState.AERIAL_ATTACK_FORWARD || state == PlayerState.AERIAL_ATTACK_NEUTRAL || state == PlayerState.AERIAL_ATTACK_UP || state == PlayerState.AIRBORNE)
 		{
 			aerial = true;
 		}

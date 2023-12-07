@@ -165,7 +165,7 @@ public class PlayerAnimationController : Sprite3D
     public void FlipSprite(bool face_left)
     {
         flip = face_left;
-        Scale = new Vector3((flip)?-1.0f:1.0f, 1.0f, 1.0f);
+        Scale = new Vector3((flip)?Mathf.Abs(Scale.x):-Mathf.Abs(Scale.x), Scale.y, Scale.z);
     }
 
     public bool GetFlip()

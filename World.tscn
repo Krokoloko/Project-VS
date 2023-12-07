@@ -1,10 +1,13 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Sounds/TargetsTestSong.mp3" type="AudioStream" id=1]
 [ext_resource path="res://Assets/Player/Prefabs/Wario/Character_Wario.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/Target.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/CameraFollowPlayer.cs" type="Script" id=4]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/TargetsGamemode.cs" type="Script" id=5]
+[ext_resource path="res://Assets/UI/GameStatus/BreakTargetsWinMessage.png" type="Texture" id=6]
+[ext_resource path="res://Assets/UI/GameStatus/BreakTargetsTimeLost.png" type="Texture" id=7]
+[ext_resource path="res://Assets/UI/GameStatus/BreakTargetsDie.png" type="Texture" id=8]
 [ext_resource path="res://Assets/BackGround.png" type="Texture" id=16]
 [ext_resource path="res://Assets/GroundTexture.png" type="Texture" id=17]
 
@@ -71,6 +74,10 @@ target_nodes = NodePath("All_Targets")
 timer_node = NodePath("GameTimer")
 player_root_node = NodePath(".")
 bottom_blast_zone = -16.0
+winscreen_node = NodePath("UI/WinScreen")
+losescreen_node = NodePath("UI/LoseScreen")
+timeupscreen_node = NodePath("UI/NoTimeScreen")
+buttons_node = NodePath("UI/HBoxContainer")
 
 [node name="Level" type="Spatial" parent="."]
 
@@ -105,15 +112,15 @@ input_ray_pickable = false
 [node name="CollisionShape" type="CollisionShape" parent="Level/MainLevelPlatform/StaticBody"]
 shape = SubResource( 8 )
 
-[node name="Sprite3D" type="Sprite3D" parent="Level"]
-transform = Transform( 8.09389, 0, 0, 0, 8.09389, 0, 0, 0, 1, 3.00301, 6.12739, -28.4512 )
-texture = ExtResource( 16 )
-
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26193, 3.42684, 8.00238 )
 script = ExtResource( 4 )
 camera_offset = Vector3( 0, 3, 8 )
 player_root_node = NodePath("..")
+
+[node name="Sprite3D" type="Sprite3D" parent="Camera"]
+transform = Transform( 8.09389, 0, 0, 0, 8.09389, 0, 0, 0, 1, 3.265, 2.701, -28.496 )
+texture = ExtResource( 16 )
 
 [node name="All_Targets" type="Spatial" parent="."]
 
@@ -136,3 +143,82 @@ volume_db = -14.042
 autoplay = true
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.742372, 0 )
+NEUTRAL_FALL_SPEED = 1.212
+FAST_FALL_SPEED = 16.554
+
+[node name="UI" type="ViewportContainer" parent="."]
+margin_right = 1027.0
+margin_bottom = 597.0
+stretch = true
+
+[node name="WinScreen" type="CenterContainer" parent="UI"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+use_top_left = true
+
+[node name="TextureRect" type="TextureRect" parent="UI/WinScreen"]
+margin_left = -274.0
+margin_top = -98.0
+margin_right = 274.0
+margin_bottom = 97.0
+texture = ExtResource( 6 )
+
+[node name="LoseScreen" type="CenterContainer" parent="UI"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+use_top_left = true
+
+[node name="TextureRect2" type="TextureRect" parent="UI/LoseScreen"]
+margin_left = -239.0
+margin_top = -74.0
+margin_right = 238.0
+margin_bottom = 73.0
+texture = ExtResource( 8 )
+
+[node name="NoTimeScreen" type="CenterContainer" parent="UI"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+use_top_left = true
+
+[node name="TextureRect3" type="TextureRect" parent="UI/NoTimeScreen"]
+margin_left = -271.0
+margin_top = -94.0
+margin_right = 270.0
+margin_bottom = 94.0
+texture = ExtResource( 7 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+visible = false
+anchor_left = 0.391
+anchor_top = 0.721
+anchor_right = 0.391
+anchor_bottom = 0.721
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Button" type="Button" parent="UI/HBoxContainer"]
+margin_right = 83.0
+margin_bottom = 40.0
+text = "Main Menu"
+
+[node name="Button2" type="Button" parent="UI/HBoxContainer"]
+margin_left = 87.0
+margin_right = 164.0
+margin_bottom = 40.0
+text = "Play Again"
+
+[node name="Button3" type="Button" parent="UI/HBoxContainer"]
+margin_left = 168.0
+margin_right = 283.0
+margin_bottom = 40.0
+text = "Select Character"

@@ -28,6 +28,22 @@ public class TargetsGamemode : Node
 	private float bottom_blast_zone;
 	private GameState state;
 
+	[Export]
+	private NodePath winscreen_node;
+	private Control winscreen_ui;
+
+	[Export]
+	private NodePath losescreen_node;
+	private Control losescreen_ui;
+
+	[Export]
+	private NodePath timeupscreen_node;
+	private Control timeupscreen_ui;
+
+	[Export]
+	private NodePath buttons_node;
+	private Control buttons_ui;
+
 	public override void _Ready()
 	{
 		state = GameState.PLAYING;
@@ -42,9 +58,6 @@ public class TargetsGamemode : Node
 			}
 		}
 
-		game_timer = GetNode<Timer>(timer_node);
-		game_timer.Connect("timeout", this, "TriggerLoseState");
-
 		Node targets_node = GetNode<Node>(target_nodes);
 		
 		targets_alive = targets_node.GetChildCount();
@@ -53,6 +66,21 @@ public class TargetsGamemode : Node
 		{
 			targets_node.GetChild<Target>(i).Connect("OnDestroy", this, "TargetLost");
 		}
+
+		game_timer = GetNode<Timer>(timer_node);
+		game_timer.Connect("timeout", this, "TriggerLoseState");
+
+		winscreen_ui = GetNode<Control>(winscreen_node);
+		winscreen_ui.Visible = false;
+
+		losescreen_ui = GetNode<Control>(losescreen_node);
+		losescreen_ui.Visible = false;
+
+		timeupscreen_ui = GetNode<Control>(timeupscreen_node);
+		timeupscreen_ui.Visible = false;
+
+		buttons_ui = GetNode<Control>(buttons_node);
+		buttons_ui.Visible = false;
 	}
 
 	private void TriggerLoseState()
@@ -60,6 +88,8 @@ public class TargetsGamemode : Node
 		if(state != GameState.PLAYING) return;
 		state = GameState.LOST;
 		GD.Print("You lose!!");
+		timeupscreen_ui.Visible = true;
+		buttons_ui.Visible = true;
 	}
 
 	private void TargetLost(Node target)
@@ -68,15 +98,19 @@ public class TargetsGamemode : Node
 		if(targets_alive == 0 && state == GameState.PLAYING)
 		{
 			GD.Print("You win!!");
+			winscreen_ui.Visible = true;
+			buttons_ui.Visible = true;
 			state = GameState.WIN;
 		}
 	}
 
 	public override void _Process(float delta)
 	{
-		if(player.GlobalTranslation.y < bottom_blast_zone)
+		if(player.GlobalTranslation.y < bottom_blast_zone && state == GameState.PLAYING)
 		{
 			TriggerLoseState();
+			losescreen_ui.Visible = true;
+			timeupscreen_ui.Visible = false;
 		}
 	}
 }
