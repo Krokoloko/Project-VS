@@ -18,6 +18,7 @@ public class CameraFollowPlayer : Spatial
         Node root = GetNode<Node>(player_root_node);
         for (int i = 0; i < root.GetChildCount(); i++)
         {
+            string name = root.GetChild(i).Name;
             if(root.GetChild(i).Name == "Player")
             {
                 player = root.GetChild<Player>(i);

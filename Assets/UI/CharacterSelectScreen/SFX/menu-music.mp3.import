@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/menu-music.mp3-04551868e912402779aabcb4678e372e.mp3str"
+
+[deps]
+
+source_file="res://Assets/UI/CharacterSelectScreen/SFX/menu-music.mp3"
+dest_files=[ "res://.import/menu-music.mp3-04551868e912402779aabcb4678e372e.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

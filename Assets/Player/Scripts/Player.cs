@@ -82,14 +82,17 @@ public class Player : KinematicBody
 	private AttackController attack_controller;
 
 	private bool floored;
+	private bool has_double_jump;
 
 	public override void _Ready()
 	{
 		floored = true;
+		has_double_jump = false;
 		air_drift = 0.0f;
 		weight_divisor = 1/WEIGHT;
 		facing_direction = 1.0f;
 		p_anim_controller = GetNode<PlayerAnimationController>(this.GetPath() + "/Sprite3D");
+		p_anim_controller.FlipSprite(true);
 		attack_controller = GetNode<AttackController>(this.GetPath() + "/AttackController");
 		Sprite3D sprite = GetNode<Sprite3D>(this.GetPath() + "/Sprite3D");
 		state = PlayerState.IDLE;
@@ -144,9 +147,16 @@ public class Player : KinematicBody
 		{
 			state = PlayerState.IDLE;
 		}
-		if(up_pressed && !IsStateAerial())
+		if(jump_pressed && !IsStateAerial())
 		{
 			state = PlayerState.JUMP;
+			has_double_jump = true;
+		}
+		if(state == PlayerState.AIRBORNE && has_double_jump && jump_pressed)
+		{
+			state = PlayerState.JUMP;
+			has_double_jump = false;
+			motion = new Vector3(motion.x,0,0);
 		}
 
 		bool attack_preformed = false;
@@ -198,7 +208,6 @@ public class Player : KinematicBody
 					state = PlayerState.TILT_ATTACK_DOWN;
 					attack_preformed = true;
 				}
-
 				//Handle Jab attacks
 				if(!attack_preformed && state == PlayerState.IDLE)
 				{
@@ -215,7 +224,6 @@ public class Player : KinematicBody
 				{
 					state = PlayerState.JAB_ATTACK3;
 				}
-
 			}
 		}
 
@@ -306,6 +314,7 @@ public class Player : KinematicBody
 				{
 					float traction = AIR_ACCELERATION*0.5f;
 					air_drift -= traction*Mathf.Sign(air_drift);
+					//air_drift = Mathf.Min(Mathf.Max(air_drift, 0),air_drift);
 					motion = new Vector3(air_drift, motion.y, 0);
 				}
 			}

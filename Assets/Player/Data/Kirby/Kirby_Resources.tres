@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Player/Visuals/Kirby/Kirby_Portrait.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Player/Scripts/Resources/CharacterResources.cs" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+prefab = "res://Assets/Player/Prefabs/Kirby/Character_Kirby.tscn"
+portrait = ExtResource( 1 )
+portrait_scale = Vector2( 0.6, 0.6 )
+name = "Kirby"

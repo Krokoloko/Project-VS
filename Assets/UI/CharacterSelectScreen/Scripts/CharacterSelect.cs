@@ -4,75 +4,92 @@ using System.Collections.Generic;
 
 public class CharacterSelect : Node2D
 {
-	public enum Character
-	{
-		NONE,
-		DK,
-		WARIO,
-		KIRBY
-	}
-	public struct Slot
-	{
-		public Character character_type;
-		public Vector2 position;
-		public Vector2 rectangle_size;
-		public bool selectable;
-	}
+	[Export]
+	public NodePath[] slot_nodes;
+
+	private CharacterSlot[] slots;
+
+	private CharacterResources hovered_character;
+	private CharacterResources selected_character;
 
 	[Export]
-	public int slots_width;
-	[Export]
-	public int slots_height;
+	private NodePath ready_to_play_node;
 
-	[Export]
-	public Slot[] slots;
-
-	private Dictionary<UICursor.PLAYER_CURSOR, Character> characters;
+	private Control ready_to_play_ui;
 
 	[Export]
 	public NodePath cursor_manager;
 	private CursorManager cursors;
 
+	[Export]
+	private LevelResource load_this_level;
+
+	bool is_loading;
+
 	public override void _Ready()
 	{
-		Array.Resize<Slot>(ref slots, slots_width * slots_height);
+		is_loading = false;
+		ready_to_play_ui = GetNode<Control>(ready_to_play_node);
+		ready_to_play_ui.Visible = false;
+
+		Array.Resize<CharacterSlot>(ref slots, slot_nodes.Length);
+		for (int i = 0; i < slot_nodes.Length; i++)
+		{
+			slots[i] = GetNode<CharacterSlot>(slot_nodes[i]);
+			slots[i].Connect("OnHover", this, "IsHoveredOnCharacter");	
+			slots[i].Connect("HoverExited", this, "UnhoverCharacter");
+		}
 		cursors = GetNode<CursorManager>(cursor_manager);
-		characters.Add(UICursor.PLAYER_CURSOR.P1, Character.NONE);
-		characters.Add(UICursor.PLAYER_CURSOR.P2, Character.NONE);
-		characters.Add(UICursor.PLAYER_CURSOR.P3, Character.NONE);
-		characters.Add(UICursor.PLAYER_CURSOR.P4, Character.NONE);
 	}
 
-	public override void _Process(float delta)
+	private void UnhoverCharacter(CharacterResources character_info)
 	{
-		var a_cursors = cursors.GetUICursors();
-		for (int i = 0; i < a_cursors.Length; i++)
+		if(character_info.name == hovered_character.name)
 		{
-			if(a_cursors[i].GetClickState())
-			{
-				for (int j = 0; j < slots.Length; j++)
-				{
-					if(IsWithinSlotBoundries(slots[j], a_cursors[i]))
-					{
-						// Cursor has selected the character slot
-						if(a_cursors[i].player == UICursor.PLAYER_CURSOR.P1)
-						{
-							characters[a_cursors[i].player] = slots[j].character_type;
-						}
-					}
-				}
-			}
+			GD.Print("Unhover");
+			hovered_character = null;
 		}
 	}
 
-	private bool IsWithinSlotBoundries(Slot slot, UICursor cursor)
+	private void IsHoveredOnCharacter(CharacterResources character)
 	{
-		Vector2 half_rect = slot.rectangle_size*0.5f;
-		float minx = slot.position.x - half_rect.x;
-		float miny = slot.position.y - half_rect.y;
-		float maxx = slot.position.x + half_rect.x;
-		float maxy = slot.position.y + half_rect.y;
-		return slot.selectable && cursor.Position.x + cursor.select_point.x >= minx && cursor.Position.y + cursor.select_point.y >= miny &&
-		 cursor.Position.x + cursor.select_point.x <= maxx && cursor.Position.y + cursor.select_point.y <= maxy;
+		GD.Print("Hover");
+		hovered_character = character;
+	}
+	public override void _Process(float delta)
+	{
+		if(Input.IsActionJustPressed("ui_accept") && selected_character != null)
+		{
+			CharacterResources load_character = selected_character;
+			Node root = GetNode<Node>("../../");
+			GetNode<Node>("../").GetChild<AudioStreamPlayer2D>(5).Stop();
+
+			GD.Print("Unload scene");
+			GetParent<Node2D>().QueueFree();
+
+			GD.Print("Load Level");
+			TargetsGamemode level = GD.Load<PackedScene>(load_this_level.level_source).Instance<TargetsGamemode>();
+			Player player = GD.Load<PackedScene>(load_character.prefab).Instance<Player>();
+			player.Translation = new Vector3(load_this_level.player_spawn_positions[0].x,load_this_level.player_spawn_positions[0].y,0);
+			
+			level.AddChild(player);
+			root.AddChild(level);
+		}
+		UICursor[] a_cursors = cursors.GetUICursors();
+		for (int i = 0; i < a_cursors.Length; i++)
+		{
+			if(hovered_character != null)
+			{
+				if(a_cursors[i].GetClickState())
+				{
+					selected_character = hovered_character;
+					ready_to_play_ui.Visible = true;
+					ready_to_play_ui.GetChild<Sprite>(0).Texture = selected_character.portrait;
+					ready_to_play_ui.GetChild<Sprite>(0).Scale = selected_character.portrait_scale;
+					ready_to_play_ui.GetChild<Label>(1).Text = selected_character.name;
+					GD.Print(selected_character.name);
+				}
+			}
+		}
 	}
 }

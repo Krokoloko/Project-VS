@@ -19,16 +19,21 @@ public class UICursor : Node2D
     [Export]
     public PLAYER_CURSOR player;
     
+    [Export]
+    public float cursor_move_speed;
+
     private bool has_clicked;
+    private Vector2 velocity;
 
     public override void _Ready()
     {
         SpawnCursor();
         has_clicked = false;
+
     }
     public override void _Process(float delta)
     {
-        
+        Position += velocity * delta;
     }
     public void MakeCursorVisible(bool is_visible)
     {
@@ -40,7 +45,7 @@ public class UICursor : Node2D
     }
     public void MoveCursor(Vector2 move_to)
     {
-        Position += move_to;
+        velocity = move_to * cursor_move_speed;
     }
     public void Click()
     {
