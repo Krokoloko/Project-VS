@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/HitboxSequence.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Down Air/Hitboxes/HBD_Kirby_DownAir_1.tres" type="Resource" id=2]
+[ext_resource path="res://Assets/Player/Data/HBD_EMPTY.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Down Air/Hitboxes/HBD_Kirby_DownAir_2.tres" type="Resource" id=4]
+
+[resource]
+script = ExtResource( 1 )
+sequence = [ ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ) ]

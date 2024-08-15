@@ -1,11 +1,12 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class PlayerAnimationController : Sprite3D
 {
     public enum AnimationState 
     {
-        NONE,
+        NONE = 0,
         JUMP,
         AERIAL_TO_JUMP,
         CROUCHATTACK_TO_CROUCH,
@@ -32,8 +33,11 @@ public class PlayerAnimationController : Sprite3D
         DOWN_SPECIAL,
         TAUNT1,
         TAUNT2,
-        TAUNT3
+        TAUNT3,
+        COUNT
     }
+
+    public Dictionary<AnimationState, string> animation_names;
 
     public struct AnimationProgress
     {
@@ -58,6 +62,25 @@ public class PlayerAnimationController : Sprite3D
     private AnimationState state;
     public override void _Ready()
     {
+        animation_names = new Dictionary<AnimationState, string>((int)AnimationState.COUNT)
+        {
+            { AnimationState.IDLE, "Idle" },
+            { AnimationState.JUMP, "Jump" },
+            { AnimationState.WALKING, "Walk" },
+            { AnimationState.CROUCHING, "Crouch" },
+            { AnimationState.JAB1, "Jab1" },
+            { AnimationState.JAB2, "Jab2" },
+            { AnimationState.JAB3, "Jab3" },
+            { AnimationState.DASH_ATTACK, "DashAttack1" },
+            { AnimationState.AERIAL_FORWARD, "ForwardAerial1" },
+            { AnimationState.AERIAL_BEHIND, "BehindAerial1" },
+            { AnimationState.AERIAL_NEUTRAL, "NeutralAerial1" },
+            { AnimationState.AERIAL_UP, "UpAerial1" },
+            { AnimationState.AERIAL_DOWN, "DownAerial1" },
+            { AnimationState.FORWARD_TILT, "ForwardTilt1" },
+            { AnimationState.UP_TILT, "UpTilt1" },
+            { AnimationState.DOWN_TILT, "DownTilt1" }
+        };
         flip = false;
         animation_player = GetNode<AnimationPlayer>(this.GetPath() + "/AnimationPlayer");
         Frame = default_frame;
@@ -65,6 +88,11 @@ public class PlayerAnimationController : Sprite3D
         p_current_frame = 0;
         frames_animation = 0;
         FPS_in_ms = 1000.0f/FPS;
+    }
+
+    public AnimationPlayer GetAnimationPlayer()
+    {
+        return animation_player;
     }
 
     public AnimationState GetState()
@@ -175,7 +203,6 @@ public class PlayerAnimationController : Sprite3D
 
     public override void _Process(float delta)
     {
-        //p_current_frame = (int)((animation_player.CurrentAnimationLength/animation_player.CurrentAnimationPosition)/FPS_in_ms);
         switch(state)
         {
             case AnimationState.JAB1:

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/HitboxSequence.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Forward Air/Hitboxes/HBD_Wario_ForwardAir_1.tres" type="Resource" id=2]
+
+[resource]
+script = ExtResource( 1 )
+sequence = [ ExtResource( 2 ) ]

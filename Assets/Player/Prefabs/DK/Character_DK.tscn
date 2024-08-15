@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Player.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Scripts/PlayerAnimationController.cs" type="Script" id=2]
@@ -21,6 +21,7 @@
 [ext_resource path="res://Assets/Player/Visuals/DK/BehindAerial1.anim" type="Animation" id=19]
 [ext_resource path="res://Assets/Player/Visuals/DK/UpAerial1.anim" type="Animation" id=20]
 [ext_resource path="res://Assets/Player/Visuals/DK/ForwardAerial1.anim" type="Animation" id=21]
+[ext_resource path="res://Assets/Player/Data/DK/DK_Resources.tres" type="Resource" id=22]
 
 [sub_resource type="Animation" id=4]
 resource_name = "Jump"
@@ -75,14 +76,19 @@ tracks/0/keys = {
 [sub_resource type="BoxShape" id=6]
 extents = Vector3( 1.06463, 1, 1.95054 )
 
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 1.15159, 0.400859, 1 )
+
 [node name="Player" type="KinematicBody"]
 axis_lock_motion_z = true
 move_lock_z = true
 script = ExtResource( 1 )
+resource_reference = ExtResource( 22 )
 MOVE_SPEED = 60.673
 RUNSPEED = 146.168
 total_jabs = 1
-JUMP_HEIGHT = 14.415
+JUMP_HEIGHT = 20.017
+AIR_SPEED = 13.622
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform( -1, 0, 0, 0, 1, 8.74228e-08, 0, 8.74228e-08, -1, 0.0730259, 2.24397, 0 )
@@ -122,3 +128,11 @@ moveset = ExtResource( 16 )
 [node name="EnvironmentCollision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.244, 0 )
 shape = SubResource( 6 )
+
+[node name="Area" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.551297, 0 )
+shape = SubResource( 7 )

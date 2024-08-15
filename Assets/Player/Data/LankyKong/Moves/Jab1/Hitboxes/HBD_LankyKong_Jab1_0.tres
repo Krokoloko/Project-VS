@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/HitboxData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Player/Data/LankyKong/Moves/Jab1/Hitboxes/Composition/CD_LankyKong_Jab1_Mid.tres" type="Resource" id=2]
+[ext_resource path="res://Assets/Player/Data/LankyKong/Moves/Jab1/Hitboxes/Composition/CD_LankyKong_Jab1_Short.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Player/Data/LankyKong/Moves/Jab1/Hitboxes/Composition/CD_LankyKong_Jab1_Long.tres" type="Resource" id=4]
+
+[resource]
+script = ExtResource( 1 )
+composition = [ ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ) ]
+frames = 3

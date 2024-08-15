@@ -13,12 +13,12 @@ public class CharacterSelect : Node2D
 	private CharacterResources selected_character;
 
 	[Export]
-	private NodePath ready_to_play_node;
+	private NodePath ready_to_play_node = "";
 
 	private Control ready_to_play_ui;
 
 	[Export]
-	public NodePath cursor_manager;
+	public NodePath cursor_manager = "";
 	private CursorManager cursors;
 
 	[Export]
@@ -58,21 +58,31 @@ public class CharacterSelect : Node2D
 	}
 	public override void _Process(float delta)
 	{
+		if(Input.IsActionJustPressed("Goto_Trophy_Lottery"))
+		{
+			Node root = GetNode<Node>("../../");
+			Node sceneroot = GetNode<Node>("../");
+			sceneroot.GetChild<AudioStreamPlayer2D>(sceneroot.GetChildCount()-1).Stop();	
+			sceneroot.QueueFree();
+			Node trophy_gallery = GD.Load<PackedScene>("res://Assets/UI/TrophyGallery/TrophyGallery.tscn").Instance<Node>();
+			root.AddChild(trophy_gallery);
+		}
 		if(Input.IsActionJustPressed("ui_accept") && selected_character != null)
 		{
 			CharacterResources load_character = selected_character;
 			Node root = GetNode<Node>("../../");
-			GetNode<Node>("../").GetChild<AudioStreamPlayer2D>(5).Stop();
+			Node sceneroot = GetNode<Node>("../");
+			sceneroot.GetChild<AudioStreamPlayer2D>(sceneroot.GetChildCount()-1).Stop();
 
 			GD.Print("Unload scene");
-			GetParent<Node2D>().QueueFree();
+			sceneroot.QueueFree();
 
 			GD.Print("Load Level");
 			TargetsGamemode level = GD.Load<PackedScene>(load_this_level.level_source).Instance<TargetsGamemode>();
 			Player player = GD.Load<PackedScene>(load_character.prefab).Instance<Player>();
 			player.Translation = new Vector3(load_this_level.player_spawn_positions[0].x,load_this_level.player_spawn_positions[0].y,0);
 			
-			level.AddChild(player);
+			level.GetNode<Node>("./PlayerContainer").AddChild(player);
 			root.AddChild(level);
 		}
 		UICursor[] a_cursors = cursors.GetUICursors();

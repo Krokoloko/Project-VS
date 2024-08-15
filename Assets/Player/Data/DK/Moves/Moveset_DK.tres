@@ -1,8 +1,26 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=12 format=2]
 
 [ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/Moveset.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Data/DK/Moves/Jab1/HBS_DK_Jab1.tres" type="Resource" id=2]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Neutral Air/HBS_DK_NeutralAir.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Dash Attack/HBS_DK_DashAttack1.tres" type="Resource" id=4]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Down Tilt/HBS_DK_DownTilt.tres" type="Resource" id=5]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Up Tilt/HBS_DK_UpTilt.tres" type="Resource" id=6]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Forward Tilt/HBS_DK_ForwardTilt.tres" type="Resource" id=7]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Up Air/HBS_DK_UpAir.tres" type="Resource" id=8]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Back Air/HBS_DK_BackAir.tres" type="Resource" id=9]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Down Air/HBS_DK_DownAir.tres" type="Resource" id=10]
+[ext_resource path="res://Assets/Player/Data/DK/Moves/Forward Air/HBS_DK_ForwardAir.tres" type="Resource" id=11]
 
 [resource]
 script = ExtResource( 1 )
 Jab1 = ExtResource( 2 )
+DashAttack = ExtResource( 4 )
+ForwardTilt = ExtResource( 7 )
+UpTilt = ExtResource( 6 )
+DownTilt = ExtResource( 5 )
+NeutralAerial = ExtResource( 3 )
+ForwardAerial = ExtResource( 11 )
+BackAerial = ExtResource( 9 )
+UpAerial = ExtResource( 8 )
+DownAerial = ExtResource( 10 )

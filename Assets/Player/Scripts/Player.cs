@@ -4,6 +4,8 @@ using System.Diagnostics.Eventing.Reader;
 using System.Drawing.Text;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
+using System.Xml.Serialization;
+
 
 
 public class Player : KinematicBody
@@ -35,6 +37,9 @@ public class Player : KinematicBody
 		TAUNT2,
 		TAUNT3
 	}
+
+	[Export]
+	public CharacterResources resource_reference;
 
 	[Export(PropertyHint.Range,"0,100")]
 	public float MOVE_SPEED = 10.0f;
@@ -77,15 +82,29 @@ public class Player : KinematicBody
 	private float air_drift;
 
 	private PlayerState state;
+	public Area area;
 	public PlayerAnimationController anim_controller{get {return p_anim_controller;}}
 	private PlayerAnimationController p_anim_controller;
 	private AttackController attack_controller;
 
 	private bool floored;
 	private bool has_double_jump;
+	private PhysicsBody detected_go_through_platform = null;
+	public int player_number;
+	private uint platform_bittracker = 0;
+	private bool go_through_platform = false;
+	private bool print_once = true;
+	private const float double_down_platform_timer_treshold = 0.3f;
+	private bool double_down_platform_timer_on = false;
+	private float double_down_platform_timer = 0.0f;
 
 	public override void _Ready()
 	{
+		for(int i = 16; i < 32; i++)
+		{
+			platform_bittracker |= (uint)(1<<i);
+		}
+		player_number = 1;
 		floored = true;
 		has_double_jump = false;
 		air_drift = 0.0f;
@@ -96,9 +115,48 @@ public class Player : KinematicBody
 		attack_controller = GetNode<AttackController>(this.GetPath() + "/AttackController");
 		Sprite3D sprite = GetNode<Sprite3D>(this.GetPath() + "/Sprite3D");
 		state = PlayerState.IDLE;
+		area = GetNode<Area>(this.GetPath() + "/Area");
+		area.CollisionLayer = platform_bittracker;
+		area.CollisionMask = platform_bittracker;
+		area.Connect("body_entered", this, "AreaDetected");
+		area.Connect("body_exited", this, "AreaExited");
+		platform_bittracker |= 1;
 		accumalator = 0.0f;
 		track_time = 0.0f;
 		treshold = 0.0f;
+	}
+
+	private void AreaDetected(Node body)
+	{
+		if(IsStateAerial())
+		{
+			PhysicsBody p_body = (PhysicsBody)(body);
+			if(p_body.Name != "Player")
+			{
+				detected_go_through_platform = p_body;
+				platform_bittracker |= p_body.CollisionLayer;
+				CollisionLayer = platform_bittracker;
+				CollisionMask = platform_bittracker;
+			}
+		}
+	}
+
+	private void AreaExited(Node body)
+	{
+		PhysicsBody p_body = (PhysicsBody)(body);
+		if(p_body == detected_go_through_platform)
+		{
+			detected_go_through_platform = null;
+		}
+	}
+
+	public void SetPassThroughPlatformBits()
+	{
+		for(int i = 15; i < 32; i++)
+		{
+			SetCollisionLayerBit(i, ((1<<i) & platform_bittracker) > 0);
+			SetCollisionMaskBit(i, ((1<<i) & platform_bittracker) > 0);
+		}
 	}
 
 	public override void _Process(float delta)
@@ -124,6 +182,7 @@ public class Player : KinematicBody
 		bool left_released = Input.IsActionJustReleased("Player_Left");
 
 		bool down_hold = Input.IsActionPressed("Player_Down");
+		bool down_released = Input.IsActionJustReleased("Player_Down");
 
 		bool jump_pressed = Input.IsActionJustPressed("Player_Jump");
 
@@ -147,14 +206,46 @@ public class Player : KinematicBody
 		{
 			state = PlayerState.IDLE;
 		}
+
+		if(down_released)
+		{
+			if(double_down_platform_timer_on)
+			{
+				FallThroughPlatform();
+				double_down_platform_timer_on = false;
+				double_down_platform_timer = 0;
+			}else
+			{
+				double_down_platform_timer_on = true;
+				double_down_platform_timer = 0;
+			}
+		}
+
 		if(jump_pressed && !IsStateAerial())
 		{
-			state = PlayerState.JUMP;
+			if(state == PlayerState.CROUCHING)
+			{
+				FallThroughPlatform();
+			}
+			else
+			{
+				state = PlayerState.JUMP;
+			}
 			has_double_jump = true;
 		}
-		if(state == PlayerState.AIRBORNE && has_double_jump && jump_pressed)
+		else if(state == PlayerState.AIRBORNE && has_double_jump && jump_pressed)
 		{
-			state = PlayerState.JUMP;
+			state = PlayerState.JUMP;	
+			if(detected_go_through_platform != null)
+			{	
+				uint keep_bits = 0;
+				for(int i = 0; i < 15; i++)
+				{
+					keep_bits |= (uint)(1 << i) & CollisionMask;
+				}
+				platform_bittracker &= keep_bits;
+				platform_bittracker |= ~detected_go_through_platform.CollisionLayer;
+			}
 			has_double_jump = false;
 			motion = new Vector3(motion.x,0,0);
 		}
@@ -166,21 +257,59 @@ public class Player : KinematicBody
 			if(state == PlayerState.AIRBORNE)
 			{
 				state = PlayerState.AERIAL_ATTACK_NEUTRAL;
-				if(up_hold)
-				{
-					state = PlayerState.AERIAL_ATTACK_UP;
-				}
-				if(down_hold)
-				{
-					state = PlayerState.AERIAL_ATTACK_DOWN;
-				}
 				if(left_hold)
 				{
-					state = (facing_direction > 0) ? PlayerState.AERIAL_ATTACK_BEHIND : PlayerState.AERIAL_ATTACK_FORWARD;
+					bool direction = (facing_direction > 0);
+					if(direction)
+					{
+						state = PlayerState.AERIAL_ATTACK_BEHIND;
+						var animation_player = anim_controller.GetAnimationPlayer();
+						float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_BEHIND]).Step;
+						attack_controller.PreformAction(EACTION_TYPE.BACK_AERIAL, step);
+					}else
+					{
+						state = PlayerState.AERIAL_ATTACK_FORWARD;
+						var animation_player = anim_controller.GetAnimationPlayer();
+						float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_FORWARD]).Step;
+						attack_controller.PreformAction(EACTION_TYPE.FORWARD_AERIAL, step);
+					}
 				}
-				if(right_hold)
+				else if(right_hold)
 				{
-					state = (facing_direction > 0) ? PlayerState.AERIAL_ATTACK_FORWARD : PlayerState.AERIAL_ATTACK_BEHIND;
+					bool direction = (facing_direction > 0);
+					if(direction)
+					{
+						state = PlayerState.AERIAL_ATTACK_FORWARD;
+						var animation_player = anim_controller.GetAnimationPlayer();
+						float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_FORWARD]).Step;
+						attack_controller.PreformAction(EACTION_TYPE.FORWARD_AERIAL, step);
+					}else
+					{
+						state = PlayerState.AERIAL_ATTACK_BEHIND;
+						var animation_player = anim_controller.GetAnimationPlayer();
+						float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_BEHIND]).Step;
+						attack_controller.PreformAction(EACTION_TYPE.BACK_AERIAL, step);
+					}
+				}
+				else if(up_hold)
+				{
+					state = PlayerState.AERIAL_ATTACK_UP;
+					var animation_player = anim_controller.GetAnimationPlayer();
+					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_UP]).Step;
+					attack_controller.PreformAction(EACTION_TYPE.UP_AERIAL, step);
+				}
+				else if(down_hold)
+				{
+					state = PlayerState.AERIAL_ATTACK_DOWN;
+					var animation_player = anim_controller.GetAnimationPlayer();
+					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_DOWN]).Step;
+					attack_controller.PreformAction(EACTION_TYPE.DOWN_AERIAL, step);
+				}
+				if(state == PlayerState.AERIAL_ATTACK_NEUTRAL)
+				{
+					var animation_player = anim_controller.GetAnimationPlayer();
+					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_NEUTRAL]).Step;
+					attack_controller.PreformAction(EACTION_TYPE.NEUTRAL_AERIAL, step);
 				}
 			}
 			
@@ -189,23 +318,35 @@ public class Player : KinematicBody
 				if(up_hold)
 				{
 					state = PlayerState.TILT_ATTACK_UP;
+					var animation_player = anim_controller.GetAnimationPlayer();
+					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.UP_TILT]).Step;
+					attack_controller.PreformAction(EACTION_TYPE.UP_TILT, step);
 					attack_preformed = true;
 				}
 				if(!attack_preformed && state == PlayerState.WALKING)
 				{
 					state = PlayerState.TILT_ATTACK_FORWARD;
+					var animation_player = anim_controller.GetAnimationPlayer();
+					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.FORWARD_TILT]).Step;
+					attack_controller.PreformAction(EACTION_TYPE.FORWARD_TILT, step);
 					attack_preformed = true;
 					motion = Vector3.Zero;
 				}
 				if(!attack_preformed && state == PlayerState.RUN)
 				{
 					state = PlayerState.DASH_ATTACK;
+					var animation_player = anim_controller.GetAnimationPlayer();	
+					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.DASH_ATTACK]).Step;
+					attack_controller.PreformAction(EACTION_TYPE.DASHATTACK, step);
 					p_anim_controller.SetAnimationSpeed(1.0f);
 					attack_preformed = true;
 				}
 				if(!attack_preformed && state == PlayerState.CROUCHING)
 				{
 					state = PlayerState.TILT_ATTACK_DOWN;
+					var animation_player = anim_controller.GetAnimationPlayer();	
+					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.DOWN_TILT]).Step;
+					attack_controller.PreformAction(EACTION_TYPE.DOWN_TILT, step);
 					attack_preformed = true;
 				}
 				//Handle Jab attacks
@@ -214,7 +355,9 @@ public class Player : KinematicBody
 					state = PlayerState.JAB_ATTACK1;
 					treshold = 1.0f;
 					attack_preformed = true;
-					attack_controller.PreformAction(EACTION_TYPE.JAB1);
+					var animation_player = anim_controller.GetAnimationPlayer();	
+					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.JAB1]).Step;
+					attack_controller.PreformAction(EACTION_TYPE.JAB1, step);
 				}
 				else if(state == PlayerState.JAB_ATTACK1 && total_jabs > 1)
 				{
@@ -300,24 +443,24 @@ public class Player : KinematicBody
 			}
 		}   
 		if(state == PlayerState.AIRBORNE)
+		{
+			if(left_hold)
 			{
-				if(left_hold)
-				{
-					air_drift = Mathf.Max(air_drift - AIR_ACCELERATION, -AIR_SPEED);
-					motion = new Vector3(air_drift, motion.y, 0);
-				}
-				else if(right_hold)
-				{
-					air_drift = Mathf.Min(air_drift + AIR_ACCELERATION, AIR_SPEED);
-					motion = new Vector3(air_drift, motion.y, 0);
-				}else
-				{
-					float traction = AIR_ACCELERATION*0.5f;
-					air_drift -= traction*Mathf.Sign(air_drift);
-					//air_drift = Mathf.Min(Mathf.Max(air_drift, 0),air_drift);
-					motion = new Vector3(air_drift, motion.y, 0);
-				}
+				air_drift = Mathf.Max(air_drift - AIR_ACCELERATION, -AIR_SPEED);
+				motion = new Vector3(air_drift, motion.y, 0);
 			}
+			else if(right_hold)
+			{
+				air_drift = Mathf.Min(air_drift + AIR_ACCELERATION, AIR_SPEED);
+				motion = new Vector3(air_drift, motion.y, 0);
+			}else
+			{
+				float traction = AIR_ACCELERATION*0.5f;
+				air_drift -= traction*Mathf.Sign(air_drift);
+				//air_drift = Mathf.Min(Mathf.Max(air_drift, 0),air_drift);
+				motion = new Vector3(air_drift, motion.y, 0);
+			}
+		}
 	}
 
 	public void HandleAction(float deltaTime)
@@ -338,7 +481,7 @@ public class Player : KinematicBody
 				state = PlayerState.CROUCHING;
 			}
 		}
-		//PlayerAnimationController.AnimationProgress animation_progress;
+		
 		switch(state)
 		{
 			case PlayerState.IDLE:
@@ -385,8 +528,6 @@ public class Player : KinematicBody
 
 			case PlayerState.DASH_ATTACK:
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.DASH_ATTACK);
-				//animation_progress = p_anim_controller.GetAnimationProgress();
-				//p_anim_controller.Rotation = new Vector3(0,0,0*(1 - animation_progress.position/animation_progress.animation_length) + facing_direction*-1*2.0f*Mathf.Pi * animation_progress.position/animation_progress.animation_length);
 				motion = new Vector3(facing_direction * deltaTime * RUNSPEED,motion.y,0);
 				break;
 
@@ -441,11 +582,45 @@ public class Player : KinematicBody
 		if(IsStateAerial())
 		{
 			motion -= Vector3.Up * GRAVITY * falling_speed;
-			if(floored)
+			
+			//Contains bug where bit manipulation doesn't go correctly
+			if(motion.y < 0)
 			{
+				CollisionLayer = platform_bittracker;
+				CollisionMask = platform_bittracker;
+				if(print_once)
+				{
+					GD.Print("FALLING");
+					PrintBits();
+					print_once = false;
+				}
+			}
+			//Contains bug where bit manipulation doesn't go correctly
+			if(floored && !go_through_platform)
+			{
+				print_once = true;
 				state = PlayerState.IDLE;
+				
+				uint keep_bits = 0;
+				for(int i = 0; i < 15; i++)
+				{
+					keep_bits |= (uint)(1 << i) & CollisionMask;
+				}
+				platform_bittracker &= keep_bits;
+				if(detected_go_through_platform != null)
+				{
+					platform_bittracker |= detected_go_through_platform.CollisionLayer;
+				}
+
+				CollisionLayer = platform_bittracker;
+				CollisionMask = platform_bittracker;
+				GD.Print("LANDED");
+				PrintBits();
 				ResetParameters();
 				motion = Vector3.Down;
+			}else
+			{
+				go_through_platform = false;
 			}
 		}
 		if(IsStateGrounded() && !floored)
@@ -457,7 +632,64 @@ public class Player : KinematicBody
 		{
 			state = PlayerState.AIRBORNE;
 		}
-		GD.Print(state);
+		if(double_down_platform_timer_on)
+		{
+			double_down_platform_timer += deltaTime;
+			if(double_down_platform_timer >= double_down_platform_timer_treshold)
+			{
+				double_down_platform_timer_on = false;
+			}
+		}
+	}
+
+	private void FallThroughPlatform()
+	{
+		if(detected_go_through_platform != null)
+		{
+			state = PlayerState.AIRBORNE;
+			uint keep_bits = 0;
+			for(int i = 0; i < 15; i++)
+			{
+				keep_bits |= (uint)(1 << i) & CollisionMask;
+			}
+			platform_bittracker &= keep_bits;
+			CollisionLayer = platform_bittracker;
+			CollisionMask = platform_bittracker;
+			go_through_platform = true;
+		}
+	}
+	private void PrintBits()
+	{
+		string CollisionMaskPrint = "";
+		string CollisionLayerPrint = "";
+		string PlatformBitTrackerPrint = "";
+		for(int i = 31; i >= 0; i--)
+		{
+			if(GetCollisionLayerBit(i))
+			{
+				CollisionLayerPrint += '1';
+			}else
+			{
+				CollisionLayerPrint += '0';
+			}
+			if(GetCollisionMaskBit(i)) 
+			{
+				CollisionMaskPrint += '1';
+			}else
+			{
+				CollisionMaskPrint += '0';
+			}
+			if((platform_bittracker & (1<<i)) == 1)
+			{
+				PlatformBitTrackerPrint += "1";
+			}else
+			{
+				PlatformBitTrackerPrint += "0";
+			}
+		}
+		GD.Print("Tracker: " + PlatformBitTrackerPrint);
+		GD.Print("Mask: " + CollisionMaskPrint);
+		GD.Print("Layer: " + CollisionLayerPrint);
 	}
 
 	private void ResetParameters()

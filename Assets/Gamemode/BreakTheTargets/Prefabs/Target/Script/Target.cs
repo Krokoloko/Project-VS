@@ -7,19 +7,17 @@ public class Target : Node
 	public delegate void OnDestroy(Node target);
 
 	[Export]
-	NodePath hurtbox_node;
+	NodePath hurtbox_node = "";
 
 	[Export]
-	NodePath audioplayer_node;
+	NodePath audioplayer_node = "";
 
 	[Export]
-	NodePath sprite_node;
-
-
+	NodePath sprite_node = "";
 	Sprite3D sprite;
 	AudioStreamPlayer3D audio_player;
 	Hurtbox hurtbox;
-	bool dying;
+	bool dying = false;
 	public override void _Ready()
 	{
 		dying = false;

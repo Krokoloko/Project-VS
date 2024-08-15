@@ -1,8 +1,26 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Player/Data/Wario/Moves/Jab1/HBS_Wario_Jab1.tres" type="Resource" id=1]
 [ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/Moveset.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Nair/HBS_Wario_NeutralAir.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Ftilt/HBS_Wario_ForwardTilt.tres" type="Resource" id=4]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/UpAir/HBS_Wario_UpAir.tres" type="Resource" id=5]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/UpTilt/HBS_Wario_UpTilt.tres" type="Resource" id=6]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Down Air/HBS_Wario_DownAir.tres" type="Resource" id=7]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Forward Air/HBS_Wario_ForwardAir.tres" type="Resource" id=8]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Back Air/HBS_Wario_BackAir.tres" type="Resource" id=9]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Dash Attack/HBS_Wario_DashAttack.tres" type="Resource" id=10]
+[ext_resource path="res://Assets/Player/Data/Wario/Moves/Dtilt/HBS_Wario_DownTilt.tres" type="Resource" id=11]
 
 [resource]
 script = ExtResource( 2 )
 Jab1 = ExtResource( 1 )
+DashAttack = ExtResource( 10 )
+ForwardTilt = ExtResource( 4 )
+UpTilt = ExtResource( 6 )
+DownTilt = ExtResource( 11 )
+NeutralAerial = ExtResource( 3 )
+ForwardAerial = ExtResource( 8 )
+BackAerial = ExtResource( 9 )
+UpAerial = ExtResource( 5 )
+DownAerial = ExtResource( 7 )

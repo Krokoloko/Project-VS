@@ -11,39 +11,50 @@ public class TargetsGamemode : Node
 		LOST
 	}
 	[Export]
-	private NodePath target_nodes;
+	private NodePath target_nodes = "";
 
 
-	private int targets_alive;
+	private int targets_alive = 0;
 
 	[Export]
-	private NodePath timer_node;
+	private NodePath timer_node = "";
 	private Timer game_timer;
 
 	[Export]
-	private NodePath player_root_node;
+	private NodePath timer_display_node = "";
+	private Label timer_display;
+
+	[Export]
+	private NodePath player_root_node = "";
 	private Player player;
 
 	[Export]
-	private float bottom_blast_zone;
+	private float bottom_blast_zone = 0;
 	private GameState state;
 
 	[Export]
-	private NodePath winscreen_node;
+	private NodePath winscreen_node = "";
 	private Control winscreen_ui;
 
 	[Export]
-	private NodePath losescreen_node;
+	private NodePath losescreen_node = "";
 	private Control losescreen_ui;
 
 	[Export]
-	private NodePath timeupscreen_node;
+	private NodePath timeupscreen_node = "";
 	private Control timeupscreen_ui;
 
 	[Export]
-	private NodePath buttons_node;
+	private NodePath buttons_node = "";
 	private Control buttons_ui;
 
+	[Export]
+	private NodePath narrator_node = "";
+	private AudioStreamPlayer narrator;
+	[Export]
+	private AudioStream win_sound;
+	[Export]
+	private AudioStream lose_sound;
 	public override void _Ready()
 	{
 		state = GameState.PLAYING;
@@ -52,7 +63,7 @@ public class TargetsGamemode : Node
 		for (int i = 0; i < root.GetChildCount(); i++)
 		{
 			string name = root.GetChild(i).Name;
-			if(root.GetChild(i).Name == "Player")
+			if(root.GetChild(i).Name.Contains("Player"))
 			{
 				player = root.GetChild<Player>(i);
 			}
@@ -81,6 +92,11 @@ public class TargetsGamemode : Node
 
 		buttons_ui = GetNode<Control>(buttons_node);
 		buttons_ui.Visible = false;
+
+		narrator = GetNode<AudioStreamPlayer>(narrator_node);
+
+		timer_display = GetNode<Label>(timer_display_node);
+
 	}
 
 	private void TriggerLoseState()
@@ -90,6 +106,9 @@ public class TargetsGamemode : Node
 		GD.Print("You lose!!");
 		timeupscreen_ui.Visible = true;
 		buttons_ui.Visible = true;
+		narrator.Stream = lose_sound;
+		game_timer.Paused = true;
+		narrator.Play();
 	}
 
 	private void TargetLost(Node target)
@@ -100,12 +119,23 @@ public class TargetsGamemode : Node
 			GD.Print("You win!!");
 			winscreen_ui.Visible = true;
 			buttons_ui.Visible = true;
+			narrator.Stream = win_sound;
+			narrator.Play();
+			game_timer.Paused = true;
 			state = GameState.WIN;
+			TrophySystem trophySystem = GetNode<TrophySystem>("/root/TrophySystem");
+			trophySystem.AddCoins(5);
 		}
 	}
 
 	public override void _Process(float delta)
 	{
+		float time = game_timer.TimeLeft;
+		string minutes = ((int)(time / 60)).ToString();
+		string seconds = (((int)time) % 60).ToString();
+		string ms = time.ToString();
+		ms = ms.Substr(ms.Find('.') + 1, ms.Find('.') + 3);
+		timer_display.Text = minutes + ":" + seconds + ":" + ms;
 		if(player.GlobalTranslation.y < bottom_blast_zone && state == GameState.PLAYING)
 		{
 			TriggerLoseState();

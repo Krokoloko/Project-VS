@@ -1,0 +1,79 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/UI/borderUp.png" type="Texture" id=1]
+[ext_resource path="res://Assets/UI/borderDown.png" type="Texture" id=2]
+[ext_resource path="res://Assets/UI/TrophyGallery/capsule-vending-machine-png.png" type="Texture" id=3]
+[ext_resource path="res://Assets/UI/TrophyGallery/Scripts/RotateAndDrop.cs" type="Script" id=4]
+[ext_resource path="res://Assets/Trophies/Scripts/CoinsLabelDisplay.cs" type="Script" id=5]
+[ext_resource path="res://Assets/Trophies/Scripts/TrophiesUnlockedLabelDisplay.cs" type="Script" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 278, 19.75 )
+
+[node name="World" type="Node2D"]
+
+[node name="BorderUp" type="Sprite" parent="."]
+position = Vector2( 539, -32 )
+scale = Vector2( 0.392351, 0.15235 )
+z_index = -1
+texture = ExtResource( 1 )
+
+[node name="BorderDown" type="Sprite" parent="."]
+position = Vector2( 529, 542 )
+scale = Vector2( 0.393392, 0.113392 )
+z_index = -1
+texture = ExtResource( 2 )
+
+[node name="VendingMachine" type="Sprite" parent="."]
+position = Vector2( 198, 218 )
+scale = Vector2( 0.164501, 0.164501 )
+texture = ExtResource( 3 )
+script = ExtResource( 4 )
+trophy_physics_drop = "res://Assets/UI/TrophyGallery/Prefabs/TrophyPhysicsInstance.tscn"
+display_coins_path = "CoinsDisplay"
+display_trophiesunlocked_display_path = "TrophiesUnlocked"
+display_sprite_path = "DisplayTrophySprite"
+display_name_path = "TrophyNameDisplay"
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 257, 569 )
+shape = SubResource( 1 )
+
+[node name="DisplayTrophySprite" type="Sprite" parent="."]
+position = Vector2( 752, 252 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 813.0
+margin_top = 79.0
+margin_right = 1006.0
+margin_bottom = 110.0
+text = "Press ESCAPE to go back
+Press Spacebar to get a trophy"
+
+[node name="CoinsDisplay" type="Label" parent="."]
+margin_left = 331.0
+margin_top = 83.0
+margin_right = 417.0
+margin_bottom = 97.0
+rect_scale = Vector2( 2, 2 )
+text = "Total Coins: 0"
+script = ExtResource( 5 )
+
+[node name="TrophyNameDisplay" type="Label" parent="."]
+margin_left = 550.0
+margin_top = 83.0
+margin_right = 637.0
+margin_bottom = 97.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Donkey Kong!"
+
+[node name="TrophiesUnlocked" type="Label" parent="."]
+margin_left = 336.0
+margin_top = 126.0
+margin_right = 376.0
+margin_bottom = 140.0
+rect_scale = Vector2( 2, 2 )
+script = ExtResource( 6 )

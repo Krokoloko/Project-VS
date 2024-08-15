@@ -7,7 +7,7 @@ public class Hitbox : Spatial
 {
 
 	public int frames = 0;
-	private const float time_per_frame = 1.0f/5.0f;
+	public float time_per_frame = 1.0f/5.0f;
 	private float timer;
 	private StaticBody physics_body;
 	private CollisionShape collider;

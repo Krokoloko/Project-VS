@@ -1,8 +1,26 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=12 format=2]
 
 [ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/Moveset.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Data/Kirby/Moves/Jab1/HBS_Kirby_Jab1.tres" type="Resource" id=2]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Neutral Air/HBS_Kirby_NeutralAir.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Dash Attack/HBS_Kirby_DashAttack.tres" type="Resource" id=4]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Down Air/HBS_Kirby_DownAir.tres" type="Resource" id=5]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Down Tilt/HBS_Kirby_DownTilt.tres" type="Resource" id=6]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Forward Air/HBS_Kirby_ForwardAir.tres" type="Resource" id=7]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Forward Tilt/HBS_Kirby_ForwardTilt.tres" type="Resource" id=8]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Up Air/HBS_Kirby_UpAir.tres" type="Resource" id=9]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Up Tilt/HBS_Kirby_UpTilt.tres" type="Resource" id=10]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Back Air/HBS_Kirby_BackAir.tres" type="Resource" id=11]
 
 [resource]
 script = ExtResource( 1 )
 Jab1 = ExtResource( 2 )
+DashAttack = ExtResource( 4 )
+ForwardTilt = ExtResource( 8 )
+UpTilt = ExtResource( 10 )
+DownTilt = ExtResource( 6 )
+NeutralAerial = ExtResource( 3 )
+ForwardAerial = ExtResource( 7 )
+BackAerial = ExtResource( 11 )
+UpAerial = ExtResource( 9 )
+DownAerial = ExtResource( 5 )

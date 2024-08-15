@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Player.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Scripts/PlayerAnimationController.cs" type="Script" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://Assets/Player/Visuals/Wario/Jab1.anim" type="Animation" id=21]
 [ext_resource path="res://Assets/Player/Visuals/Wario/Walk.anim" type="Animation" id=22]
 [ext_resource path="res://Assets/Player/Visuals/Wario/Idle.anim" type="Animation" id=23]
+[ext_resource path="res://Assets/Player/Data/Wario/Wario_Resource.tres" type="Resource" id=24]
 
 [sub_resource type="Animation" id=5]
 length = 0.001
@@ -42,10 +43,14 @@ tracks/0/keys = {
 [sub_resource type="BoxShape" id=6]
 extents = Vector3( 1.06463, 1, 1.0276 )
 
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 1.16753, 0.425989, 1 )
+
 [node name="Player" type="KinematicBody"]
 axis_lock_motion_z = true
 move_lock_z = true
 script = ExtResource( 1 )
+resource_reference = ExtResource( 24 )
 MOVE_SPEED = 60.673
 RUNSPEED = 146.168
 total_jabs = 1
@@ -87,7 +92,16 @@ anims/Walk = ExtResource( 22 )
 [node name="AttackController" type="Node" parent="."]
 script = ExtResource( 15 )
 moveset = ExtResource( 16 )
+name = "Wario"
 
 [node name="EnvironmentCollision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.35902, 0 )
 shape = SubResource( 6 )
+
+[node name="Area" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.450353, 0 )
+shape = SubResource( 7 )
