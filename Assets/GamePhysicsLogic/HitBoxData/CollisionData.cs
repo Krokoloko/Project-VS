@@ -21,31 +21,24 @@ public partial class CollisionData : Resource
     
     [Export]
     public float knockback_angle {get; set;}
-
-    private float knockback_angle_radians;
     private bool is_special_angle;
-
-    private Vector2 knockback_angle_vec2;
 
     public CollisionData() : this(Vector2.Zero, Vector2.Zero, 0.0f, 0.0f, 0.0f, 0.0f) {}
     public CollisionData(Vector2 p_offset, Vector2 p_size, float p_base_damage, float p_base_knockback, float p_growth_knockback, float p_knockback_angle)
     {
         offset = p_offset;
         size = p_size;
+        base_damage = p_base_damage;
+        base_knockback = p_base_knockback;
+        growth_knockback = p_growth_knockback;
         knockback_angle = p_knockback_angle;
-        knockback_angle_radians = Mathf.Deg2Rad(knockback_angle);
-        knockback_angle_vec2 = new Vector2(Mathf.Sin(knockback_angle_radians), Mathf.Cos(knockback_angle_radians));
-        is_special_angle = knockback_angle >= 360; 
+        is_special_angle = knockback_angle >= 360;
     }
 
     public Vector2 GetKnockbackVector()
     {
-        return knockback_angle_vec2;
-    }
-
-    public float GetKnockBackAngleRadians()
-    {
-        return knockback_angle_radians;
+        float rad = Mathf.Deg2Rad(knockback_angle);
+        return new Vector2(Mathf.Sin(rad), Mathf.Cos(rad));
     }
 
     public bool IsSpecialAngle()

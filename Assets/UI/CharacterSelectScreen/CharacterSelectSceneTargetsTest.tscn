@@ -1,0 +1,196 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://Assets/Player/Data/DK/DK_Resources.tres" type="Resource" id=1]
+[ext_resource path="res://Assets/Player/Data/Kirby/Kirby_Resources.tres" type="Resource" id=2]
+[ext_resource path="res://Assets/Player/Data/Wario/Wario_Resource.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/BeakTheTargetsLevel.tres" type="Resource" id=4]
+[ext_resource path="res://Assets/Player/Data/Wooper/Wooper_Resources.tres" type="Resource" id=5]
+[ext_resource path="res://Assets/UI/Cursor/Cursor.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/CharacterSelect.cs" type="Script" id=7]
+[ext_resource path="res://Assets/UI/Cursor/CursorManager.cs" type="Script" id=8]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/CharacterSlot.cs" type="Script" id=9]
+[ext_resource path="res://Assets/Player/Data/LankyKong/LankyKong_Resources.tres" type="Resource" id=10]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/PlayerCharacterHighlighter.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/The Big 3.png" type="Texture" id=12]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/SFX/menu-music.mp3" type="AudioStream" id=13]
+[ext_resource path="res://Assets/UI/borderDown.png" type="Texture" id=14]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/ready.png" type="Texture" id=15]
+[ext_resource path="res://Assets/UI/borderUp.png" type="Texture" id=16]
+[ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=17]
+[ext_resource path="res://Assets/UI/Buttons/Back_Button.png" type="Texture" id=18]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 493.75, 522.5 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 391.25, 568.125 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 452.5, 545.558 )
+
+[node name="World" type="Node2D"]
+
+[node name="Cursors" type="Node2D" parent="."]
+position = Vector2( 543, 453 )
+script = ExtResource( 8 )
+
+[node name="Cursor_P1" parent="Cursors" instance=ExtResource( 6 )]
+cursor_move_speed = 150.0
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 665, 165.502 )
+scale = Vector2( 0.396232, 0.396232 )
+texture = ExtResource( 12 )
+
+[node name="CharacterSelectMenu" type="Sprite" parent="."]
+position = Vector2( 650, 192.961 )
+scale = Vector2( 0.2, 0.2 )
+script = ExtResource( 7 )
+slot_nodes = [ NodePath("Slot_DK"), NodePath("Slot_Wario"), NodePath("Slot_Kirby") ]
+player_portrait_nodes = [ NodePath("../Player_Highlighters/Player1_Highlighter") ]
+ready_to_play_node = NodePath("../AspectRatioContainer")
+cursor_manager = NodePath("../Cursors")
+load_this_level = ExtResource( 4 )
+
+[node name="Slot_DK" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( -1005, -867.295 )
+script = ExtResource( 9 )
+character_resource = ExtResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_DK"]
+position = Vector2( 0.000244141, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_DK/Area2D"]
+position = Vector2( 36.2498, 767.5 )
+shape = SubResource( 1 )
+
+[node name="Slot_Kirby" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( -430, -902.295 )
+script = ExtResource( 9 )
+character_resource = ExtResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Kirby"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Kirby/Area2D"]
+position = Vector2( 538.75, 756.875 )
+shape = SubResource( 3 )
+
+[node name="Slot_Wario" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( 80, -877.295 )
+script = ExtResource( 9 )
+character_resource = ExtResource( 3 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Wario"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Wario/Area2D"]
+position = Vector2( 1092.5, 769.442 )
+shape = SubResource( 2 )
+
+[node name="Slot_Wooper" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( 3925, 212.705 )
+script = ExtResource( 9 )
+character_resource = ExtResource( 5 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Wooper"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Wooper/Area2D"]
+position = Vector2( 70, -54.177 )
+shape = SubResource( 3 )
+
+[node name="Slot_LankyKong" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( 3500, 507.705 )
+script = ExtResource( 9 )
+character_resource = ExtResource( 10 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_LankyKong"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_LankyKong/Area2D"]
+position = Vector2( -85, -27.2952 )
+shape = SubResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 517, 302 )
+scale = Vector2( 0.654559, 2.22379 )
+
+[node name="AspectRatioContainer" type="Control" parent="."]
+
+[node name="CharacterPortrait" type="Sprite" parent="AspectRatioContainer"]
+position = Vector2( 164, 448 )
+
+[node name="Label2" type="Label" parent="AspectRatioContainer"]
+margin_left = 7.0
+margin_top = 317.0
+margin_right = 613.0
+margin_bottom = 331.0
+text = "Lorem Ipsum Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum"
+valign = 2
+
+[node name="Sprite" type="Sprite" parent="AspectRatioContainer"]
+position = Vector2( 166, 240 )
+texture = ExtResource( 15 )
+
+[node name="Label" type="Label" parent="AspectRatioContainer"]
+margin_left = 91.0
+margin_top = 292.0
+margin_right = 210.0
+margin_bottom = 306.0
+text = "Press Enter to play"
+
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="."]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 317.0
+margin_bottom = 194.0
+
+[node name="Label" type="Label" parent="AspectRatioContainer2"]
+margin_left = 61.5
+margin_top = 80.0
+margin_right = 253.5
+margin_bottom = 111.0
+text = "WASD to move
+Spacebar to select character"
+
+[node name="BackButton" type="Sprite" parent="."]
+position = Vector2( 65, 516 )
+scale = Vector2( 0.373817, 0.373817 )
+z_index = -1
+texture = ExtResource( 18 )
+
+[node name="TextureButton" type="TextureButton" parent="BackButton"]
+margin_left = -310.0
+margin_top = -147.0
+margin_right = 310.0
+margin_bottom = 152.0
+script = ExtResource( 17 )
+scene_file = "res://Assets/UI/StartMenu/StartMenuScene.tscn"
+scene_root = NodePath("../..")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="BackButton"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BackButton/StaticBody2D"]
+polygon = PoolVector2Array( 157.831, -155.156, 315.663, 152.481, -163.181, 152.481, -318.338, -152.481 )
+
+[node name="BorderUp" type="Sprite" parent="."]
+position = Vector2( 539, -32 )
+scale = Vector2( 0.392351, 0.15235 )
+z_index = -1
+texture = ExtResource( 16 )
+
+[node name="BorderDown" type="Sprite" parent="."]
+position = Vector2( 529, 542 )
+scale = Vector2( 0.393392, 0.113392 )
+z_index = -1
+texture = ExtResource( 14 )
+
+[node name="Player_Highlighters" type="Node" parent="."]
+
+[node name="Player1_Highlighter" parent="Player_Highlighters" instance=ExtResource( 11 )]
+position = Vector2( 913, 475 )
+scale = Vector2( 0.75, 0.75 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( 519, 303 )
+scale = Vector2( 138.703, -24.1596 )
+stream = ExtResource( 13 )
+volume_db = -17.197
+autoplay = true

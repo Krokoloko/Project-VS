@@ -4,12 +4,21 @@ using System;
 public class StartMenuScript : Label
 {
     [Export]
+    private NodePath world;
+
+    [Export]
+    private NodePath animated_sprites_path;
+    private Node2D animated_sprites;
+
+    [Export]
     public float interval = 1.0f;
     private float timer = 0.0f;
     private Label this_label;
     private Color color;
     [Export]
     private Color alt_color;
+    [Export]
+    private string scene_path;
     private bool visible;
 
     private string text;
@@ -19,6 +28,11 @@ public class StartMenuScript : Label
     public override void _Ready()
     {
         this_label = GetNode<Label>(this.GetPath());
+        animated_sprites = GetNode<Node2D>(animated_sprites_path);
+        for(int i = 0; i < animated_sprites.GetChildCount(); i++)
+        {
+            animated_sprites.GetChild<Sprite>(i).GetChild<AnimationPlayer>(0).Play("Main Menu Loop");
+        }
         text = this_label.Text;
         visible = true;
         color = this_label.GetColor("font_color");
@@ -34,12 +48,12 @@ public class StartMenuScript : Label
 
     public override void _Process(float delta)
     {
-        if(Input.IsActionPressed("ui_accept"))
+        if(Input.IsActionJustPressed("ui_accept"))
         {
-            GetParent<Node2D>().QueueFree();
-            Node2D instance = GD.Load<PackedScene>("res://Assets/UI/CharacterSelectScreen/CharacterSelectScene.tscn").Instance<Node2D>();
-
-            GetNode<Node>("../../").AddChild(instance);
+            GetNode<Node>(world).QueueFree();
+            Control instance = GD.Load<PackedScene>(scene_path).Instance<Control>();
+            Node root = GetNode<Node>("../../"); 
+            root.AddChild(instance);
         }
         timer += delta;
         if(timer >= interval)

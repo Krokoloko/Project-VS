@@ -35,8 +35,16 @@ public class Player : KinematicBody
 		CROUCHING,
 		TAUNT1,
 		TAUNT2,
-		TAUNT3
+		TAUNT3,
+		LAUNCHED,
+		TUMBLING
 	}
+
+	[Signal]
+	public delegate void OnPlayerDie();
+
+	[Signal]
+	public delegate void OnPlayerDamaged();
 
 	[Export]
 	public CharacterResources resource_reference;
@@ -81,22 +89,66 @@ public class Player : KinematicBody
 	private float accumalator;
 	private float air_drift;
 
-	private PlayerState state;
+	private Hurtbox hurtbox;
 	public Area area;
+	private PlayerState state;
 	public PlayerAnimationController anim_controller{get {return p_anim_controller;}}
 	private PlayerAnimationController p_anim_controller;
 	private AttackController attack_controller;
+	private PLAYER_CURSOR player_id;
 
+	public int player_number;
+	private float damage_percantage = 0.0f;
 	private bool floored;
 	private bool has_double_jump;
 	private PhysicsBody detected_go_through_platform = null;
-	public int player_number;
 	private uint platform_bittracker = 0;
 	private bool go_through_platform = false;
 	private bool print_once = true;
 	private const float double_down_platform_timer_treshold = 0.3f;
 	private bool double_down_platform_timer_on = false;
 	private float double_down_platform_timer = 0.0f;
+	
+	//knockback stuff
+	private Vector3 applied_knockback;
+	private float knockback_timer = 0.0f;
+	private float knockback_accumalator = 0.0f;
+
+
+	private string PLAYER_LEFT;
+	private string PLAYER_RIGHT;
+	private string PLAYER_UP;
+	private string PLAYER_DOWN;
+	private string PLAYER_ATTACK;
+	private string PLAYER_SPECIAL;
+	private string PLAYER_TAUNT1;
+	private string PLAYER_JUMP;
+
+	//Misc info
+	private string character_name = "";
+	private int stock_count = -1;
+	public void SetPlayerID(PLAYER_CURSOR id)
+	{
+		player_id = id;
+		PLAYER_LEFT = "Player_Left_" + ((int)id + 1);
+		PLAYER_RIGHT = "Player_Right_" + ((int)id + 1);
+		PLAYER_UP = "Player_Up_" + ((int)id + 1);
+		PLAYER_DOWN = "Player_Down_" + ((int)id + 1);
+		PLAYER_ATTACK = "Player_Attack_" + ((int)id + 1);
+		PLAYER_SPECIAL = "Player_Special_" + ((int)id + 1);
+		PLAYER_TAUNT1 = "Player_Taunt1_" + ((int)id + 1);
+		PLAYER_JUMP = "Player_Jump_" + ((int)id + 1);
+	}
+
+	public Texture GetStockIcon()
+	{
+		return resource_reference.stock_icon;
+	}
+
+	public Vector2 GetStockScale()
+	{
+		return resource_reference.icon_scale;
+	}
 
 	public override void _Ready()
 	{
@@ -113,6 +165,9 @@ public class Player : KinematicBody
 		p_anim_controller = GetNode<PlayerAnimationController>(this.GetPath() + "/Sprite3D");
 		p_anim_controller.FlipSprite(true);
 		attack_controller = GetNode<AttackController>(this.GetPath() + "/AttackController");
+		hurtbox = GetNode<Hurtbox>(this.GetPath() + "/Hurtbox");
+		hurtbox.area.SetCollisionLayerBit((int)player_id + 1, true);
+		hurtbox.area.SetCollisionLayerBit(5, false);
 		Sprite3D sprite = GetNode<Sprite3D>(this.GetPath() + "/Sprite3D");
 		state = PlayerState.IDLE;
 		area = GetNode<Area>(this.GetPath() + "/Area");
@@ -126,6 +181,47 @@ public class Player : KinematicBody
 		treshold = 0.0f;
 	}
 
+	public void RespawnToLocation(Vector2 position)
+	{
+		Translation = new Vector3(position.x, position.y, 0.0f);
+		state = PlayerState.AIRBORNE;
+		ResetParameters();
+	}
+
+	public void SetStockCount(int count)
+	{
+		if(stock_count == -1)
+		{
+			stock_count = Mathf.Clamp(count, 1, 99);
+		}
+	}
+	public void SetPlayerName(string name)
+	{
+		character_name = name;
+	}
+	public string GetCharacterName()
+	{
+		return character_name;
+	}
+	public string GetPlayerName()
+	{
+		return character_name;
+	}
+	public int GetStockCount()
+	{
+		return stock_count;
+	}
+	public void SubtractStock()
+	{
+		stock_count--;
+		damage_percantage = 0.0f;
+		EmitSignal("OnPlayerDie");
+		stock_count = Mathf.Clamp(stock_count, 0, 100);
+	}
+	public PLAYER_CURSOR GetPlayerID()
+	{
+		return player_id;
+	}
 	private void AreaDetected(Node body)
 	{
 		if(IsStateAerial())
@@ -140,7 +236,6 @@ public class Player : KinematicBody
 			}
 		}
 	}
-
 	private void AreaExited(Node body)
 	{
 		PhysicsBody p_body = (PhysicsBody)(body);
@@ -149,7 +244,20 @@ public class Player : KinematicBody
 			detected_go_through_platform = null;
 		}
 	}
-
+	public override void _Process(float delta)
+	{
+		HandleInput();
+		if(state != PlayerState.LAUNCHED && stock_count > 0)
+		{
+			HandleAction(delta);
+		}
+		ProcessKnockbackState(delta);
+	}
+	public override void _PhysicsProcess(float deltaTime)
+	{
+		MoveAndSlide(motion, Vector3.Up, true);
+		floored = IsOnFloor();
+	}
 	public void SetPassThroughPlatformBits()
 	{
 		for(int i = 15; i < 32; i++)
@@ -158,36 +266,77 @@ public class Player : KinematicBody
 			SetCollisionMaskBit(i, ((1<<i) & platform_bittracker) > 0);
 		}
 	}
-
-	public override void _Process(float delta)
+	public void ApplyDamage(Vector2 direction, int frames_hitstun, float knockback_strength, float damage)
 	{
-		HandleInput();
-		HandleAction(delta);
+		//frames_hitstun in 60fps
+		damage_percantage += damage;
+		float final_knockback = knockback_strength * 1/WEIGHT;
+
+		if(facing_direction < 0)
+		{
+			direction.x = -direction.x; 
+		}
+
+		knockback_timer = frames_hitstun * (1/60.0f);
+		state = PlayerState.LAUNCHED;
+
+		applied_knockback = new Vector3(direction.x * final_knockback, direction.y * final_knockback, 0.0f);
+
+		motion = applied_knockback;
+		EmitSignal("OnPlayerDamaged");
 	}
-
-	public override void _PhysicsProcess(float deltaTime)
+	public float GetPercentage()
 	{
-		MoveAndSlide(motion, Vector3.Up, true);
-		floored = IsOnFloor();
+		return damage_percantage;
 	}
-
-	public void HandleInput()
+	private void ProcessKnockbackState(float deltaTime)
 	{
-		bool right_pressed = Input.IsActionJustPressed("Player_Right");
-		bool right_hold = Input.IsActionPressed("Player_Right");
-		bool right_released = Input.IsActionJustReleased("Player_Right");
+		if(state == PlayerState.LAUNCHED)
+		{
+			knockback_accumalator += deltaTime;
+			if(knockback_accumalator > 2*(1.0f/60.0f))
+			{
+				if(floored)
+				{
+					state = PlayerState.IDLE;
+				}
+			}
+			if(knockback_accumalator >= knockback_timer)
+			{
+				//implement teching here
+				if(floored)
+				{
+					//should be knockdown state in the future
+					state = PlayerState.IDLE;
+				}else{
+					//should be tumble state in the future
+					state = PlayerState.AIRBORNE;
+				}
+				knockback_accumalator = 0;
 
-		bool left_pressed = Input.IsActionJustPressed("Player_Left");
-		bool left_hold = Input.IsActionPressed("Player_Left");
-		bool left_released = Input.IsActionJustReleased("Player_Left");
+			}
+			motion = applied_knockback * (knockback_accumalator / knockback_timer);
+		}
+	}
+	private void HandleInput()
+	{
+		bool reverse_direction = facing_direction<0?true:false;
 
-		bool down_hold = Input.IsActionPressed("Player_Down");
-		bool down_released = Input.IsActionJustReleased("Player_Down");
+		bool right_pressed = Input.IsActionJustPressed(PLAYER_RIGHT);
+		bool right_hold = Input.IsActionPressed(PLAYER_RIGHT);
+		bool right_released = Input.IsActionJustReleased(PLAYER_RIGHT);
 
-		bool jump_pressed = Input.IsActionJustPressed("Player_Jump");
+		bool left_pressed = Input.IsActionJustPressed(PLAYER_LEFT);
+		bool left_hold = Input.IsActionPressed(PLAYER_LEFT);
+		bool left_released = Input.IsActionJustReleased(PLAYER_LEFT);
 
-		bool up_pressed = Input.IsActionJustPressed("Player_Up");
-		bool up_hold = Input.IsActionPressed("Player_Up");
+		bool down_hold = Input.IsActionPressed(PLAYER_DOWN);
+		bool down_released = Input.IsActionJustReleased(PLAYER_DOWN);
+
+		bool jump_pressed = Input.IsActionJustPressed(PLAYER_JUMP);
+
+		bool up_pressed = Input.IsActionJustPressed(PLAYER_UP);
+		bool up_hold = Input.IsActionPressed(PLAYER_UP);
 
 		//Move Left or right
 		if(left_hold && state == PlayerState.IDLE)
@@ -252,7 +401,7 @@ public class Player : KinematicBody
 
 		bool attack_preformed = false;
 
-		if(Input.IsActionJustPressed("Player_Attack"))
+		if(Input.IsActionJustPressed(PLAYER_ATTACK))
 		{
 			if(state == PlayerState.AIRBORNE)
 			{
@@ -265,13 +414,13 @@ public class Player : KinematicBody
 						state = PlayerState.AERIAL_ATTACK_BEHIND;
 						var animation_player = anim_controller.GetAnimationPlayer();
 						float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_BEHIND]).Step;
-						attack_controller.PreformAction(EACTION_TYPE.BACK_AERIAL, step);
+						attack_controller.PreformAction(EACTION_TYPE.BACK_AERIAL, step, reverse_direction);
 					}else
 					{
 						state = PlayerState.AERIAL_ATTACK_FORWARD;
 						var animation_player = anim_controller.GetAnimationPlayer();
 						float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_FORWARD]).Step;
-						attack_controller.PreformAction(EACTION_TYPE.FORWARD_AERIAL, step);
+						attack_controller.PreformAction(EACTION_TYPE.FORWARD_AERIAL, step, reverse_direction);
 					}
 				}
 				else if(right_hold)
@@ -282,13 +431,13 @@ public class Player : KinematicBody
 						state = PlayerState.AERIAL_ATTACK_FORWARD;
 						var animation_player = anim_controller.GetAnimationPlayer();
 						float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_FORWARD]).Step;
-						attack_controller.PreformAction(EACTION_TYPE.FORWARD_AERIAL, step);
+						attack_controller.PreformAction(EACTION_TYPE.FORWARD_AERIAL, step, reverse_direction);
 					}else
 					{
 						state = PlayerState.AERIAL_ATTACK_BEHIND;
 						var animation_player = anim_controller.GetAnimationPlayer();
 						float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_BEHIND]).Step;
-						attack_controller.PreformAction(EACTION_TYPE.BACK_AERIAL, step);
+						attack_controller.PreformAction(EACTION_TYPE.BACK_AERIAL, step, reverse_direction);
 					}
 				}
 				else if(up_hold)
@@ -296,20 +445,20 @@ public class Player : KinematicBody
 					state = PlayerState.AERIAL_ATTACK_UP;
 					var animation_player = anim_controller.GetAnimationPlayer();
 					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_UP]).Step;
-					attack_controller.PreformAction(EACTION_TYPE.UP_AERIAL, step);
+					attack_controller.PreformAction(EACTION_TYPE.UP_AERIAL, step, reverse_direction);
 				}
 				else if(down_hold)
 				{
 					state = PlayerState.AERIAL_ATTACK_DOWN;
 					var animation_player = anim_controller.GetAnimationPlayer();
 					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_DOWN]).Step;
-					attack_controller.PreformAction(EACTION_TYPE.DOWN_AERIAL, step);
+					attack_controller.PreformAction(EACTION_TYPE.DOWN_AERIAL, step, reverse_direction);
 				}
 				if(state == PlayerState.AERIAL_ATTACK_NEUTRAL)
 				{
 					var animation_player = anim_controller.GetAnimationPlayer();
 					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.AERIAL_NEUTRAL]).Step;
-					attack_controller.PreformAction(EACTION_TYPE.NEUTRAL_AERIAL, step);
+					attack_controller.PreformAction(EACTION_TYPE.NEUTRAL_AERIAL, step, reverse_direction);
 				}
 			}
 			
@@ -320,7 +469,7 @@ public class Player : KinematicBody
 					state = PlayerState.TILT_ATTACK_UP;
 					var animation_player = anim_controller.GetAnimationPlayer();
 					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.UP_TILT]).Step;
-					attack_controller.PreformAction(EACTION_TYPE.UP_TILT, step);
+					attack_controller.PreformAction(EACTION_TYPE.UP_TILT, step, reverse_direction);
 					attack_preformed = true;
 				}
 				if(!attack_preformed && state == PlayerState.WALKING)
@@ -328,7 +477,7 @@ public class Player : KinematicBody
 					state = PlayerState.TILT_ATTACK_FORWARD;
 					var animation_player = anim_controller.GetAnimationPlayer();
 					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.FORWARD_TILT]).Step;
-					attack_controller.PreformAction(EACTION_TYPE.FORWARD_TILT, step);
+					attack_controller.PreformAction(EACTION_TYPE.FORWARD_TILT, step, reverse_direction);
 					attack_preformed = true;
 					motion = Vector3.Zero;
 				}
@@ -337,7 +486,7 @@ public class Player : KinematicBody
 					state = PlayerState.DASH_ATTACK;
 					var animation_player = anim_controller.GetAnimationPlayer();	
 					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.DASH_ATTACK]).Step;
-					attack_controller.PreformAction(EACTION_TYPE.DASHATTACK, step);
+					attack_controller.PreformAction(EACTION_TYPE.DASHATTACK, step, reverse_direction);
 					p_anim_controller.SetAnimationSpeed(1.0f);
 					attack_preformed = true;
 				}
@@ -346,7 +495,7 @@ public class Player : KinematicBody
 					state = PlayerState.TILT_ATTACK_DOWN;
 					var animation_player = anim_controller.GetAnimationPlayer();	
 					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.DOWN_TILT]).Step;
-					attack_controller.PreformAction(EACTION_TYPE.DOWN_TILT, step);
+					attack_controller.PreformAction(EACTION_TYPE.DOWN_TILT, step, reverse_direction);
 					attack_preformed = true;
 				}
 				//Handle Jab attacks
@@ -357,7 +506,7 @@ public class Player : KinematicBody
 					attack_preformed = true;
 					var animation_player = anim_controller.GetAnimationPlayer();	
 					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.JAB1]).Step;
-					attack_controller.PreformAction(EACTION_TYPE.JAB1, step);
+					attack_controller.PreformAction(EACTION_TYPE.JAB1, step, reverse_direction);
 				}
 				else if(state == PlayerState.JAB_ATTACK1 && total_jabs > 1)
 				{
@@ -408,7 +557,7 @@ public class Player : KinematicBody
 			p_anim_controller.SetAnimationSpeed(2.0f);
 		}
 
-		if(Input.IsActionJustPressed("TAUNT_1") && (state == PlayerState.IDLE || state == PlayerState.WALKING || state == PlayerState.WALKING_TO_RUN))
+		if(Input.IsActionJustPressed(PLAYER_TAUNT1) && (state == PlayerState.IDLE || state == PlayerState.WALKING || state == PlayerState.WALKING_TO_RUN))
 		{
 			state = PlayerState.TAUNT1;
 		}
@@ -462,8 +611,7 @@ public class Player : KinematicBody
 			}
 		}
 	}
-
-	public void HandleAction(float deltaTime)
+	private void HandleAction(float deltaTime)
 	{
 		accumalator += track_time * deltaTime;
 		if(p_anim_controller.GetState() == PlayerAnimationController.AnimationState.NONE)
@@ -641,7 +789,6 @@ public class Player : KinematicBody
 			}
 		}
 	}
-
 	private void FallThroughPlatform()
 	{
 		if(detected_go_through_platform != null)
@@ -691,7 +838,6 @@ public class Player : KinematicBody
 		GD.Print("Mask: " + CollisionMaskPrint);
 		GD.Print("Layer: " + CollisionLayerPrint);
 	}
-
 	private void ResetParameters()
 	{
 		motion = Vector3.Zero;
@@ -701,7 +847,6 @@ public class Player : KinematicBody
 		air_drift = 0f;
 		p_anim_controller.SetAnimationSpeed(1.0f);
 	}
-
 	private bool IsStateGrounded()
 	{
 		bool grounded = false;
@@ -709,7 +854,6 @@ public class Player : KinematicBody
 			|| state == PlayerState.JAB_ATTACK1 || state == PlayerState.JAB_ATTACK2 || state == PlayerState.JAB_ATTACK3 || state == PlayerState.JAB_RAPID) grounded = true;
 		return grounded;
 	}
-
 	private bool IsStateAerial()
 	{
 		bool aerial = false;

@@ -1,0 +1,168 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://Assets/UI/Cursor/Cursor.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/The Big 3.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/Data/Wooper/Wooper_Resources.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/UI/Cursor/CursorManager.cs" type="Script" id=4]
+[ext_resource path="res://Assets/Player/Data/LankyKong/LankyKong_Resources.tres" type="Resource" id=5]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/CrescentMoonMap.tres" type="Resource" id=6]
+[ext_resource path="res://Assets/Player/Data/Wario/Wario_Resource.tres" type="Resource" id=7]
+[ext_resource path="res://Assets/Player/Data/DK/DK_Resources.tres" type="Resource" id=8]
+[ext_resource path="res://Assets/Player/Data/Kirby/Kirby_Resources.tres" type="Resource" id=9]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/CharacterSelect.cs" type="Script" id=10]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/CharacterSlot.cs" type="Script" id=11]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/ready.png" type="Texture" id=12]
+[ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=13]
+[ext_resource path="res://Assets/UI/Buttons/Back_Button.png" type="Texture" id=14]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/PlayerCharacterHighlighter.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/menu-music.mp3" type="AudioStream" id=16]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 493.75, 522.5 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 391.25, 568.125 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 452.5, 545.558 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Cursors" type="Node2D" parent="."]
+position = Vector2( 543, 453 )
+script = ExtResource( 4 )
+
+[node name="Cursor_P1" parent="Cursors" instance=ExtResource( 1 )]
+position = Vector2( -36, -47 )
+spawn_location = Vector2( -36, -47 )
+cursor_move_speed = 150.0
+
+[node name="Cursor_P2" parent="Cursors" instance=ExtResource( 1 )]
+position = Vector2( 275, -45 )
+spawn_location = Vector2( 275, -45 )
+player = 1
+cursor_move_speed = 150.0
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Ready" type="Sprite" parent="Control"]
+position = Vector2( 166, 240 )
+texture = ExtResource( 12 )
+
+[node name="Label" type="Label" parent="Control/Ready"]
+margin_left = -75.0
+margin_top = 52.0
+margin_right = 44.0
+margin_bottom = 66.0
+text = "Press Enter to play"
+
+[node name="CharacterSelectMenu" type="Sprite" parent="."]
+position = Vector2( 650, 189 )
+scale = Vector2( 0.2, 0.2 )
+script = ExtResource( 10 )
+slot_nodes = [ NodePath("Slot_DK"), NodePath("Slot_Wario"), NodePath("Slot_Kirby") ]
+player_portrait_nodes = [ NodePath("../Player_Highlighters/Player1_Highlighter"), NodePath("../Player_Highlighters/Player2_Highlighter") ]
+ready_to_play_node = NodePath("../Control")
+cursor_manager = NodePath("../Cursors")
+load_this_level = ExtResource( 6 )
+
+[node name="Sprite" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( 75, -137.295 )
+scale = Vector2( 1.98116, 1.98116 )
+texture = ExtResource( 2 )
+
+[node name="Slot_DK" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( -1005, -867.295 )
+script = ExtResource( 11 )
+character_resource = ExtResource( 8 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_DK"]
+position = Vector2( 0.000244141, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_DK/Area2D"]
+position = Vector2( 36.2498, 767.5 )
+shape = SubResource( 1 )
+
+[node name="Slot_Kirby" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( -430, -902.295 )
+script = ExtResource( 11 )
+character_resource = ExtResource( 9 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Kirby"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Kirby/Area2D"]
+position = Vector2( 538.75, 756.875 )
+shape = SubResource( 2 )
+
+[node name="Slot_Wario" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( 80, -877.295 )
+script = ExtResource( 11 )
+character_resource = ExtResource( 7 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Wario"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Wario/Area2D"]
+position = Vector2( 1092.5, 769.442 )
+shape = SubResource( 3 )
+
+[node name="Slot_Wooper" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( 3925, 212.705 )
+script = ExtResource( 11 )
+character_resource = ExtResource( 3 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Wooper"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Wooper/Area2D"]
+position = Vector2( 70, -54.177 )
+shape = SubResource( 2 )
+
+[node name="Slot_LankyKong" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( 3500, 507.705 )
+script = ExtResource( 11 )
+character_resource = ExtResource( 5 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_LankyKong"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_LankyKong/Area2D"]
+position = Vector2( -85, -27.2952 )
+shape = SubResource( 2 )
+
+[node name="BackButton" type="Sprite" parent="."]
+position = Vector2( 59, 543 )
+scale = Vector2( 0.373817, 0.373817 )
+texture = ExtResource( 14 )
+
+[node name="TextureButton" type="TextureButton" parent="BackButton"]
+margin_left = -310.0
+margin_top = -147.0
+margin_right = 310.0
+margin_bottom = 152.0
+script = ExtResource( 13 )
+scene_file = "res://Assets/UI/StartMenu/StartMenuScene.tscn"
+scene_root = NodePath("../..")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="BackButton"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BackButton/StaticBody2D"]
+polygon = PoolVector2Array( 157.831, -155.156, 315.663, 152.481, -163.181, 152.481, -318.338, -152.481 )
+
+[node name="Player_Highlighters" type="Node" parent="."]
+
+[node name="Player1_Highlighter" parent="Player_Highlighters" instance=ExtResource( 15 )]
+position = Vector2( 532, 488 )
+scale = Vector2( 0.75, 0.75 )
+
+[node name="Player2_Highlighter" parent="Player_Highlighters" instance=ExtResource( 15 )]
+position = Vector2( 804, 490 )
+scale = Vector2( 0.75, 0.75 )
+player = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( 550, 307 )
+stream = ExtResource( 16 )
+volume_db = -17.0
+autoplay = true

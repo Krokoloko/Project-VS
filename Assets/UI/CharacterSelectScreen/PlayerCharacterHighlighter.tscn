@@ -1,0 +1,99 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/PlayerSelectPortrait.cs" type="Script" id=1]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/CharacterHighlight.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Shutter:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "Shutter_Close"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Shutter:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Shutter_Open"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Shutter:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 2, 1, 0 ]
+}
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 1 )
+character_label = NodePath("Character Name")
+player_label = NodePath("Player")
+portrait_node = NodePath("Portrait")
+shutteranimation_node = NodePath("AnimationPlayer")
+
+[node name="Shutter" type="Sprite" parent="."]
+position = Vector2( 0, -98 )
+scale = Vector2( 2.35333, 2.35333 )
+texture = ExtResource( 2 )
+hframes = 4
+
+[node name="Portrait" type="Sprite" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 2 )
+anims/Shutter_Close = SubResource( 1 )
+anims/Shutter_Open = SubResource( 3 )
+
+[node name="Character Name" type="Label" parent="."]
+margin_left = -136.0
+margin_top = 59.0
+margin_right = -45.0
+margin_bottom = 73.0
+rect_scale = Vector2( 3, 3 )
+text = "LOREM IPSUM"
+align = 1
+
+[node name="Miscelenious" type="Label" parent="."]
+margin_left = -55.0
+margin_top = -1.0
+margin_right = 36.0
+margin_bottom = 13.0
+rect_scale = Vector2( 1.2, 1.2 )
+align = 1
+
+[node name="Player" type="Label" parent="."]
+margin_left = -40.0
+margin_top = 108.0
+margin_right = 11.0
+margin_bottom = 122.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Player 1"
+align = 1

@@ -1,0 +1,79 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/UI/PlayerInfo/PlayerInfo.cs" type="Script" id=1]
+[ext_resource path="res://Assets/UI/PlayerInfo/number_sprites.tres" type="Resource" id=2]
+
+[node name="Player Info" type="Control"]
+margin_right = 189.0
+margin_bottom = 172.0
+script = ExtResource( 1 )
+character_name_node = NodePath("player id/name")
+damage_node = NodePath("damage display")
+player_portrait_node = NodePath("player portrait small")
+player_id_label_node = NodePath("player id")
+stock_display_node = NodePath("Stocks")
+sprite_number_relation = ExtResource( 2 )
+
+[node name="player id" type="Label" parent="."]
+margin_left = 124.0
+margin_top = 2.0
+margin_right = 205.0
+margin_bottom = 16.0
+rect_scale = Vector2( 3, 3 )
+text = "P1 /  "
+
+[node name="name" type="Label" parent="player id"]
+margin_left = 31.0
+margin_right = 71.0
+margin_bottom = 14.0
+
+[node name="Stocks" type="Control" parent="."]
+margin_left = 122.0
+margin_top = 88.0
+margin_right = 315.0
+margin_bottom = 128.0
+
+[node name="TextureRect" type="TextureRect" parent="Stocks"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="TextureRect2" type="TextureRect" parent="Stocks"]
+margin_left = 39.0
+margin_right = 79.0
+margin_bottom = 40.0
+
+[node name="TextureRect3" type="TextureRect" parent="Stocks"]
+margin_left = 93.0
+margin_right = 133.0
+margin_bottom = 40.0
+
+[node name="damage display" type="Control" parent="."]
+margin_left = 121.0
+margin_top = 51.0
+margin_right = 295.0
+margin_bottom = 91.0
+
+[node name="digit_1" type="TextureRect" parent="damage display"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="digit_2" type="TextureRect" parent="damage display"]
+margin_left = 54.0
+margin_right = 94.0
+margin_bottom = 40.0
+
+[node name="digit_3" type="TextureRect" parent="damage display"]
+margin_left = 109.0
+margin_right = 149.0
+margin_bottom = 40.0
+
+[node name="Symbol" type="TextureRect" parent="damage display"]
+margin_left = 169.0
+margin_right = 209.0
+margin_bottom = 40.0
+
+[node name="player portrait small" type="TextureRect" parent="."]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 41.0
+margin_bottom = 41.0

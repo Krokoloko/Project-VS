@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/CrescentMoon.mp3-b742abbd4db3aa67cc0cad54e0829b0b.mp3str"
+
+[deps]
+
+source_file="res://Assets/Gamemode/Multiplayer/Maps/Songs/CrescentMoon.mp3"
+dest_files=[ "res://.import/CrescentMoon.mp3-b742abbd4db3aa67cc0cad54e0829b0b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

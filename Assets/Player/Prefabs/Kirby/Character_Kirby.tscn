@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Player.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Scripts/PlayerAnimationController.cs" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Assets/Player/Visuals/Kirby/BehindAerial1.anim" type="Animation" id=7]
 [ext_resource path="res://Assets/Player/Visuals/Kirby/DownAerial1.anim" type="Animation" id=8]
 [ext_resource path="res://Assets/Player/Visuals/Kirby/UpAerial1.anim" type="Animation" id=9]
+[ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/Hurtbox.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/Player/Visuals/Kirby/ForwardAerial1.anim" type="Animation" id=12]
 [ext_resource path="res://Assets/Player/Visuals/Kirby/Jump.anim" type="Animation" id=13]
 [ext_resource path="res://Assets/Player/Visuals/Kirby/Kirby_sprite sheet test.png" type="Texture" id=14]
@@ -44,6 +45,8 @@ extents = Vector3( 1.06463, 1, 1.0276 )
 extents = Vector3( 1.16753, 0.409824, 1 )
 
 [node name="Player" type="KinematicBody"]
+collision_layer = 65537
+collision_mask = 65537
 axis_lock_motion_z = true
 move_lock_z = true
 script = ExtResource( 1 )
@@ -51,7 +54,7 @@ resource_reference = ExtResource( 3 )
 MOVE_SPEED = 60.673
 RUNSPEED = 146.168
 total_jabs = 1
-JUMP_HEIGHT = 22.682
+JUMP_HEIGHT = 30.889
 AIR_ACCELERATION = 3.074
 AIR_SPEED = 9.172
 
@@ -91,6 +94,9 @@ name = "Kirby"
 [node name="EnvironmentCollision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.35902, 0 )
 shape = SubResource( 6 )
+
+[node name="Hurtbox" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3222, 0 )
 
 [node name="Area" type="Area" parent="."]
 collision_layer = 0

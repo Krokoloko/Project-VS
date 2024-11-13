@@ -28,7 +28,11 @@ public class ButtonRestartLevel : Node
         Node instance_container = scene_instance.GetNode<Node>("./PlayerContainer");
         for(int i = 0; i < player_container.GetChildCount(); i++)
         {
-            Player player = GD.Load<PackedScene>(player_container.GetChild<Player>(i).resource_reference.prefab).Instance<Player>();
+            Player current_player = player_container.GetChild<Player>(i);
+            Player player = GD.Load<PackedScene>(current_player.resource_reference.prefab).Instance<Player>();
+            player.SetPlayerID(current_player.GetPlayerID());
+            player.SetStockCount(3);
+            player.SetPlayerName(current_player.GetPlayerName());
             player.Translation = new Vector3(level.player_spawn_positions[i].x, level.player_spawn_positions[i].y, 0.0f);
             instance_container.AddChild(player);
         }

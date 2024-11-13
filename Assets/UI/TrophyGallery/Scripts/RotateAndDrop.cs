@@ -6,34 +6,34 @@ public class RotateAndDrop : Sprite
 {
     // Called when the node enters the scene tree for the first time.
     [Export]
-    private string trophy_physics_drop;
+    private PackedScene trophy_node;
     [Export]
-    private string display_coins_path;
+    private PackedScene back_menu;
+    [Export]
+    private NodePath display_coins_path;
     private CoinsLabelDisplay display_coins;
     [Export]
-    private string display_trophiesunlocked_display_path;
+    private NodePath display_trophiesunlocked_display_path;
     private TrophiesUnlockedLabelDisplay display_tropghiesunlocked;
     [Export]
-    private string display_sprite_path;
+    private NodePath display_sprite_path;
     private Sprite display_sprite; 
     [Export]
-    private string display_name_path;
+    private NodePath display_name_path;
     private Label display_name;
     private Node world;
-    private PackedScene trophy_node;
     private Transform2D default_transform;
     private bool rotating;
     private float amount_rotated = 0.0f;
     private TrophyData drop_trophy;
     public override void _Ready()
     {
-        display_tropghiesunlocked = GetNode<TrophiesUnlockedLabelDisplay>("../"+display_trophiesunlocked_display_path);
-        display_coins = GetNode<CoinsLabelDisplay>("../"+display_coins_path);
-        display_name = GetNode<Label>("../"+display_name_path);
-        display_sprite = GetNode<Sprite>("../"+display_sprite_path);
+        display_tropghiesunlocked = GetNode<TrophiesUnlockedLabelDisplay>(display_trophiesunlocked_display_path);
+        display_coins = GetNode<CoinsLabelDisplay>(display_coins_path);
+        display_name = GetNode<Label>(display_name_path);
+        display_sprite = GetNode<Sprite>(display_sprite_path);
         default_transform = Transform;
         rotating = false;
-        trophy_node = GD.Load<PackedScene>(trophy_physics_drop);
         world = GetNode("../");
     }
     public override void _Process(float delta)
@@ -62,11 +62,11 @@ public class RotateAndDrop : Sprite
             if(Input.IsActionJustPressed("ui_cancel"))
             {
                 GetParent<Node2D>().QueueFree();
-                Node2D instance = GD.Load<PackedScene>("res://Assets/UI/CharacterSelectScreen/CharacterSelectScene.tscn").Instance<Node2D>();
+                Control instance = back_menu.Instance<Control>();
 
                 GetNode<Node>("../../").AddChild(instance);
             }
-            if(Input.IsActionJustPressed("Player_Jump"))
+            if(Input.IsActionJustPressed("Player_Jump_1"))
             {
                 var trophy_system = GetNode<TrophySystem>("/root/TrophySystem");
                 if(trophy_system.GetCoins() > 0)

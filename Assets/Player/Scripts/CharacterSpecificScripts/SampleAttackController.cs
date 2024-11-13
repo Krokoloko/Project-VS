@@ -71,7 +71,7 @@ public class SampleAttackController : AttackController
         hitboxHandler.DeleteSequence(current_action_id);
         current_action_move = null;
     }
-    public override void PreformAction(EACTION_TYPE action_type, float speed)
+    public override void PreformAction(EACTION_TYPE action_type, float speed, bool reverse_direction)
     {
         if(action == action_type) return;
         
@@ -80,7 +80,7 @@ public class SampleAttackController : AttackController
         {
             case EACTION_TYPE.JAB1:
                 current_action_move = moveset.Jab1;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 if(name == "Lanky")
                 {
                     audio_player.Play();
@@ -100,39 +100,39 @@ public class SampleAttackController : AttackController
                 break;
             case EACTION_TYPE.DOWN_AERIAL:
                 current_action_move = moveset.DownAerial;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 break;
             case EACTION_TYPE.FORWARD_AERIAL:
                 current_action_move = moveset.ForwardAerial;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 break;
             case EACTION_TYPE.BACK_AERIAL:
                 current_action_move = moveset.BackAerial;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 break;
             case EACTION_TYPE.UP_AERIAL:
                 current_action_move = moveset.UpAerial;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 break;
             case EACTION_TYPE.FORWARD_TILT:
                 current_action_move = moveset.ForwardTilt;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 break;
             case EACTION_TYPE.UP_TILT:
                 current_action_move = moveset.UpTilt;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 break;
             case EACTION_TYPE.DOWN_TILT:
                 current_action_move = moveset.DownTilt;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 break;
             case EACTION_TYPE.DASHATTACK:
                 current_action_move = moveset.DashAttack;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 break;
             case EACTION_TYPE.NEUTRAL_AERIAL:
                 current_action_move = moveset.NeutralAerial;
-                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath());
+                hitboxHandler.AddSequence(current_action_move, speed, player.GetPath(), player.GetPlayerID(), reverse_direction);
                 break;
             default:
                 break;

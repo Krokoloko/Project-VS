@@ -1,7 +1,8 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Resources/CharacterResources.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Visuals/DK/DK_Portrait.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/Visuals/DK/DK_Stock_Icon.png" type="Texture" id=3]
 
 [resource]
 script = ExtResource( 1 )
@@ -9,3 +10,5 @@ prefab = "res://Assets/Player/Prefabs/DK/Character_DK.tscn"
 portrait = ExtResource( 2 )
 portrait_scale = Vector2( 0.4, 0.4 )
 name = "Donkey Kong"
+stock_icon = ExtResource( 3 )
+icon_scale = Vector2( 0.35, 0.35 )
