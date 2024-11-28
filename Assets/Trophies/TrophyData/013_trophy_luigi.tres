@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/013_luigi.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+name = "Luigi"
+sprite = ExtResource( 1 )
+description = "He looks like a green Mario. 
+The only thing worse than his fear of ghosts is his ghastly mustache!
+ 
+Rumor has it he likes to buy skeleton keys but never use them..."
+franchise = ""

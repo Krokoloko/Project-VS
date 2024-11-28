@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/022_olimar_alternate.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Sus Olimar"
+sprite = ExtResource( 2 )
+description = "It seems it's no longer safe aboard the S.S. Dolphin!
+Will imposter Olimar take out his crewmate? 
+
+Or is Louie, the King of Bugs the true danger after all??
+
+
+Fun fact: The scientific name of the Fiery Blowhog is Sus Draconis."
+franchise = ""

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/018_another_lanky.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Another Lanky Kong"
+sprite = ExtResource( 2 )
+description = "He has no style, he has no grace
+This Kong has a funny face! 
+
+\"I'm an normal guy... I work in IT!\"
+
+This is the oldest drawing featured among the trophy's. It's from 2016."
+franchise = ""

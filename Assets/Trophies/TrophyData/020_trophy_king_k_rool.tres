@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/020_krool.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "King K. Rool"
+sprite = ExtResource( 2 )
+description = "This humongous chungus is the leader of the Kremlings. 
+Be it a general, a pirate or a mad scientist this scaly cretin is always planning to steal DK's banana hoard! 
+Does he even like banana's? 
+
+Missing for many years Krool has been planning for his greatest comeback yet!... right??"
+franchise = ""

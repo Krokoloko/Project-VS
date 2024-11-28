@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/003_wario.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Trophies/TrophySprites/003_wario_2.png" type="Texture" id=3]
+
+[resource]
+script = ExtResource( 2 )
+name = "Wario"
+sprite = ExtResource( 1 )
+easter_egg_sprite = ExtResource( 3 )
+description = "The last of the first four planned characters representing his own franchise. Wario is especially exciting because I always wanted to reimagine his moveset being based on the Wario Land games and Wario World.
+
+All the playable characters current sprites are improvised or loosely based on their actual smash brothers move-sets. We intend to do a re-sprite with altered moves, more frames and better linework eventually. 
+
+\"OH MY GOD, WAAAAAAAAAAAAAAAAAAAAA!\"
+ "
+franchise = ""

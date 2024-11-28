@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/021_louie.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Louie at the campfire"
+sprite = ExtResource( 2 )
+description = "Louie's notes: 
+Red dwarf Bulborb. 
+
+For a blissful bisque, mince the entire beast finely and stir in with heavy cream, artichoke hearts, and a pinch of black pepper. Heat slowly until piping hot.
+Mmmmm... Rich and creamy!
+
+(Maybe the real treasure is the endangered animals we consumed along the way.)"
+franchise = ""

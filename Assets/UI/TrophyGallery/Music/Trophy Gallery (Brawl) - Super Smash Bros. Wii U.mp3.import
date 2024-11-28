@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Trophy Gallery (Brawl) - Super Smash Bros. Wii U.mp3-24485360b64e8c5de9f43b8e98d0be90.mp3str"
+
+[deps]
+
+source_file="res://Assets/UI/TrophyGallery/Music/Trophy Gallery (Brawl) - Super Smash Bros. Wii U.mp3"
+dest_files=[ "res://.import/Trophy Gallery (Brawl) - Super Smash Bros. Wii U.mp3-24485360b64e8c5de9f43b8e98d0be90.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -8,11 +8,14 @@ public class TrophySystem : Node
 {
     private const string TROPHY_ROOT = "res://Assets/Trophies/TrophyData";
     private List<string> unlockable_trophies = new List<string>();
-    private List<string> unlocked_trophies = new List<string>();
+    private Dictionary<int, string> unlocked_trophies = new Dictionary<int, string>();
     private int coins = 0;
     public string coins_display = "0";
     public override void _EnterTree()
     {
+        ulong random_time = (ulong)Time.GetTicksMsec();
+        GD.Seed(random_time);
+
         Directory directory = new Directory();
         if(directory.Open(TROPHY_ROOT) == Error.Ok)
         {
@@ -29,6 +32,28 @@ public class TrophySystem : Node
             }
             directory.ListDirEnd();
         }
+
+        //Test Trophy Gallery
+        AddCoins(10);
+    }
+
+    public int GetTotalUnlockableTrophies()
+    {
+        return unlockable_trophies.Count;
+    }
+    public Dictionary<int, TrophyData> GetAllUnlockedTrophies()
+    {
+        Dictionary<int, TrophyData> current_trophy_list = new Dictionary<int, TrophyData>();
+
+        for(int i = 0; i < unlockable_trophies.Count; i++)
+        {
+            if(unlocked_trophies.ContainsKey(i))
+            {
+                TrophyData data = (TrophyData)GD.Load<Resource>(unlocked_trophies[i]);
+                current_trophy_list.Add(i, data);
+            }
+        }
+        return current_trophy_list;
     }
 
     public TrophyData GetRandomNewTrophy()
@@ -37,12 +62,13 @@ public class TrophySystem : Node
         {
             return null;
         }
+        var randomiser = new RandomNumberGenerator();
         while(true)
         {
-            int i = (int)(GD.Randi()/2) % unlockable_trophies.Count;
-            if(!unlocked_trophies.Contains(unlockable_trophies[i]))
+            int i = randomiser.RandiRange(0,unlockable_trophies.Count-1);
+            if(!unlocked_trophies.ContainsKey(i))
             {
-                unlocked_trophies.Add(unlockable_trophies[i]);
+                unlocked_trophies.Add(i, unlockable_trophies[i]);
                 return (TrophyData)GD.Load<Resource>(unlockable_trophies[i]);
             }
         }
@@ -51,7 +77,10 @@ public class TrophySystem : Node
     {
         return unlocked_trophies.Count;
     }
-    public int GetCoins() { return coins; }
+    public int GetCoins() 
+    { 
+        return coins; 
+    }
     public bool SubtractCoins(int sub_coins)
     {
         if(sub_coins > coins)

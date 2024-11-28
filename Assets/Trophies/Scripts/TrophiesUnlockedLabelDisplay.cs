@@ -13,6 +13,6 @@ public class TrophiesUnlockedLabelDisplay : Label
     public void RefreshDisplay()
     {
         int number = trophySystem.TotalTrophiesUnlocked();
-        Text = "Tophies Unlocked " + trophySystem.TotalTrophiesUnlocked() + "/10";
+        Text = "Tophies Unlocked " + trophySystem.TotalTrophiesUnlocked() + "/" + trophySystem.GetTotalUnlockableTrophies();
     }
 }

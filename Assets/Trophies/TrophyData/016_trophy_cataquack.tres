@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/016_quack.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Cataquack"
+sprite = ExtResource( 2 )
+description = "These not so gentle creatures can mainly be found on the tropical beaches of Ilse Delphino. 
+It's not recommended to get too close given their territorial nature, unless you want to be sent flying. 
+Even sitting inside a go-kart doesn't guarantee you safety.
+
+Some explorers claim to have spotted these creatures in distant galaxy's"
+franchise = ""

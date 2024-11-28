@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/005_wooper.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Trophies/TrophySprites/005_wooper_2.png" type="Texture" id=3]
+
+[resource]
+script = ExtResource( 2 )
+name = "Wooper"
+sprite = ExtResource( 1 )
+easter_egg_sprite = ExtResource( 3 )
+description = "Being one of our favorite pokemon and having cancelled a Wooper only fighting game project;
+It goes without saying that this little pokemon will still get his time to shine!
+
+Seemingly the only thing Wooper missed out on, was leg day."
+franchise = ""

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/019_cranky.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Cranky Kong"
+sprite = ExtResource( 2 )
+description = "This old ape used to be the original Donkey Kong, but has long since retired. 
+
+Cranky gladly gives the other Kongs gentle and friendly advise. 
+(They get scolded and beaten with his cane)
+
+He claims he can beat Donkey Kong Country in less then one hour and in one life."
+franchise = ""

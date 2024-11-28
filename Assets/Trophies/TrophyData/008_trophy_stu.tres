@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/008_stu.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Trophies/TrophySprites/008_stu_2.png" type="Texture" id=3]
+
+[resource]
+script = ExtResource( 2 )
+name = "Stu"
+sprite = ExtResource( 1 )
+easter_egg_sprite = ExtResource( 3 )
+description = "This \"Project VS\" is intended as a stepping stone to a more structured and planned out fangame.
+As such I realized the opportunity to add silly and easy to make characters that I don't want to seriously consider implementing.
+Stu being the first of two.
+
+A Goomba or the like would have been to predictable I say!
+
+This character is considered to be from the \"Sunshine\" franchise."
+franchise = ""

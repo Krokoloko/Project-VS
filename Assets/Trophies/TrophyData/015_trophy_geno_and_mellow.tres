@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/015_geno_mallow.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Geno and Mellow"
+sprite = ExtResource( 2 )
+description = "These two brave heroes aid a plumber, fat turtle and a ditzy princess on a quest to defeat the evil Smithy gang that has invaded the mushroom kingdom.
+ 
+Mallow claims to be a frog that has lost his parents. He acts like a pushover but is surprisingly capable with his powerful weather and healing based magic!
+ 
+Geno's true form was descended from the \"Star road\" and inhabited a wooden doll. His real name is \"♡♪!?\".
+ Geno is frail but extremely powerful. Watch out for his GENO BLAST!!"
+franchise = ""

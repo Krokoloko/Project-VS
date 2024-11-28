@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/001_dk.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Trophies/TrophySprites/001_dk_1.png" type="Texture" id=3]
+
+[resource]
+script = ExtResource( 2 )
+name = "Donkey Kong"
+sprite = ExtResource( 1 )
+easter_egg_sprite = ExtResource( 3 )
+description = "Deciding the character roster has been an ongoing process for more than 6 years.
+When development actually started we finally needed to make an decision who to choose.
+
+We decided to start with 4 characters.
+Three main characters from franchises we would like to make the most.
+And one \"unique\" character to make the project ours.
+
+\"Ooh ooh!\""
+franchise = ""

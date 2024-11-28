@@ -1,82 +1,209 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Assets/UI/borderUp.png" type="Texture" id=1]
-[ext_resource path="res://Assets/UI/borderDown.png" type="Texture" id=2]
-[ext_resource path="res://Assets/UI/TrophyGallery/capsule-vending-machine-png.png" type="Texture" id=3]
-[ext_resource path="res://Assets/UI/TrophyGallery/Scripts/RotateAndDrop.cs" type="Script" id=4]
-[ext_resource path="res://Assets/Trophies/Scripts/CoinsLabelDisplay.cs" type="Script" id=5]
-[ext_resource path="res://Assets/Trophies/Scripts/TrophiesUnlockedLabelDisplay.cs" type="Script" id=6]
-[ext_resource path="res://Assets/UI/TrophyGallery/Prefabs/TrophyPhysicsInstance.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Assets/UI/MainMenu/MainMenu.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Assets/Trophies/TrophySprites/001_dk.png" type="Texture" id=1]
+[ext_resource path="res://Assets/UI/TrophyGallery/Music/Trophy Gallery (Brawl) - Super Smash Bros. Wii U.mp3" type="AudioStream" id=2]
+[ext_resource path="res://Assets/UI/Fonts/FOT-RodinHimawariPro-UB.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/UI/TrophyGallery/Scripts/TrophyGallery.cs" type="Script" id=4]
+[ext_resource path="res://Assets/UI/MainMenu/MainMenu.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/UI/missingTrophie.png" type="Texture" id=6]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 278, 19.75 )
+[sub_resource type="DynamicFont" id=1]
+size = 18
+font_data = ExtResource( 3 )
 
-[node name="World" type="Node2D"]
+[sub_resource type="DynamicFont" id=2]
+size = 28
+font_data = ExtResource( 3 )
 
-[node name="BorderUp" type="Sprite" parent="."]
-position = Vector2( 539, -32 )
-scale = Vector2( 0.392351, 0.15235 )
-z_index = -1
-texture = ExtResource( 1 )
+[sub_resource type="DynamicFont" id=4]
+size = 13
+font_data = ExtResource( 3 )
 
-[node name="BorderDown" type="Sprite" parent="."]
-position = Vector2( 529, 542 )
-scale = Vector2( 0.393392, 0.113392 )
-z_index = -1
-texture = ExtResource( 2 )
-
-[node name="VendingMachine" type="Sprite" parent="."]
-position = Vector2( 198, 218 )
-scale = Vector2( 0.164501, 0.164501 )
-texture = ExtResource( 3 )
+[node name="Node" type="Node"]
 script = ExtResource( 4 )
-trophy_node = ExtResource( 7 )
-back_menu = ExtResource( 8 )
-display_coins_path = NodePath("../CoinsDisplay")
-display_trophiesunlocked_display_path = NodePath("../TrophiesUnlocked")
-display_sprite_path = NodePath("../DisplayTrophySprite")
-display_name_path = NodePath("../TrophyNameDisplay")
+scrollSpeed = 0.2
+sfxNode = NodePath("SFX")
+musicNode = NodePath("Music")
+notUnlockedSprite = ExtResource( 6 )
+descriptionLabelNode = NodePath("Control4/Label")
+goBackScene = ExtResource( 5 )
+highLightNode = NodePath("Control2")
+previousNode = NodePath("Control")
+nextNode = NodePath("Control3")
+trophyNumberNode = NodePath("TrophyNumber")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="Control" type="Control" parent="."]
+anchor_left = 0.112
+anchor_top = 0.17
+anchor_right = 0.311
+anchor_bottom = 0.678
+margin_left = -48.688
+margin_top = -31.0
+margin_right = -49.464
+margin_bottom = -30.8
+rect_scale = Vector2( 0.8, 0.8 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( 257, 569 )
-shape = SubResource( 1 )
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 0.741
+margin_bottom = -0.00502014
 
-[node name="DisplayTrophySprite" type="Sprite" parent="."]
-position = Vector2( 752, 252 )
-scale = Vector2( 0.5, 0.5 )
+[node name="TextureRect" type="TextureRect" parent="Control/AspectRatioContainer"]
+margin_top = 11.5
+margin_right = 203.0
+margin_bottom = 214.5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 1
 
-[node name="Label" type="Label" parent="."]
-margin_left = 813.0
-margin_top = 79.0
-margin_right = 1006.0
-margin_bottom = 110.0
-text = "Press ESCAPE to go back
-Press Spacebar to get a trophy"
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="Control"]
+anchor_left = 0.005
+anchor_top = 0.803
+anchor_right = 1.0
+anchor_bottom = 0.98
+margin_left = -0.0150001
+margin_top = 0.0849915
+margin_bottom = 0.100006
+size_flags_vertical = 0
+stretch_mode = 3
+alignment_vertical = 0
 
-[node name="CoinsDisplay" type="Label" parent="."]
-margin_left = 331.0
-margin_top = 83.0
-margin_right = 417.0
-margin_bottom = 97.0
-rect_scale = Vector2( 2, 2 )
-text = "Total Coins: 0"
-script = ExtResource( 5 )
+[node name="Label" type="Label" parent="Control/AspectRatioContainer2"]
+margin_right = 202.0
+margin_bottom = 202.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "Donkey Kong"
+align = 1
+autowrap = true
 
-[node name="TrophyNameDisplay" type="Label" parent="."]
-margin_left = 550.0
-margin_top = 83.0
-margin_right = 637.0
-margin_bottom = 97.0
-rect_scale = Vector2( 1.5, 1.5 )
-text = "Donkey Kong!"
+[node name="Control2" type="Control" parent="."]
+anchor_left = 0.382
+anchor_top = 0.17
+anchor_right = 0.641
+anchor_bottom = 0.802
+margin_left = -0.16803
+margin_top = -31.0
+margin_right = -0.384033
+margin_bottom = -31.2
 
-[node name="TrophiesUnlocked" type="Label" parent="."]
-margin_left = 336.0
-margin_top = 126.0
-margin_right = 376.0
-margin_bottom = 140.0
-rect_scale = Vector2( 2, 2 )
-script = ExtResource( 6 )
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Control2"]
+anchor_right = 1.0
+anchor_bottom = 0.741
+margin_bottom = -0.00502014
+
+[node name="TextureRect" type="TextureRect" parent="Control2/AspectRatioContainer"]
+margin_top = 7.91701
+margin_right = 265.0
+margin_bottom = 272.917
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 1
+
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="Control2"]
+anchor_left = 0.005
+anchor_top = 0.803
+anchor_right = 1.0
+anchor_bottom = 0.98
+margin_left = -0.0150001
+margin_top = 0.0849915
+margin_bottom = 0.100006
+size_flags_vertical = 0
+stretch_mode = 3
+alignment_vertical = 0
+
+[node name="Label" type="Label" parent="Control2/AspectRatioContainer2"]
+margin_right = 263.69
+margin_bottom = 263.69
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 2 )
+text = "Donkey Kong"
+align = 1
+autowrap = true
+
+[node name="Control3" type="Control" parent="."]
+anchor_left = 0.704
+anchor_top = 0.17
+anchor_right = 0.902
+anchor_bottom = 0.687
+margin_left = 83.1039
+margin_top = -26.0
+margin_right = 83.3519
+margin_bottom = -31.2
+rect_scale = Vector2( 0.8, 0.8 )
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Control3"]
+anchor_right = 1.0
+anchor_bottom = 0.741
+margin_bottom = -0.00502014
+
+[node name="TextureRect" type="TextureRect" parent="Control3/AspectRatioContainer"]
+margin_top = 11.5
+margin_right = 203.0
+margin_bottom = 214.5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 1
+
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="Control3"]
+anchor_left = 0.005
+anchor_top = 0.803
+anchor_right = 1.0
+anchor_bottom = 0.98
+margin_left = -0.0150001
+margin_top = 0.0849915
+margin_bottom = 0.100006
+size_flags_vertical = 0
+stretch_mode = 3
+alignment_vertical = 0
+
+[node name="Label" type="Label" parent="Control3/AspectRatioContainer2"]
+margin_right = 202.0
+margin_bottom = 202.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "Donkey Kong"
+align = 1
+autowrap = true
+
+[node name="SFX" type="AudioStreamPlayer" parent="."]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -25.078
+autoplay = true
+
+[node name="TrophyNumber" type="Label" parent="."]
+margin_left = 625.0
+margin_top = 17.0
+margin_right = 665.0
+margin_bottom = 31.0
+rect_scale = Vector2( 2.5, 2.5 )
+text = "#1"
+
+[node name="Control4" type="Control" parent="."]
+anchor_left = 0.241
+anchor_top = 0.743
+anchor_right = 0.241
+anchor_bottom = 0.743
+margin_left = 0.215988
+margin_top = -27.8
+margin_right = 537.216
+margin_bottom = 131.2
+size_flags_vertical = 2
+
+[node name="Label" type="Label" parent="Control4"]
+anchor_right = 1.061
+anchor_bottom = 0.818
+margin_right = 0.24292
+margin_bottom = -0.0619965
+size_flags_horizontal = 0
+size_flags_vertical = 2
+custom_fonts/font = SubResource( 4 )
+text = "These two brave heroes aid a plumber, fat turtle and a ditzy princess on a quest to defeat the evil Smithy gang that has invaded the mushroom kingdom.
+
+Mallow is a frog? that has lost his parents. He acts like a pushover but is supringly capable with his powerful weather and healing based magic!
+
+Geno's true form was decendent from the star heaven and inhabited a wooden doll. Geno is frail but extremely powerfull.
+Watch out for his GENO BLAST!!"
+autowrap = true

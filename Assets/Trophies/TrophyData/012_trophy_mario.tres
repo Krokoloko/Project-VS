@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/012_mario.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Mario"
+sprite = ExtResource( 2 )
+description = "Just some Italian plumber guy, you've probably never heard of him. Hence why we didn't bother making him a playable character.
+He is not very fond of turtles.
+ 
+However he has an emaculate mustache!"
+franchise = ""

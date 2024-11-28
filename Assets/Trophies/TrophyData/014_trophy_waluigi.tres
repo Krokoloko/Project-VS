@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/014_waluigi.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+name = "Waluigi"
+sprite = ExtResource( 1 )
+description = "\"Everyone's cheating but me!!\"
+
+This upstanding citizen is well versed at tennis and other sports.
+In his free time waluigi creeps around the sewers in search of lonely bob-ombs. 
+After diligently caring for these bob-ombs, Waluigi gives them a warm home... 
+
+...The homes of those that Waluigi happened to lose from in tennis matches. I'm sure its all a coincidence."
+franchise = ""

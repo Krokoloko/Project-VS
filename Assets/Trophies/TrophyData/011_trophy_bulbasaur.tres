@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/011_bulbasaur.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Bulbasaur"
+sprite = ExtResource( 2 )
+description = "Seed PKMN
+Height 2' 04'' 
+Weight 15 lbs 
+
+A strange seed was planted on its back at birth. 
+If you are in the market for the devils lettuce, this is your guy. 
+(Pokédex excerpt)"
+franchise = ""
