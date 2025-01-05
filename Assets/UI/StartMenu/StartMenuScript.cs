@@ -15,10 +15,14 @@ public class StartMenuScript : Label
     private float timer = 0.0f;
     private Label this_label;
     private Color color;
+    
     [Export]
     private Color alt_color;
+
     [Export]
-    private string scene_path;
+    private string scene_file;
+    private PackedScene scene;
+
     private bool visible;
 
     private string text;
@@ -51,7 +55,8 @@ public class StartMenuScript : Label
         if(Input.IsActionJustPressed("ui_accept"))
         {
             GetNode<Node>(world).QueueFree();
-            Control instance = GD.Load<PackedScene>(scene_path).Instance<Control>();
+            scene = GD.Load<PackedScene>(scene_file);
+            Control instance = scene.Instance<Control>();
             Node root = GetNode<Node>("../../"); 
             root.AddChild(instance);
         }

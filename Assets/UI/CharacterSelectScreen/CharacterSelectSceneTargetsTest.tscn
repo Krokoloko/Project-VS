@@ -1,9 +1,9 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Assets/Player/Data/DK/DK_Resources.tres" type="Resource" id=1]
 [ext_resource path="res://Assets/Player/Data/Kirby/Kirby_Resources.tres" type="Resource" id=2]
 [ext_resource path="res://Assets/Player/Data/Wario/Wario_Resource.tres" type="Resource" id=3]
-[ext_resource path="res://Assets/Gamemode/BreakTheTargets/BeakTheTargetsLevel.tres" type="Resource" id=4]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Maps/BeakTheTargetsLevel.tres" type="Resource" id=4]
 [ext_resource path="res://Assets/Player/Data/Wooper/Wooper_Resources.tres" type="Resource" id=5]
 [ext_resource path="res://Assets/UI/Cursor/Cursor.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/CharacterSelect.cs" type="Script" id=7]
@@ -16,8 +16,9 @@
 [ext_resource path="res://Assets/UI/borderDown.png" type="Texture" id=14]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/ready.png" type="Texture" id=15]
 [ext_resource path="res://Assets/UI/borderUp.png" type="Texture" id=16]
-[ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=17]
-[ext_resource path="res://Assets/UI/Buttons/Back_Button.png" type="Texture" id=18]
+[ext_resource path="res://Assets/UI/Controls.png" type="Texture" id=19]
+[ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=20]
+[ext_resource path="res://Assets/UI/ToggleControlsGraphic.cs" type="Script" id=21]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 493.75, 522.5 )
@@ -33,6 +34,8 @@ extents = Vector2( 452.5, 545.558 )
 [node name="Cursors" type="Node2D" parent="."]
 position = Vector2( 543, 453 )
 script = ExtResource( 8 )
+world_node = NodePath("..")
+previous_menu_file = "res://Assets/UI/MainMenu/MainMenu.tscn"
 
 [node name="Cursor_P1" parent="Cursors" instance=ExtResource( 6 )]
 cursor_move_speed = 150.0
@@ -119,56 +122,36 @@ position = Vector2( 164, 448 )
 
 [node name="Label2" type="Label" parent="AspectRatioContainer"]
 margin_left = 7.0
-margin_top = 317.0
+margin_top = 391.0
 margin_right = 613.0
-margin_bottom = 331.0
-text = "Lorem Ipsum Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum"
+margin_bottom = 405.0
 valign = 2
 
 [node name="Sprite" type="Sprite" parent="AspectRatioContainer"]
-position = Vector2( 166, 240 )
+position = Vector2( 166, 314 )
 texture = ExtResource( 15 )
 
 [node name="Label" type="Label" parent="AspectRatioContainer"]
 margin_left = 91.0
-margin_top = 292.0
+margin_top = 366.0
 margin_right = 210.0
-margin_bottom = 306.0
-text = "Press Enter to play"
+margin_bottom = 380.0
+text = "Press Start to play"
 
 [node name="AspectRatioContainer2" type="AspectRatioContainer" parent="."]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 317.0
 margin_bottom = 194.0
+rect_scale = Vector2( 0.5, 0.5 )
 
-[node name="Label" type="Label" parent="AspectRatioContainer2"]
-margin_left = 61.5
-margin_top = 80.0
-margin_right = 253.5
-margin_bottom = 111.0
-text = "WASD to move
-Spacebar to select character"
-
-[node name="BackButton" type="Sprite" parent="."]
-position = Vector2( 65, 516 )
-scale = Vector2( 0.373817, 0.373817 )
-z_index = -1
-texture = ExtResource( 18 )
-
-[node name="TextureButton" type="TextureButton" parent="BackButton"]
-margin_left = -310.0
-margin_top = -147.0
-margin_right = 310.0
-margin_bottom = 152.0
-script = ExtResource( 17 )
-scene_file = "res://Assets/UI/StartMenu/StartMenuScene.tscn"
-scene_root = NodePath("../..")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="BackButton"]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BackButton/StaticBody2D"]
-polygon = PoolVector2Array( 157.831, -155.156, 315.663, 152.481, -163.181, 152.481, -318.338, -152.481 )
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer2"]
+margin_right = 549.0
+margin_bottom = 382.0
+texture = ExtResource( 20 )
+script = ExtResource( 21 )
+controller_graphic = ExtResource( 20 )
+keyboard_graphic = ExtResource( 19 )
 
 [node name="BorderUp" type="Sprite" parent="."]
 position = Vector2( 539, -32 )

@@ -28,6 +28,7 @@ public class TrophyGallery : Node
     private Label description;
 
     [Export]
+    private string goBackSceneFile;
     private PackedScene goBackScene;
 
     [Export]
@@ -54,6 +55,8 @@ public class TrophyGallery : Node
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        goBackScene = GD.Load<PackedScene>(goBackSceneFile);
+        
         var trophySystem = GetNode<TrophySystem>("/root/TrophySystem");    
         trophies = trophySystem.GetAllUnlockedTrophies();
         totalObtainableTrophies = trophySystem.GetTotalUnlockableTrophies();

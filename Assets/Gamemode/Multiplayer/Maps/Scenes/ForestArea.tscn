@@ -1,0 +1,309 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/ForestAreaMap.tres" type="Resource" id=1]
+[ext_resource path="res://Assets/UI/PlayerInfo/PlayerInfo.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Gamemode/Deathzone/DeathzoneRespawnSystem.cs" type="Script" id=3]
+[ext_resource path="res://Assets/UI/Buttons/ButtonRestartLevel.cs" type="Script" id=4]
+[ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=5]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/background.jpg" type="Texture" id=6]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Songs/Forest Area.mp3" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/mainplatform.material" type="Material" id=8]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/mainplatformoutlines.material" type="Material" id=9]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Scripts/MultiplayerGamemode.cs" type="Script" id=10]
+[ext_resource path="res://Assets/UI/Controls.png" type="Texture" id=11]
+[ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=12]
+[ext_resource path="res://Assets/UI/ToggleControlsGraphic.cs" type="Script" id=13]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/mainplatform.jpg" type="Texture" id=14]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/mainplatformoutline.jpg" type="Texture" id=15]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/pic_1.jpg" type="Texture" id=16]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/pic_2.jpg" type="Texture" id=17]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/pic_3.jpg" type="Texture" id=18]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/pic_4.jpg" type="Texture" id=19]
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 14.6842, 1, 1 )
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 2.36147, 0.0719333, 1 )
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 33.7448, 1, 1 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 1, 22.55, 1 )
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 10 )
+win_state_UI_path = NodePath("UI")
+win_label_path = NodePath("UI/Control/Win Label Text")
+player_container_path = NodePath("PlayerContainer")
+
+[node name="PlayerContainer" type="Node" parent="."]
+
+[node name="Stage" type="Spatial" parent="."]
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage"]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, 1.164, 7.339, -10 )
+texture = ExtResource( 6 )
+
+[node name="CSGBox" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.08196, -0.17309, 0.0804815 )
+width = 26.6485
+material = ExtResource( 8 )
+
+[node name="StaticBody" type="StaticBody" parent="Stage/CSGBox"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Stage/CSGBox/StaticBody"]
+shape = SubResource( 3 )
+
+[node name="CSGBox2" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0357, -0.16363, 0.05777 )
+width = 1.29307
+material = ExtResource( 9 )
+
+[node name="CSGBox3" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.853, -0.164, 0.058 )
+width = 1.29307
+material = ExtResource( 9 )
+
+[node name="Spatial" type="Spatial" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011, 0 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/Spatial"]
+transform = Transform( 0.171839, 0, 0, 0, 0.171839, 0, 0, 0, 1, -11.6172, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="Stage/Spatial"]
+transform = Transform( 0.171839, 0, 0, 0, 0.171839, 0, 0, 0, 1, -6.08206, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="Sprite3D3" type="Sprite3D" parent="Stage/Spatial"]
+transform = Transform( 0.171839, 0, 0, 0, 0.171839, 0, 0, 0, 1, -0.563844, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="Sprite3D4" type="Sprite3D" parent="Stage/Spatial"]
+transform = Transform( 0.171839, 0, 0, 0, 0.171839, 0, 0, 0, 1, 4.9776, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="Sprite3D5" type="Sprite3D" parent="Stage/Spatial"]
+transform = Transform( 0.141848, 0, 0, 0, 0.171839, 0, 0, 0, 1, 9.95822, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="Spatial2" type="Spatial" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.91395, 0.303382 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/Spatial2"]
+transform = Transform( 0.171839, 0, 0, 0, 0.171839, 0, 0, 0, 1, -11.6172, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="Stage/Spatial2"]
+transform = Transform( 0.171839, 0, 0, 0, 0.171839, 0, 0, 0, 1, -6.08206, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="Sprite3D3" type="Sprite3D" parent="Stage/Spatial2"]
+transform = Transform( 0.171839, 0, 0, 0, 0.171839, 0, 0, 0, 1, -0.563844, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="Sprite3D4" type="Sprite3D" parent="Stage/Spatial2"]
+transform = Transform( 0.171839, 0, 0, 0, 0.171839, 0, 0, 0, 1, 4.9776, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="Sprite3D5" type="Sprite3D" parent="Stage/Spatial2"]
+transform = Transform( 0.141848, 0, 0, 0, 0.171839, 0, 0, 0, 1, 9.95822, -0.344652, 1.0824 )
+texture = ExtResource( 14 )
+
+[node name="CSGBox4" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.48896, 5.22872, 0 )
+width = 4.73476
+height = 0.3
+material = ExtResource( 8 )
+
+[node name="StaticBody" type="StaticBody" parent="Stage/CSGBox4"]
+collision_layer = 65536
+collision_mask = 65536
+
+[node name="CollisionShape" type="CollisionShape" parent="Stage/CSGBox4/StaticBody"]
+shape = SubResource( 5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/CSGBox4"]
+transform = Transform( 0.347498, 0, 0, 0, 0.0279071, 0, 0, 0, 1, -0.0218287, -0.0201025, 1.04119 )
+texture = ExtResource( 15 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="Stage"]
+transform = Transform( 0.213715, -0.015938, 0, 0.015938, 0.213715, 0, 0, 0, 1, -20.4504, 18.5015, -9.96852 )
+transparent = false
+texture = ExtResource( 16 )
+
+[node name="Sprite3D3" type="Sprite3D" parent="Stage"]
+transform = Transform( 0.23313, 0.0706258, 0, -0.0706258, 0.23313, 0, 0, 0, 1, -12.7123, 9.70178, -9.97358 )
+transparent = false
+texture = ExtResource( 17 )
+
+[node name="Sprite3D4" type="Sprite3D" parent="Stage"]
+transform = Transform( 0.320495, -0.0580937, 0, 0.0580937, 0.320495, 0, 0, 0, 1, 22.0461, 18.0762, -9.68082 )
+transparent = false
+texture = ExtResource( 18 )
+
+[node name="Sprite3D5" type="Sprite3D" parent="Stage"]
+transform = Transform( 0.32621, 0.0502669, 0, -0.0502669, 0.32621, 0, 0, 0, 0.999155, 10.8441, 9.58408, -9.45549 )
+transparent = false
+texture = ExtResource( 19 )
+
+[node name="Deathzones" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0634041, -0.0298195, 0.0053463 )
+script = ExtResource( 3 )
+spawn_nodes = [ NodePath("Spatial"), NodePath("Spatial2") ]
+deathzone_nodes = [ NodePath("Area2"), NodePath("Area"), NodePath("Area3"), NodePath("Area4") ]
+
+[node name="Area" type="Area" parent="Deathzones"]
+collision_layer = 63
+collision_mask = 63
+
+[node name="CollisionShape" type="CollisionShape" parent="Deathzones/Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.3712, 0 )
+shape = SubResource( 1 )
+
+[node name="Area2" type="Area" parent="Deathzones"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.1047, 0 )
+collision_layer = 63
+collision_mask = 63
+
+[node name="CollisionShape" type="CollisionShape" parent="Deathzones/Area2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.88756, 0 )
+shape = SubResource( 1 )
+
+[node name="Area3" type="Area" parent="Deathzones"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.0113, 0 )
+collision_layer = 63
+collision_mask = 63
+
+[node name="CollisionShape" type="CollisionShape" parent="Deathzones/Area3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32.677, -9.43785, 0 )
+shape = SubResource( 2 )
+
+[node name="Area4" type="Area" parent="Deathzones"]
+collision_layer = 63
+collision_mask = 63
+
+[node name="CollisionShape2" type="CollisionShape" parent="Deathzones/Area4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32.607, 6.57349, 0 )
+shape = SubResource( 2 )
+
+[node name="Spatial" type="Spatial" parent="Deathzones"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.17025, 8.75048, 0 )
+
+[node name="Spatial2" type="Spatial" parent="Deathzones"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.72109, 9.04235, 0 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.24852, 31.0698 )
+keep_aspect = 0
+far = 2000.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( 532, 305 )
+stream = ExtResource( 7 )
+volume_db = -17.0
+autoplay = true
+
+[node name="Player Info" parent="." instance=ExtResource( 2 )]
+margin_left = 161.0
+margin_top = 428.0
+margin_right = 350.0
+margin_bottom = 600.0
+player_container = NodePath("../PlayerContainer")
+
+[node name="Player Info2" parent="." instance=ExtResource( 2 )]
+margin_left = 662.0
+margin_top = 428.0
+margin_right = 851.0
+margin_bottom = 600.0
+player_id = 1
+player_container = NodePath("../PlayerContainer")
+
+[node name="UI" type="ViewportContainer" parent="."]
+margin_right = 1027.0
+margin_bottom = 597.0
+stretch = true
+
+[node name="WinScreen" type="Control" parent="UI"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="Label" parent="UI/WinScreen"]
+margin_left = 400.0
+margin_top = 500.0
+margin_right = 541.0
+margin_bottom = 514.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0.996078, 0.745098, 0, 1 )
+text = "You Earned +5 Coins!!!"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+anchor_left = 0.391
+anchor_top = 0.721
+anchor_right = 0.391
+anchor_bottom = 0.721
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Button" type="Button" parent="UI/HBoxContainer"]
+margin_right = 83.0
+margin_bottom = 40.0
+focus_neighbour_left = NodePath("../Button3")
+focus_neighbour_right = NodePath("../Button2")
+text = "Main Menu"
+script = ExtResource( 5 )
+scene_file = "res://Assets/UI/MainMenu/MainMenu.tscn"
+scene_root = NodePath("../../..")
+
+[node name="Button2" type="Button" parent="UI/HBoxContainer"]
+margin_left = 87.0
+margin_right = 164.0
+margin_bottom = 40.0
+focus_neighbour_left = NodePath("../Button")
+focus_neighbour_right = NodePath("../Button3")
+text = "Play Again"
+script = ExtResource( 4 )
+level = ExtResource( 1 )
+players_nodepath = NodePath("../../../PlayerContainer")
+scene_root = NodePath("../../..")
+
+[node name="Button3" type="Button" parent="UI/HBoxContainer"]
+margin_left = 168.0
+margin_right = 283.0
+margin_bottom = 40.0
+focus_neighbour_left = NodePath("../Button2")
+focus_neighbour_right = NodePath("../Button")
+text = "Select Character"
+script = ExtResource( 5 )
+scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectSceneVersusMode.tscn"
+scene_root = NodePath("../../..")
+
+[node name="Control" type="Control" parent="UI"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Win Label Text" type="Label" parent="UI/Control"]
+margin_left = 304.0
+margin_top = 104.0
+margin_right = 406.0
+margin_bottom = 118.0
+rect_scale = Vector2( 5, 5 )
+text = "Player 1 WINS!!!"
+
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="."]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 317.0
+margin_bottom = 194.0
+rect_scale = Vector2( 0.5, 0.5 )
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer2"]
+margin_right = 549.0
+margin_bottom = 382.0
+texture = ExtResource( 12 )
+script = ExtResource( 13 )
+controller_graphic = ExtResource( 12 )
+keyboard_graphic = ExtResource( 11 )

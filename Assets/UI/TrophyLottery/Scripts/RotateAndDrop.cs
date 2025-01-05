@@ -6,8 +6,11 @@ public class RotateAndDrop : Sprite
 {
     // Called when the node enters the scene tree for the first time.
     [Export]
+    private string trophy_node_file;
     private PackedScene trophy_node;
+
     [Export]
+    private string back_menu_file;
     private PackedScene back_menu;
     [Export]
     private NodePath display_coins_path;
@@ -62,6 +65,7 @@ public class RotateAndDrop : Sprite
             if(Input.IsActionJustPressed("ui_cancel"))
             {
                 GetParent<Node2D>().QueueFree();
+                back_menu = GD.Load<PackedScene>(back_menu_file);
                 Control instance = back_menu.Instance<Control>();
 
                 GetNode<Node>("../../").AddChild(instance);

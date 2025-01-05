@@ -1,3 +1,62 @@
-[gd_scene format=2]
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/UI/Cursor/CursorManager.cs" type="Script" id=1]
+[ext_resource path="res://Assets/UI/Cursor/Cursor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/UI/StageSelectMultiplayer/Scripts/StageSelectScript.cs" type="Script" id=3]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/ForestAreaMap.tres" type="Resource" id=4]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/CrescentMoonMap.tres" type="Resource" id=5]
+[ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=8]
+[ext_resource path="res://Assets/UI/Buttons/Back_Button.png" type="Texture" id=9]
 
 [node name="Node" type="Node"]
+script = ExtResource( 3 )
+stages = [ ExtResource( 5 ), ExtResource( 4 ) ]
+cursor_manager_nodepath = NodePath("Cursors")
+stage_ui_element_file = "res://Assets/UI/StageSelectMultiplayer/StageSelectThumbnail.tscn"
+parent_path = NodePath("Control/GridContainer")
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="GridContainer" type="GridContainer" parent="Control"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -584.0
+grow_horizontal = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+columns = 3
+
+[node name="Cursors" type="Node2D" parent="."]
+position = Vector2( 543, 453 )
+script = ExtResource( 1 )
+world_node = NodePath("..")
+previous_menu_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectSceneVersusMode.tscn"
+
+[node name="Cursor_P1" parent="Cursors" instance=ExtResource( 2 )]
+cursor_move_speed = 150.0
+
+[node name="BackButton" type="Sprite" parent="."]
+position = Vector2( 59, 543 )
+scale = Vector2( 0.373817, 0.373817 )
+texture = ExtResource( 9 )
+
+[node name="StaticBody2D" type="Area2D" parent="BackButton"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BackButton/StaticBody2D"]
+polygon = PoolVector2Array( 157.831, -155.156, 315.663, 152.481, -163.181, 152.481, -318.338, -152.481 )
+
+[node name="TextureButton" type="TextureButton" parent="BackButton"]
+margin_left = -310.0
+margin_top = -147.0
+margin_right = 310.0
+margin_bottom = 152.0
+script = ExtResource( 8 )
+scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectSceneVersusMode.tscn"
+scene_root = NodePath("../..")
+cursor_manager = NodePath("../../Cursors")

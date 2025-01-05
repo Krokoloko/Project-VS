@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Forest Area.mp3-031b926ff4b80413e4f436b0713a0251.mp3str"
+
+[deps]
+
+source_file="res://Assets/Gamemode/Multiplayer/Maps/Songs/Forest Area.mp3"
+dest_files=[ "res://.import/Forest Area.mp3-031b926ff4b80413e4f436b0713a0251.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Xml.Serialization;
@@ -9,13 +10,17 @@ public class TrophySystem : Node
     private const string TROPHY_ROOT = "res://Assets/Trophies/TrophyData";
     private List<string> unlockable_trophies = new List<string>();
     private Dictionary<int, string> unlocked_trophies = new Dictionary<int, string>();
+    private RandomNumberGenerator randomiser;
     private int coins = 0;
     public string coins_display = "0";
     public override void _EnterTree()
     {
-        ulong random_time = (ulong)Time.GetTicksMsec();
-        GD.Seed(random_time);
-
+        var time = Time.GetDatetimeStringFromSystem();
+        var random_time = (ulong)time.Substr(time.Length()-2, time.Length()-1).ToInt();
+        randomiser = new RandomNumberGenerator
+        {
+            Seed = (ulong)random_time
+        };
         Directory directory = new Directory();
         if(directory.Open(TROPHY_ROOT) == Error.Ok)
         {
@@ -62,7 +67,6 @@ public class TrophySystem : Node
         {
             return null;
         }
-        var randomiser = new RandomNumberGenerator();
         while(true)
         {
             int i = randomiser.RandiRange(0,unlockable_trophies.Count-1);

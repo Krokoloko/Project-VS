@@ -289,6 +289,10 @@ public class Player : KinematicBody
 	{
 		return damage_percantage;
 	}
+	public bool IsLaunchState()
+	{
+		return knockback_accumalator > 0.0f;
+	}
 	private void ProcessKnockbackState(float deltaTime)
 	{
 		if(state == PlayerState.LAUNCHED)
@@ -863,4 +867,5 @@ public class Player : KinematicBody
 		}
 		return aerial;
 	}
+
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Songs/CrescentMoon.mp3" type="AudioStream" id=1]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CrescentMoon/CrescentMoon_Floor.material" type="Material" id=2]
@@ -12,7 +12,9 @@
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Scripts/MultiplayerGamemode.cs" type="Script" id=10]
 [ext_resource path="res://Assets/UI/Buttons/ButtonRestartLevel.cs" type="Script" id=11]
 [ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=12]
-[ext_resource path="res://Assets/UI/0_2-HalloweenupdateOkt2024.png" type="Texture" id=13]
+[ext_resource path="res://Assets/UI/Controls.png" type="Texture" id=14]
+[ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=15]
+[ext_resource path="res://Assets/UI/ToggleControlsGraphic.cs" type="Script" id=16]
 
 [sub_resource type="BoxShape" id=7]
 extents = Vector3( 33.7448, 1, 1 )
@@ -61,7 +63,7 @@ material = ExtResource( 5 )
 [node name="Deathzones" type="Spatial" parent="."]
 script = ExtResource( 7 )
 spawn_nodes = [ NodePath("Spatial"), NodePath("Spatial2") ]
-deathzone_nodes = [ NodePath("Area"), NodePath("Area2"), NodePath("Area3"), NodePath("Area4") ]
+deathzone_nodes = [ NodePath("Area2"), NodePath("Area"), NodePath("Area3"), NodePath("Area4") ]
 
 [node name="Area" type="Area" parent="Deathzones"]
 collision_layer = 63
@@ -228,7 +230,7 @@ focus_neighbour_left = NodePath("../Button3")
 focus_neighbour_right = NodePath("../Button2")
 text = "Main Menu"
 script = ExtResource( 12 )
-scene_file = "res://Assets/UI/StartMenu/StartMenuScene.tscn"
+scene_file = "res://Assets/UI/MainMenu/MainMenu.tscn"
 scene_root = NodePath("../../..")
 
 [node name="Button2" type="Button" parent="UI/HBoxContainer"]
@@ -251,7 +253,7 @@ focus_neighbour_left = NodePath("../Button2")
 focus_neighbour_right = NodePath("../Button")
 text = "Select Character"
 script = ExtResource( 12 )
-scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectScene.tscn"
+scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectSceneVersusMode.tscn"
 scene_root = NodePath("../../..")
 
 [node name="Control" type="Control" parent="UI"]
@@ -266,6 +268,17 @@ margin_bottom = 118.0
 rect_scale = Vector2( 5, 5 )
 text = "Player 1 WINS!!!"
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform( 0.177165, 0, 0, 0, 0.177165, 0, 0, 0, 1, -10.8988, 2.90397, -0.938097 )
-texture = ExtResource( 13 )
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="."]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 317.0
+margin_bottom = 194.0
+rect_scale = Vector2( 0.5, 0.5 )
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer2"]
+margin_right = 549.0
+margin_bottom = 382.0
+texture = ExtResource( 15 )
+script = ExtResource( 16 )
+controller_graphic = ExtResource( 15 )
+keyboard_graphic = ExtResource( 14 )

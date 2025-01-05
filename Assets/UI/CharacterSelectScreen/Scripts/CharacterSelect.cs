@@ -24,7 +24,19 @@ public class CharacterSelect : Node2D
 	private CursorManager cursors;
 
 	[Export]
+	private string stage_select_menu_file;
+	private PackedScene stage_select_menu;
+
+	[Export]
 	private LevelResource load_this_level;
+
+	[Export]
+	private LevelResource testLevel;
+
+	[Export]
+	private NodePath testButtonNode = "";
+	private Button testButton;
+
 	private bool ready;
 	private bool is_loading;
 
@@ -32,7 +44,10 @@ public class CharacterSelect : Node2D
 	{
 		ready = false;
 		is_loading = false;
+		stage_select_menu = GD.Load<PackedScene>(stage_select_menu_file);
 		
+		testButton = GetNodeOrNull<Button>(testButtonNode);
+		testButton?.Connect("button_down", this, "LoadTestLevel");
 		ready_to_play_ui = GetNode<Control>(ready_to_play_node);
 		ready_to_play_ui.Visible = false;
 		
@@ -54,6 +69,14 @@ public class CharacterSelect : Node2D
 		cursors = GetNode<CursorManager>(cursor_manager);
 	}
 
+	private void LoadTestLevel()
+	{
+		if(ready && testLevel != null)
+		{
+			LoadLevel(cursors.GetUICursors(), testLevel);
+		}
+	}
+
 	private void UnhoverCharacter(CharacterResources character_info, PLAYER_CURSOR cursor)
 	{
 		if(character_info.name == hovered_characters[(int)(cursor)].name)
@@ -68,6 +91,41 @@ public class CharacterSelect : Node2D
 		GD.Print("Hover");
 		hovered_characters[(int)(cursor)] = character;
 	}
+
+	private void LoadLevel(UICursor[] a_cursors, LevelResource levelResource)
+	{
+		CharacterResources[] load_character = new CharacterResources[a_cursors.Length];
+		for(int j = 0; j < a_cursors.Length; j++)
+		{
+			load_character[j] = player_portraits[(PLAYER_CURSOR)(j)].GetCharacter();
+		} 
+		Node root = GetNode<Node>("../../");
+		Node sceneroot = GetNode<Node>("../");
+		sceneroot.GetChild<AudioStreamPlayer2D>(sceneroot.GetChildCount()-1).Stop();
+
+		GD.Print("Unload scene");
+		sceneroot.QueueFree();
+
+		GD.Print("Load Level");
+		Node level = GD.Load<PackedScene>(levelResource.level_source).Instance<Node>();
+		for(int j = 0; j < a_cursors.Length; j++)
+		{
+			//Todo: set input binding of the players
+			Player player = GD.Load<PackedScene>(load_character[j].prefab).Instance<Player>();
+			player.SetPlayerID(a_cursors[j].player);
+			player.SetStockCount(3);
+			player.SetPlayerName(load_character[j].name);
+			player.Translation = new Vector3(load_this_level.player_spawn_positions[j].x, load_this_level.player_spawn_positions[j].y, 0);
+			level.GetNode<Node>("./PlayerContainer").AddChild(player);
+		}
+		for(int j = 0; j < slots.Length; j++)
+		{
+			slots[j]._ExitTree();
+		}
+		
+		root.AddChild(level);
+	}
+
 	public override void _Process(float delta)
 	{
 		if(Input.IsActionJustPressed("Goto_Trophy_Lottery"))
@@ -104,7 +162,7 @@ public class CharacterSelect : Node2D
 					for(int j = 0; j < a_cursors.Length; j++)
 					{
 						load_character[j] = player_portraits[(PLAYER_CURSOR)(j)].GetCharacter();
-					} 
+					}
 					Node root = GetNode<Node>("../../");
 					Node sceneroot = GetNode<Node>("../");
 					sceneroot.GetChild<AudioStreamPlayer2D>(sceneroot.GetChildCount()-1).Stop();
@@ -113,24 +171,38 @@ public class CharacterSelect : Node2D
 					sceneroot.QueueFree();
 
 					GD.Print("Load Level");
-					Node level = GD.Load<PackedScene>(load_this_level.level_source).Instance<Node>();
-					for(int j = 0; j < a_cursors.Length; j++)
+
+					if(stage_select_menu != null)
 					{
-						//Todo: set input binding of the players
-						Player player = GD.Load<PackedScene>(load_character[j].prefab).Instance<Player>();
-						player.SetPlayerID(a_cursors[j].player);
-						player.SetStockCount(3);
-						player.SetPlayerName(load_character[j].name);
-						player.Translation = new Vector3(load_this_level.player_spawn_positions[j].x, load_this_level.player_spawn_positions[j].y, 0);
-						level.GetNode<Node>("./PlayerContainer").AddChild(player);
-					}
-					for(int j = 0; j < slots.Length; j++)
+						StageSelectScript stageSelect = stage_select_menu.Instance<StageSelectScript>();
+						
+						for(int j = 0; j < a_cursors.Length; j++)
+						{
+							stageSelect.AddCharacter(a_cursors[j].player, load_character[j]);
+						}
+
+						root.AddChild(stageSelect);
+						break;
+					}else
 					{
-						slots[j]._ExitTree();
+						Node level = GD.Load<PackedScene>(load_this_level.level_source).Instance<Node>();
+						for(int j = 0; j < a_cursors.Length; j++)
+						{
+							Player player = GD.Load<PackedScene>(load_character[j].prefab).Instance<Player>();
+							player.SetPlayerID(a_cursors[j].player);
+							player.SetStockCount(3);
+							player.SetPlayerName(load_character[j].name);
+							player.Translation = new Vector3(load_this_level.player_spawn_positions[j].x, load_this_level.player_spawn_positions[j].y, 0);
+							level.GetNode<Node>("./PlayerContainer").AddChild(player);
+						}
+						for(int j = 0; j < slots.Length; j++)
+						{
+							slots[j]._ExitTree();
+						}
+						
+						root.AddChild(level);
+						break;
 					}
-					
-					root.AddChild(level);
-					break;
 				}
 			}
 		}

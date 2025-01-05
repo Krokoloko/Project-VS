@@ -1,20 +1,22 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
-[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Sounds/TargetsTestSong.mp3" type="AudioStream" id=1]
-[ext_resource path="res://Assets/UI/Controls.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/Target.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/CameraFollowPlayer.cs" type="Script" id=4]
-[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/TargetsGamemode.cs" type="Script" id=5]
-[ext_resource path="res://Assets/UI/GameStatus/BreakTargetsWinMessage.png" type="Texture" id=6]
-[ext_resource path="res://Assets/UI/GameStatus/BreakTargetsTimeLost.png" type="Texture" id=7]
-[ext_resource path="res://Assets/UI/GameStatus/BreakTargetsDie.png" type="Texture" id=8]
-[ext_resource path="res://Assets/UI/VS Logo.png" type="Texture" id=9]
-[ext_resource path="res://Assets/UI/GameStatus/Sounds/Complete.wav" type="AudioStream" id=10]
-[ext_resource path="res://Assets/UI/GameStatus/Sounds/Failure.wav" type="AudioStream" id=11]
-[ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=12]
-[ext_resource path="res://Assets/UI/Buttons/ButtonRestartLevel.cs" type="Script" id=13]
-[ext_resource path="res://Assets/Gamemode/BreakTheTargets/BeakTheTargetsLevel.tres" type="Resource" id=14]
-[ext_resource path="res://Assets/GroundTexture.png" type="Texture" id=17]
+[ext_resource path="res://Assets/UI/GameStatus/Sounds/Complete.wav" type="AudioStream" id=1]
+[ext_resource path="res://Assets/UI/GameStatus/BreakTargetsDie.png" type="Texture" id=2]
+[ext_resource path="res://Assets/GroundTexture.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Sounds/TargetsTestSong.mp3" type="AudioStream" id=4]
+[ext_resource path="res://Assets/UI/GameStatus/BreakTargetsTimeLost.png" type="Texture" id=5]
+[ext_resource path="res://Assets/UI/GameStatus/Sounds/Failure.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/UI/GameStatus/BreakTargetsWinMessage.png" type="Texture" id=7]
+[ext_resource path="res://Assets/UI/ToggleControlsGraphic.cs" type="Script" id=8]
+[ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=9]
+[ext_resource path="res://Assets/UI/VS Logo.png" type="Texture" id=10]
+[ext_resource path="res://Assets/UI/Controls.png" type="Texture" id=11]
+[ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Maps/BeakTheTargetsLevel.tres" type="Resource" id=13]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/Target.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/CameraFollowPlayer.cs" type="Script" id=15]
+[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/TargetsGamemode.cs" type="Script" id=16]
+[ext_resource path="res://Assets/UI/Buttons/ButtonRestartLevel.cs" type="Script" id=17]
 
 [sub_resource type="CubeMesh" id=4]
 
@@ -69,12 +71,12 @@ shader_param/uv1_scale = Vector3( 3.001, 1, 1 )
 shader_param/uv1_offset = Vector3( 0, 0, 0 )
 shader_param/uv2_scale = Vector3( 1, 1, 1 )
 shader_param/uv2_offset = Vector3( 0, 0, 0 )
-shader_param/texture_albedo = ExtResource( 17 )
+shader_param/texture_albedo = ExtResource( 3 )
 
 [sub_resource type="BoxShape" id=8]
 
 [node name="World" type="Spatial"]
-script = ExtResource( 5 )
+script = ExtResource( 16 )
 target_nodes = NodePath("All_Targets")
 timer_node = NodePath("GameTimer")
 timer_display_node = NodePath("TimerDisplay")
@@ -85,8 +87,8 @@ losescreen_node = NodePath("UI/LoseScreen")
 timeupscreen_node = NodePath("UI/NoTimeScreen")
 buttons_node = NodePath("UI/HBoxContainer")
 narrator_node = NodePath("NarratorStreamPlayer")
-win_sound = ExtResource( 10 )
-lose_sound = ExtResource( 11 )
+win_sound = ExtResource( 1 )
+lose_sound = ExtResource( 6 )
 
 [node name="PlayerContainer" type="Node" parent="."]
 
@@ -196,35 +198,35 @@ shape = SubResource( 8 )
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.26193, 3.42684, 16.7558 )
 keep_aspect = 0
-script = ExtResource( 4 )
+script = ExtResource( 15 )
 camera_offset = Vector3( 0, 3, 17 )
 player_root_node = NodePath("../PlayerContainer")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform( 6.39881, 0, 0, 0, 6.39881, 0, 0, 0, 1, 3.00307, -1.14322, -36.0929 )
-texture = ExtResource( 9 )
+texture = ExtResource( 10 )
 
 [node name="All_Targets" type="Spatial" parent="."]
 
-[node name="Target" parent="All_Targets" instance=ExtResource( 3 )]
+[node name="Target" parent="All_Targets" instance=ExtResource( 14 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.46773, 1.86266, -0.0525665 )
 
-[node name="Target2" parent="All_Targets" instance=ExtResource( 3 )]
+[node name="Target2" parent="All_Targets" instance=ExtResource( 14 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.18561, 1.96978, 0 )
 
-[node name="Target3" parent="All_Targets" instance=ExtResource( 3 )]
+[node name="Target3" parent="All_Targets" instance=ExtResource( 14 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.18561, 5.4994, 0 )
 
-[node name="Target4" parent="All_Targets" instance=ExtResource( 3 )]
+[node name="Target4" parent="All_Targets" instance=ExtResource( 14 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.18561, 12.625, 0 )
 
-[node name="Target5" parent="All_Targets" instance=ExtResource( 3 )]
+[node name="Target5" parent="All_Targets" instance=ExtResource( 14 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.70073, 4.91745, 0 )
 
-[node name="Target6" parent="All_Targets" instance=ExtResource( 3 )]
+[node name="Target6" parent="All_Targets" instance=ExtResource( 14 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0782, 14.0003, 0.0118275 )
 
-[node name="Target7" parent="All_Targets" instance=ExtResource( 3 )]
+[node name="Target7" parent="All_Targets" instance=ExtResource( 14 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.2513, 4.885, -0.00273895 )
 
 [node name="Spatial" type="Spatial" parent="."]
@@ -238,7 +240,7 @@ autostart = true
 volume_db = -23.543
 
 [node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 1 )
+stream = ExtResource( 4 )
 volume_db = -30.239
 autoplay = true
 
@@ -286,7 +288,7 @@ margin_left = -274.0
 margin_top = -98.0
 margin_right = 274.0
 margin_bottom = 97.0
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 
 [node name="LoseScreen" type="CenterContainer" parent="UI"]
 visible = false
@@ -301,7 +303,7 @@ margin_left = -239.0
 margin_top = -74.0
 margin_right = 238.0
 margin_bottom = 73.0
-texture = ExtResource( 8 )
+texture = ExtResource( 2 )
 
 [node name="NoTimeScreen" type="CenterContainer" parent="UI"]
 visible = false
@@ -316,7 +318,7 @@ margin_left = -271.0
 margin_top = -94.0
 margin_right = 270.0
 margin_bottom = 94.0
-texture = ExtResource( 7 )
+texture = ExtResource( 5 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI"]
 anchor_left = 0.391
@@ -332,7 +334,7 @@ margin_bottom = 40.0
 focus_neighbour_left = NodePath("../Button3")
 focus_neighbour_right = NodePath("../Button2")
 text = "Main Menu"
-script = ExtResource( 12 )
+script = ExtResource( 9 )
 scene_file = "res://Assets/UI/StartMenu/StartMenuScene.tscn"
 scene_root = NodePath("../../..")
 
@@ -343,8 +345,8 @@ margin_bottom = 40.0
 focus_neighbour_left = NodePath("../Button")
 focus_neighbour_right = NodePath("../Button3")
 text = "Play Again"
-script = ExtResource( 13 )
-level = ExtResource( 14 )
+script = ExtResource( 17 )
+level = ExtResource( 13 )
 players_nodepath = NodePath("../../../PlayerContainer")
 scene_root = NodePath("../../..")
 
@@ -355,12 +357,21 @@ margin_bottom = 40.0
 focus_neighbour_left = NodePath("../Button2")
 focus_neighbour_right = NodePath("../Button")
 text = "Select Character"
-script = ExtResource( 12 )
-scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectScene.tscn"
+script = ExtResource( 9 )
+scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectSceneTargetsTest.tscn"
 scene_root = NodePath("../../..")
 
-[node name="TextureRect" type="TextureRect" parent="UI"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="."]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 317.0
+margin_bottom = 194.0
 rect_scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer2"]
+margin_right = 549.0
+margin_bottom = 382.0
+texture = ExtResource( 12 )
+script = ExtResource( 8 )
+controller_graphic = ExtResource( 12 )
+keyboard_graphic = ExtResource( 11 )

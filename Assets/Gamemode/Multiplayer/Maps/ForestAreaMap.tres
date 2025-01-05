@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Gamemode/LevelLoader/Scripts/LevelData/LevelResource.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/Nature Area.jpg" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+level_source = "res://Assets/Gamemode/Multiplayer/Maps/Scenes/ForestArea.tscn"
+ID = 0
+thumbnail = ExtResource( 2 )
+player_spawn_positions = PoolVector2Array( -10, 9, 9, 9, 0, 1, 0, 8 )

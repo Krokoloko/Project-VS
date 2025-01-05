@@ -2,12 +2,18 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 public class CursorManager : Node
 {
     const int MAX_PLAYERS = 2;
     private Dictionary<int, string> index_string;
     private UICursor[] cursors;
+    [Export]
+    private NodePath world_node;
+    [Export]
+    private string previous_menu_file;
+    private PackedScene previous_menu;
     public override void _Ready()
     {
         index_string = new Dictionary<int, string>();
@@ -58,9 +64,26 @@ public class CursorManager : Node
             {
                 unclick = true;
             }
+            if(Input.IsActionJustPressed("Player_Special_" + index_string[i]))
+            {
+                GoToPreviousMenu();
+            }
             cursors[i].MoveCursor(move_to * delta * cursors[i].cursor_move_speed);
             if(click)cursors[i].Click();
             if(unclick)cursors[i].StopClick();
+        }
+    }
+
+    private void GoToPreviousMenu()
+    {
+        if(previous_menu_file != null)
+        {
+            previous_menu = GD.Load<PackedScene>(previous_menu_file);
+            Node menu = previous_menu.Instance<Node>();
+            Node world = GetNode<Node>(world_node);
+            Node root = world.GetParent();
+            world.QueueFree();
+            root.AddChild(menu);
         }
     }
 

@@ -4,5 +4,6 @@
 
 [resource]
 script = ExtResource( 1 )
-level_source = "res://BreakTheTargets_1.tscn"
+level_source = "res://Assets/Gamemode/BreakTheTargets/Maps/BreakTheTargets_1.tscn"
+ID = 0
 player_spawn_positions = PoolVector2Array( 0, 0.724 )
