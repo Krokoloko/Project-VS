@@ -1,8 +1,9 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/HitboxSequence.cs" type="Script" id=1]
-[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Jab1/Hitboxes/HBD_Kirby_Jab1_0.tres" type="Resource" id=2]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Jab1/Hitboxes/HBD_Kirby_Jab1_Final.tres" type="Resource" id=2]
+[ext_resource path="res://Assets/Player/Data/Kirby/Moves/Jab1/Hitboxes/HBD_Kirby_Jab1_Multihit.tres" type="Resource" id=3]
 
 [resource]
 script = ExtResource( 1 )
-sequence = [ ExtResource( 2 ), null, null ]
+sequence = [ ExtResource( 3 ), ExtResource( 3 ), ExtResource( 2 ) ]

@@ -132,14 +132,14 @@ margin_left = 939.0
 margin_top = 510.0
 margin_right = 1538.0
 margin_bottom = 524.0
-text = "V0.2.3"
+text = "V0.2.4"
 
 [node name="Date" type="Label" parent="."]
 margin_left = 910.0
 margin_top = 148.0
 margin_right = 1509.0
 margin_bottom = 162.0
-text = "03 JAN 2025"
+text = "JAN 2025"
 
 [node name="BorderUp" type="Sprite" parent="."]
 position = Vector2( 539, -32 )

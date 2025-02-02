@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class ButtonTransition : Node
+public class ButtonTransition : Control
 {
     [Signal]
     public delegate void OnHover();

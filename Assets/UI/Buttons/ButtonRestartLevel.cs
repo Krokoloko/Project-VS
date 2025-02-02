@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class ButtonRestartLevel : Node
+public class ButtonRestartLevel : Button
 {
     [Export]
     private LevelResource level = null;

@@ -44,6 +44,8 @@ tracks/0/keys = {
 extents = Vector3( 1.06463, 1, 1.59362 )
 
 [node name="Player" type="KinematicBody"]
+collision_layer = 0
+collision_mask = 65537
 axis_lock_motion_z = true
 move_lock_z = true
 script = ExtResource( 1 )

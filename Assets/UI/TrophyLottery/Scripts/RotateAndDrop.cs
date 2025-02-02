@@ -35,6 +35,7 @@ public class RotateAndDrop : Sprite
         display_coins = GetNode<CoinsLabelDisplay>(display_coins_path);
         display_name = GetNode<Label>(display_name_path);
         display_sprite = GetNode<Sprite>(display_sprite_path);
+        trophy_node = GD.Load<PackedScene>(trophy_node_file);
         default_transform = Transform;
         rotating = false;
         world = GetNode("../");

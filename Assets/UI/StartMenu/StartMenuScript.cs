@@ -27,6 +27,9 @@ public class StartMenuScript : Label
 
     private string text;
 
+    private const int counter_treshold = 3;
+    private int counter;
+
     private const string easter_text = "Please Don't Sue Us";
 
     public override void _Ready()
@@ -42,14 +45,6 @@ public class StartMenuScript : Label
         color = this_label.GetColor("font_color");
     }
 
-    public override void _Input(InputEvent vent)
-    {
-        if(vent.IsPressed())
-        {
-			
-        }
-    }
-
     public override void _Process(float delta)
     {
         if(Input.IsActionJustPressed("ui_accept"))
@@ -63,8 +58,11 @@ public class StartMenuScript : Label
         timer += delta;
         if(timer >= interval)
         {
+            counter++;
             visible = !visible;
-            this_label.Text = (visible) ? text : easter_text; 
+            
+            this_label.Text = (counter != counter_treshold) ? text : easter_text;
+            counter %= counter_treshold+1; 
             this_label.RemoveColorOverride("font_color");
             this_label.AddColorOverride("font_color", (visible) ? color : alt_color);
             timer -= interval;

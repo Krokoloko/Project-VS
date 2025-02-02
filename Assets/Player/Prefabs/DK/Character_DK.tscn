@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Player.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Scripts/PlayerAnimationController.cs" type="Script" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://Assets/Player/Visuals/DK/ForwardAerial1.anim" type="Animation" id=21]
 [ext_resource path="res://Assets/Player/Data/DK/DK_Resources.tres" type="Resource" id=22]
 [ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/Hurtbox.tscn" type="PackedScene" id=23]
+[ext_resource path="res://Assets/Player/Scripts/PlayerNumberIdentifier.cs" type="Script" id=24]
 
 [sub_resource type="Animation" id=4]
 resource_name = "Jump"
@@ -81,17 +82,31 @@ extents = Vector3( 1.06463, 1, 1.95054 )
 extents = Vector3( 1.15159, 0.400859, 1 )
 
 [node name="Player" type="KinematicBody"]
-collision_layer = 65537
+collision_layer = 0
 collision_mask = 65537
 axis_lock_motion_z = true
 move_lock_z = true
 script = ExtResource( 1 )
 resource_reference = ExtResource( 22 )
-MOVE_SPEED = 60.673
-RUNSPEED = 146.168
+sfx_player_node = NodePath("AudioStreamPlayer")
+MOVE_SPEED = 100.0
+RUNSPEED = 200.0
 total_jabs = 1
-JUMP_HEIGHT = 30.608
-AIR_SPEED = 13.622
+JUMP_HEIGHT = 100.0
+AIR_ACCELERATION = 100.0
+AIR_SPEED = 100.0
+DOUBLE_JUMPS = PoolRealArray( 100 )
+NEUTRAL_FALL_SPEED = 100.0
+FAST_FALL_SPEED = 200.0
+WEIGHT = 100.0
+
+[node name="Marker" type="Sprite3D" parent="."]
+transform = Transform( 6.55315, 0, 0, 0, 6.55315, 0, 0, 0, 1, 0, 5.96022, 0 )
+script = ExtResource( 24 )
+player = NodePath("..")
+show = true
+timer = 0.8
+player_icon_folder = "res://Assets/UI/Cursor/Visuals/PlayerNumberIcons/"
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform( -1, 0, 0, 0, 1, 8.74228e-08, 0, 8.74228e-08, -1, 0.0730259, 2.24397, 0 )
@@ -142,3 +157,5 @@ collision_mask = 0
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.551297, 0 )
 shape = SubResource( 7 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer3D" parent="."]

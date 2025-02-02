@@ -49,6 +49,10 @@ public class TargetsGamemode : Node
 	private Control buttons_ui;
 
 	[Export]
+	private NodePath focus_node = "";
+	private Control focus;
+
+	[Export]
 	private NodePath narrator_node = "";
 	private AudioStreamPlayer narrator;
 	[Export]
@@ -58,6 +62,8 @@ public class TargetsGamemode : Node
 	public override void _Ready()
 	{
 		state = GameState.PLAYING;
+
+		focus = GetNode<Control>(focus_node);
 
 		Node root = GetNode<Node>(player_root_node);
 		for (int i = 0; i < root.GetChildCount(); i++)
@@ -108,6 +114,7 @@ public class TargetsGamemode : Node
 		buttons_ui.Visible = true;
 		narrator.Stream = lose_sound;
 		game_timer.Paused = true;
+		focus.GrabFocus();
 		narrator.Play();
 	}
 
@@ -117,6 +124,7 @@ public class TargetsGamemode : Node
 		if(targets_alive == 0 && state == GameState.PLAYING)
 		{
 			GD.Print("You win!!");
+			focus.GrabFocus();
 			winscreen_ui.Visible = true;
 			buttons_ui.Visible = true;
 			narrator.Stream = win_sound;

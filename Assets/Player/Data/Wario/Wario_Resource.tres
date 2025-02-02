@@ -1,8 +1,18 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=14 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Resources/CharacterResources.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Visuals/Wario/Wario_Portrait.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Player/Visuals/Wario/Wario_Stock_Icon.png" type="Texture" id=3]
+[ext_resource path="res://Assets/SFX/Wario/Die.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/SFX/Wario/Up air.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/SFX/Wario/Get Hit.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/SFX/Wario/Down Air.wav" type="AudioStream" id=7]
+[ext_resource path="res://Assets/SFX/Wario/Ftilt.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/SFX/Wario/ground jump.wav" type="AudioStream" id=9]
+[ext_resource path="res://Assets/SFX/Wario/Taunt.wav" type="AudioStream" id=10]
+[ext_resource path="res://Assets/SFX/Wario/Dtilt.wav" type="AudioStream" id=11]
+[ext_resource path="res://Assets/SFX/Wario/double jump.wav" type="AudioStream" id=12]
+[ext_resource path="res://Assets/SFX/Wario/GOOOOO.wav" type="AudioStream" id=13]
 
 [resource]
 script = ExtResource( 1 )
@@ -12,3 +22,14 @@ portrait_scale = Vector2( 0.4, 0.4 )
 name = "Wario"
 stock_icon = ExtResource( 3 )
 icon_scale = Vector2( 0.35, 0.35 )
+dashattack_sfx = ExtResource( 13 )
+downtilt_sfx = ExtResource( 11 )
+forwardtilt_sfx = ExtResource( 8 )
+uptilt_sfx = ExtResource( 5 )
+downair_sfx = ExtResource( 7 )
+upair_sfx = ExtResource( 5 )
+gethit_sfx = ExtResource( 6 )
+jump_sfx = ExtResource( 9 )
+doublejump_sfx = ExtResource( 12 )
+die_sfx = ExtResource( 4 )
+taunt1_sfx = ExtResource( 10 )

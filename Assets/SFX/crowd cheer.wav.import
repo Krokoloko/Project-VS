@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/crowd cheer.wav-f0b3c3d315609f1f9ea3d01351451acb.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/crowd cheer.wav"
+dest_files=[ "res://.import/crowd cheer.wav-f0b3c3d315609f1f9ea3d01351451acb.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/DistantSpring.mp3-f169e9118ce435c6b41457f296864353.mp3str"
+
+[deps]
+
+source_file="res://Assets/Gamemode/Multiplayer/Maps/Songs/DistantSpring.mp3"
+dest_files=[ "res://.import/DistantSpring.mp3-f169e9118ce435c6b41457f296864353.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

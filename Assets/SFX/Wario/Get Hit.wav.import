@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Get Hit.wav-f83c08a76158dfa05c6bb42ff3bf3abe.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/Wario/Get Hit.wav"
+dest_files=[ "res://.import/Get Hit.wav-f83c08a76158dfa05c6bb42ff3bf3abe.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

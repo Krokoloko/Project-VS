@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource( 1 )
 level_source = "res://Assets/Gamemode/Multiplayer/Maps/Scenes/ForestArea.tscn"
-ID = 0
+ID = 1
 thumbnail = ExtResource( 2 )
 player_spawn_positions = PoolVector2Array( -10, 9, 9, 9, 0, 1, 0, 8 )

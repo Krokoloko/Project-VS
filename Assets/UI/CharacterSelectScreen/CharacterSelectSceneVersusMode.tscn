@@ -12,8 +12,8 @@
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/CharacterSelect.cs" type="Script" id=10]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/CharacterSlot.cs" type="Script" id=11]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/ready.png" type="Texture" id=12]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Kirby 64： The Crystal Shards - Enemy Card Index Theme.mp3" type="AudioStream" id=13]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/PlayerCharacterHighlighter.tscn" type="PackedScene" id=15]
-[ext_resource path="res://Assets/UI/CharacterSelectScreen/menu-music.mp3" type="AudioStream" id=16]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/ForestAreaMap.tres" type="Resource" id=17]
 [ext_resource path="res://Assets/UI/Controls.png" type="Texture" id=18]
 [ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=19]
@@ -165,6 +165,6 @@ keyboard_graphic = ExtResource( 18 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer2D" parent="."]
 position = Vector2( 550, 307 )
-stream = ExtResource( 16 )
+stream = ExtResource( 13 )
 volume_db = -17.0
 autoplay = true

@@ -1,8 +1,18 @@
-[gd_resource type="Resource" load_steps=4 format=2]
+[gd_resource type="Resource" load_steps=14 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Resources/CharacterResources.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Visuals/DK/DK_Portrait.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Player/Visuals/DK/DK_Stock_Icon.png" type="Texture" id=3]
+[ext_resource path="res://Assets/SFX/DK/star ko.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/SFX/DK/get hit.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/SFX/DK/Grunt medium.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/SFX/DK/double jump.wav" type="AudioStream" id=7]
+[ext_resource path="res://Assets/SFX/DK/jump ground.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/SFX/DK/taunt.wav" type="AudioStream" id=9]
+[ext_resource path="res://Assets/SFX/DK/Grunt medium low.wav" type="AudioStream" id=10]
+[ext_resource path="res://Assets/SFX/DK/Grunt heaviest.wav" type="AudioStream" id=11]
+[ext_resource path="res://Assets/SFX/DK/Grunt short.wav" type="AudioStream" id=12]
+[ext_resource path="res://Assets/SFX/DK/Grunt low.wav" type="AudioStream" id=13]
 
 [resource]
 script = ExtResource( 1 )
@@ -12,3 +22,17 @@ portrait_scale = Vector2( 0.4, 0.4 )
 name = "Donkey Kong"
 stock_icon = ExtResource( 3 )
 icon_scale = Vector2( 0.35, 0.35 )
+dashattack_sfx = ExtResource( 11 )
+downtilt_sfx = ExtResource( 12 )
+forwardtilt_sfx = ExtResource( 10 )
+uptilt_sfx = ExtResource( 6 )
+neutralair_sfx = ExtResource( 10 )
+downair_sfx = ExtResource( 13 )
+forwardair_sfx = ExtResource( 11 )
+upair_sfx = ExtResource( 11 )
+backair_sfx = ExtResource( 12 )
+gethit_sfx = ExtResource( 5 )
+jump_sfx = ExtResource( 8 )
+doublejump_sfx = ExtResource( 7 )
+die_sfx = ExtResource( 4 )
+taunt1_sfx = ExtResource( 9 )

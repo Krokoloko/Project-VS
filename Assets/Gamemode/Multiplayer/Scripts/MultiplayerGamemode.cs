@@ -15,6 +15,10 @@ public class MultiplayerGamemode : Node
     private NodePath player_container_path;
     private Node player_container;
 
+    [Export]
+    private NodePath give_focus_path;
+    private Control focus_node;
+
     Player winner = null;
 
     bool gamemode_finished = false;
@@ -22,8 +26,9 @@ public class MultiplayerGamemode : Node
     public override void _Ready()
     {
         win_state_UI = GetNode<Control>(win_state_UI_path);
-        win_state_UI.Visible = false;
         win_label = GetNode<Label>(win_label_path);
+        focus_node = GetNode<Control>(give_focus_path);
+        win_state_UI.Visible = false;
 
         player_container = GetNode<Node>(player_container_path);
 
@@ -58,7 +63,7 @@ public class MultiplayerGamemode : Node
                 win_state_UI.Visible = true;
 
                 win_label.Text = "Player " + winner.GetPlayerID().ToString() + " Lost!!! L + Bozo + Ratiod + Be better + Skill issue";
-                
+                focus_node.GrabFocus();
                 TrophySystem trophySystem = GetNode<TrophySystem>("/root/TrophySystem");
                 trophySystem.AddCoins(5);
             }

@@ -12,7 +12,7 @@
 [ext_resource path="res://Assets/Player/Data/LankyKong/LankyKong_Resources.tres" type="Resource" id=10]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/PlayerCharacterHighlighter.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/The Big 3.png" type="Texture" id=12]
-[ext_resource path="res://Assets/UI/CharacterSelectScreen/SFX/menu-music.mp3" type="AudioStream" id=13]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Kirby 64： The Crystal Shards - Enemy Card Index Theme.mp3" type="AudioStream" id=13]
 [ext_resource path="res://Assets/UI/borderDown.png" type="Texture" id=14]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/ready.png" type="Texture" id=15]
 [ext_resource path="res://Assets/UI/borderUp.png" type="Texture" id=16]
@@ -175,5 +175,5 @@ scale = Vector2( 0.75, 0.75 )
 position = Vector2( 519, 303 )
 scale = Vector2( 138.703, -24.1596 )
 stream = ExtResource( 13 )
-volume_db = -17.197
+volume_db = -17.0
 autoplay = true
