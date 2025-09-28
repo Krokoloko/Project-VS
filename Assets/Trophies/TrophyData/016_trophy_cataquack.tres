@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
+ID = 16
 name = "Cataquack"
 sprite = ExtResource( 2 )
 description = "These not so gentle creatures can mainly be found on the tropical beaches of Ilse Delphino. 

@@ -31,9 +31,12 @@ public class StartMenuScript : Label
     private int counter;
 
     private const string easter_text = "Please Don't Sue Us";
+    private MusicAndSoundManager sfx_stuff;
 
     public override void _Ready()
     {
+        sfx_stuff = GetNode<MusicAndSoundManager>(world + "/../AudioManager");
+        sfx_stuff.StopBGM();
         this_label = GetNode<Label>(this.GetPath());
         animated_sprites = GetNode<Node2D>(animated_sprites_path);
         for(int i = 0; i < animated_sprites.GetChildCount(); i++)
@@ -54,6 +57,7 @@ public class StartMenuScript : Label
             Control instance = scene.Instance<Control>();
             Node root = GetNode<Node>("../../"); 
             root.AddChild(instance);
+            sfx_stuff.PlaySFX(MusicAndSoundManager.SFX.CONFIRM, true, false);
         }
         timer += delta;
         if(timer >= interval)

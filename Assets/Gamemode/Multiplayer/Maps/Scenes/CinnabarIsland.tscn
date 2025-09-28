@@ -1,0 +1,489 @@
+[gd_scene load_steps=35 format=2]
+
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_window.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_floor.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CrescentMoon/background.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CrescentMoon/CrescentMoon_Skybox.tres" type="Material" id=5]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_borderGrey.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Gamemode/Deathzone/DeathzoneRespawnSystem.cs" type="Script" id=7]
+[ext_resource path="res://Assets/UI/PlayerInfo/PlayerInfo.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/CinnabarIsland.tres" type="Resource" id=9]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Scripts/MultiplayerGamemode.cs" type="Script" id=10]
+[ext_resource path="res://Assets/UI/Buttons/ButtonRestartLevel.cs" type="Script" id=11]
+[ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=12]
+[ext_resource path="res://Assets/UI/standard_theme.tres" type="Theme" id=13]
+[ext_resource path="res://Assets/UI/Controls Keyboard.png" type="Texture" id=14]
+[ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=15]
+[ext_resource path="res://Assets/UI/ToggleControlsGraphic.cs" type="Script" id=16]
+[ext_resource path="res://Assets/Player/Scripts/Motion_debug_label.cs" type="Script" id=17]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/exterior.tres" type="Material" id=18]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/roof.tres" type="Material" id=19]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_borderBrown.png" type="Texture" id=20]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_entranceRoof.png" type="Texture" id=21]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_wall1.png" type="Texture" id=22]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_wall2.png" type="Texture" id=23]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/floor.tres" type="Material" id=24]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_book.png" type="Texture" id=25]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_tableLeg.png" type="Texture" id=26]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna2.png" type="Texture" id=27]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna_table.png" type="Texture" id=28]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna1.png" type="Texture" id=29]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna3.png" type="Texture" id=30]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/CinnabarIsland/cinna4.png" type="Texture" id=31]
+
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 33.7448, 1, 1 )
+
+[sub_resource type="BoxShape" id=8]
+extents = Vector3( 1, 22.55, 1 )
+
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 4.98196, 1.32218, 1 )
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 5.032, 0.072, 1 )
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 10 )
+win_state_UI_path = NodePath("UI")
+win_label_path = NodePath("UI/Control/Win Label Text")
+player_container_path = NodePath("PlayerContainer")
+give_focus_path = NodePath("UI/HBoxContainer/Button2")
+
+[node name="PlayerContainer" type="Node" parent="."]
+
+[node name="Background" type="Spatial" parent="."]
+
+[node name="Sprite3D" type="Sprite3D" parent="Background"]
+transform = Transform( 4, 0, 0, 0, 4, 0, 0, 0, 1, 0, 4.7226, -10.4323 )
+visible = false
+texture = ExtResource( 4 )
+
+[node name="CSGBox" type="CSGBox" parent="Background"]
+transform = Transform( 1.21756, 0, 0, 0, 1.21756, 0, 0, 0, 1, 0, 6.71459, -12.2807 )
+visible = false
+width = 50.0
+height = 30.0
+material = ExtResource( 5 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="Background"]
+transform = Transform( 7.25955, 0, 0, 0, 7.25955, 0, 0, 0, 1, 1.127, 2.812, -52.912 )
+texture = ExtResource( 29 )
+
+[node name="Sprite3D3" type="Sprite3D" parent="Background"]
+transform = Transform( 2.5656, 0, 0, 0, 2.5656, 0, 0, 0, 1, -22.751, -3.082, -17.592 )
+transparent = false
+texture = ExtResource( 27 )
+
+[node name="Sprite3D4" type="Sprite3D" parent="Background"]
+transform = Transform( 2.2, 0, 0, 0, 2.2, 0, 0, 0, 1, 26.125, -8.229, -17.592 )
+transparent = false
+texture = ExtResource( 30 )
+
+[node name="Sprite3D5" type="Sprite3D" parent="Background"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26.22, 21.3506, -17.592 )
+transparent = false
+texture = ExtResource( 31 )
+
+[node name="Deathzones" type="Spatial" parent="."]
+script = ExtResource( 7 )
+spawn_nodes = [ NodePath("Spatial"), NodePath("Spatial2") ]
+deathzone_nodes = [ NodePath("Area2"), NodePath("Area"), NodePath("Area3"), NodePath("Area4") ]
+
+[node name="Area" type="Area" parent="Deathzones"]
+collision_layer = 63
+collision_mask = 63
+
+[node name="CollisionShape" type="CollisionShape" parent="Deathzones/Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.3712, 0 )
+shape = SubResource( 7 )
+
+[node name="Area2" type="Area" parent="Deathzones"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 28.1047, 0 )
+collision_layer = 63
+collision_mask = 63
+
+[node name="CollisionShape" type="CollisionShape" parent="Deathzones/Area2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.88756, 0 )
+shape = SubResource( 7 )
+
+[node name="Area3" type="Area" parent="Deathzones"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.0113, 0 )
+collision_layer = 63
+collision_mask = 63
+
+[node name="CollisionShape" type="CollisionShape" parent="Deathzones/Area3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32.677, -9.43785, 0 )
+shape = SubResource( 8 )
+
+[node name="Area4" type="Area" parent="Deathzones"]
+collision_layer = 63
+collision_mask = 63
+
+[node name="CollisionShape2" type="CollisionShape" parent="Deathzones/Area4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32.607, 6.57349, 0 )
+shape = SubResource( 8 )
+
+[node name="Spatial" type="Spatial" parent="Deathzones"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.383, 12.728, 0 )
+
+[node name="Spatial2" type="Spatial" parent="Deathzones"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.38288, 12.7278, 0 )
+
+[node name="Stage" type="Spatial" parent="."]
+transform = Transform( 2.20703, 0, 0, 0, 2.20703, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="MainPlatform" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 5.0585, 0, -0.930688, -3.04805 )
+width = 10.0
+height = 2.6694
+depth = 1.98468
+material = ExtResource( 18 )
+
+[node name="StaticBody" type="StaticBody" parent="Stage/MainPlatform"]
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Stage/MainPlatform/StaticBody"]
+shape = SubResource( 3 )
+
+[node name="CSGBox3" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 4.81513, -0.00836332, 3.01386, -2.73828 )
+width = 10.0
+height = 0.3
+material = ExtResource( 19 )
+
+[node name="platform" type="StaticBody" parent="Stage/CSGBox3"]
+collision_layer = 65536
+collision_mask = 65536
+
+[node name="CollisionShape" type="CollisionShape" parent="Stage/CSGBox3/platform"]
+shape = SubResource( 2 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/CSGBox3"]
+transform = Transform( 0.254, 0, 0, 0, 0.042, 0, 0, 0, 1, -0.0218291, -0.0518453, 1.00213 )
+transparent = false
+texture = ExtResource( 6 )
+
+[node name="CSGBox" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341408, -0.441406, 2.85625 )
+width = 2.57696
+height = 0.3
+depth = 4.09987
+material = ExtResource( 19 )
+
+[node name="Sprite3D3" type="Sprite3D" parent="Stage/CSGBox"]
+transform = Transform( 0.0885739, 0, 0, 0, -1.6074e-08, 0.454982, 0, -0.195318, -1.05634e-08, -0.00341408, 0.151973, 0.682337 )
+transparent = false
+texture = ExtResource( 21 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/CSGBox"]
+transform = Transform( -2.84709e-09, 0.104068, 0, -0.0980952, -6.85097e-09, 0, 0, 0, 1, 1.06, -1.238, 1.941 )
+texture = ExtResource( 20 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="Stage/CSGBox"]
+transform = Transform( -2.84709e-09, 0.104068, 0, -0.0980952, -6.85097e-09, 0, 0, 0, 1, -1.06862, -1.2383, 1.94114 )
+texture = ExtResource( 20 )
+
+[node name="CSGBox2" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46118, -8.14973 )
+width = 10.0
+height = 2.96612
+depth = 1.0
+material = ExtResource( 18 )
+
+[node name="CSGBox5" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.766, 1.63617, -5.05995 )
+width = 0.5
+height = 2.45809
+depth = 5.1252
+material = ExtResource( 18 )
+
+[node name="CSGBox6" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.766, 1.636, -5.06 )
+width = 0.5
+height = 2.45809
+depth = 5.1252
+material = ExtResource( 18 )
+
+[node name="windows_left" type="Spatial" parent="Stage"]
+transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.177584, -0.533949, 1.35589 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/windows_left"]
+transform = Transform( 0.176562, 0, 0, 0, 0.176562, 0, 0, 0, 0.08, -9.7778, -0.186092, 2.12585 )
+texture = ExtResource( 2 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="Stage/windows_left"]
+transform = Transform( 0.176562, 0, 0, 0, 0.176562, 0, 0, 0, 0.08, -7.57751, -0.183566, 2.12585 )
+texture = ExtResource( 2 )
+
+[node name="Sprite3D3" type="Sprite3D" parent="Stage/windows_left"]
+transform = Transform( 0.176562, 0, 0, 0, 0.176562, 0, 0, 0, 0.08, -5.40663, -0.183566, 2.12585 )
+texture = ExtResource( 2 )
+
+[node name="windows_right" type="Spatial" parent="Stage"]
+transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 6.04445, -0.533949, 1.35589 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/windows_right"]
+transform = Transform( 0.176562, 0, 0, 0, 0.176562, 0, 0, 0, 0.08, -9.7778, -0.186092, 2.12585 )
+texture = ExtResource( 2 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="Stage/windows_right"]
+transform = Transform( 0.176562, 0, 0, 0, 0.176562, 0, 0, 0, 0.08, -7.57751, -0.183566, 2.12585 )
+texture = ExtResource( 2 )
+
+[node name="Sprite3D3" type="Sprite3D" parent="Stage/windows_right"]
+transform = Transform( 0.176562, 0, 0, 0, 0.176562, 0, 0, 0, 0.08, -5.40663, -0.183566, 2.12585 )
+texture = ExtResource( 2 )
+
+[node name="CSGBox4" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.414098, -2.94682 )
+width = 9.9438
+height = 0.001
+depth = 9.83003
+material = ExtResource( 24 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage"]
+transform = Transform( 0.361653, 0, 0, 0, 0.0688079, 0, 0, 0, 1, 0.000470565, 0.269088, 2.0394 )
+transparent = false
+texture = ExtResource( 20 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="Stage"]
+transform = Transform( 0.361653, 0, 0, 0, 0.117854, 0, 0, 0, 1, 0, -2.00039, 2.02191 )
+transparent = false
+texture = ExtResource( 20 )
+
+[node name="walls" type="Spatial" parent="Stage"]
+
+[node name="Sprite3D4" type="Sprite3D" parent="Stage/walls"]
+transform = Transform( -1.02744e-08, 0, -0.453851, 0, 0.106538, 0, 0.272655, 0, -2.30122e-08, -4.50201, 1.61738, -5.06364 )
+transparent = false
+texture = ExtResource( 22 )
+
+[node name="Sprite3D6" type="Sprite3D" parent="Stage/walls"]
+transform = Transform( 0.126955, 0, 0, 0, 0.106538, 0, 0, 0, 0.995881, -3.28494, 1.61738, -7.61263 )
+transparent = false
+texture = ExtResource( 22 )
+
+[node name="Sprite3D7" type="Sprite3D" parent="Stage/walls"]
+transform = Transform( 0.126955, 0, 0, 0, 0.106538, 0, 0, 0, 0.995881, -0.869099, 1.61738, -7.61263 )
+transparent = false
+texture = ExtResource( 22 )
+
+[node name="Sprite3D8" type="Sprite3D" parent="Stage/walls"]
+transform = Transform( 0.126955, 0, 0, 0, 0.106538, 0, 0, 0, 0.995881, 1.54148, 1.61738, -7.61263 )
+transparent = false
+texture = ExtResource( 22 )
+
+[node name="Sprite3D9" type="Sprite3D" parent="Stage/walls"]
+transform = Transform( 0.126955, 0, 0, 0, 0.106538, 0, 0, 0, 0.995881, 3.94692, 1.61738, -7.63294 )
+transparent = false
+texture = ExtResource( 22 )
+
+[node name="Sprite3D5" type="Sprite3D" parent="Stage/walls"]
+transform = Transform( -1.02744e-08, 0, -0.453851, 0, 0.106538, 0, 0.272655, 0, -2.30122e-08, 4.51169, 1.61738, -5.06364 )
+transparent = false
+texture = ExtResource( 22 )
+
+[node name="floor" type="Spatial" parent="Stage"]
+
+[node name="Sprite3D4" type="Sprite3D" parent="Stage/floor"]
+transform = Transform( 0.210167, 0, 0, 0, -9.60023e-08, 0.463701, 0, -0.461584, -4.25987e-09, 2.93053, 0.428187, -2.49203 )
+transparent = false
+texture = ExtResource( 3 )
+
+[node name="Sprite3D5" type="Sprite3D" parent="Stage/floor"]
+transform = Transform( 0.210167, 0, 0, 0, -9.60023e-08, 0.463701, 0, -0.461584, -4.25987e-09, -0.128846, 0.429, -2.492 )
+transparent = false
+texture = ExtResource( 3 )
+
+[node name="Sprite3D6" type="Sprite3D" parent="Stage/floor"]
+transform = Transform( 0.210167, 0, 0, 0, -9.60023e-08, 0.463701, 0, -0.461584, -4.25987e-09, -2.14939, 0.428, -2.492 )
+transparent = false
+texture = ExtResource( 3 )
+
+[node name="Sprite3D7" type="Sprite3D" parent="Stage/floor"]
+transform = Transform( 0.210167, 0, 0, 0, -9.60023e-08, 0.463701, 0, -0.461584, -4.25987e-09, -2.963, 0.427, -2.492 )
+transparent = false
+texture = ExtResource( 3 )
+
+[node name="Sprite3D4" type="Sprite3D" parent="Stage"]
+transform = Transform( 0.0705, 0, 0, 0, 0.103583, 0, 0, 0, 0.987156, 4.75531, 1.61079, -2.48952 )
+texture = ExtResource( 23 )
+
+[node name="Sprite3D5" type="Sprite3D" parent="Stage"]
+transform = Transform( 0.0705, 0, 0, 0, 0.103583, 0, 0, 0, 0.987156, -4.755, 1.611, -2.49 )
+texture = ExtResource( 23 )
+
+[node name="table" type="Spatial" parent="Stage"]
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/table"]
+transform = Transform( 0.0622248, 0, 0, 0, -5.82436e-09, 0.4532, 0, -0.133246, -1.981e-08, 0.0324414, 0.811636, -3.6683 )
+transparent = false
+texture = ExtResource( 28 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="Stage/table"]
+transform = Transform( 0.042094, 0, 0, 0, 0.042094, 0, 0, 0, 1, 0.632443, 0.639609, -2.37777 )
+texture = ExtResource( 26 )
+
+[node name="Sprite3D3" type="Sprite3D" parent="Stage/table"]
+transform = Transform( 0.042094, 0, 0, 0, 0.042094, 0, 0, 0, 1, -0.59296, 0.639609, -2.37777 )
+texture = ExtResource( 26 )
+
+[node name="Sprite3D4" type="Sprite3D" parent="Stage/table"]
+transform = Transform( 0.0447701, 0, 0, 0, 0.0447701, 0, 0, 0, 1, 0.0360404, 1.06166, -2.9565 )
+texture = ExtResource( 25 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.992546, 0.121869, 0, -0.121869, 0.992546, 0, 12.011, 29.239 )
+keep_aspect = 0
+far = 500.0
+
+[node name="UI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="WinScreen" type="Control" parent="UI"]
+anchor_left = 0.388
+anchor_top = 0.829
+anchor_right = 0.668
+anchor_bottom = 0.885
+margin_left = -397.312
+margin_top = -497.4
+margin_right = -644.032
+margin_bottom = -491.0
+
+[node name="Label" type="Label" parent="UI/WinScreen"]
+anchor_left = 10.0
+anchor_top = 12.5
+anchor_right = 17.05
+anchor_bottom = 13.2
+margin_top = -3.05176e-05
+margin_right = -141.0
+margin_bottom = -14.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color = Color( 0.996078, 0.745098, 0, 1 )
+text = "You Earned +5 Coins!!!"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+anchor_left = 0.391
+anchor_top = 0.721
+anchor_right = 0.391
+anchor_bottom = 0.721
+margin_right = 40.0
+margin_bottom = 40.0
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="UI/HBoxContainer"]
+margin_right = 107.0
+margin_bottom = 40.0
+focus_neighbour_left = NodePath("../Button3")
+focus_neighbour_right = NodePath("../Button2")
+theme = ExtResource( 13 )
+text = "Main Menu"
+script = ExtResource( 12 )
+scene_file = "res://Assets/UI/MainMenu/MainMenu.tscn"
+scene_root = NodePath("../../..")
+
+[node name="Button2" type="Button" parent="UI/HBoxContainer"]
+margin_left = 111.0
+margin_right = 212.0
+margin_bottom = 40.0
+focus_neighbour_left = NodePath("../Button")
+focus_neighbour_right = NodePath("../Button3")
+theme = ExtResource( 13 )
+text = "Play Again"
+script = ExtResource( 11 )
+level = ExtResource( 9 )
+players_nodepath = NodePath("../../../PlayerContainer")
+scene_root = NodePath("../../..")
+
+[node name="Button3" type="Button" parent="UI/HBoxContainer"]
+margin_left = 216.0
+margin_right = 366.0
+margin_bottom = 40.0
+focus_neighbour_left = NodePath("../Button2")
+focus_neighbour_right = NodePath("../Button")
+theme = ExtResource( 13 )
+text = "Select Character"
+script = ExtResource( 12 )
+scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectSceneVersusMode.tscn"
+scene_root = NodePath("../../..")
+
+[node name="Control" type="Control" parent="UI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -984.0
+margin_bottom = -560.0
+
+[node name="Win Label Text" type="Label" parent="UI/Control"]
+margin_left = 304.0
+margin_top = 104.0
+margin_right = 406.0
+margin_bottom = 118.0
+rect_scale = Vector2( 5, 5 )
+text = "Player 1 WINS!!!"
+
+[node name="Label" type="Label" parent="UI"]
+visible = false
+anchor_left = 0.863
+anchor_top = 0.057
+anchor_right = 0.863
+anchor_bottom = 0.057
+margin_left = 0.287964
+margin_top = -30.2
+margin_right = 140.288
+margin_bottom = 30.8
+text = "TEST TEST"
+script = ExtResource( 17 )
+id = 1
+player_container = NodePath("../../PlayerContainer")
+
+[node name="AspectRatioContainer2" type="AspectRatioContainer" parent="."]
+anchor_right = 0.27
+anchor_bottom = 0.322
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 40.52
+margin_bottom = 0.799988
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer2"]
+margin_right = 549.0
+margin_bottom = 382.0
+texture = ExtResource( 15 )
+script = ExtResource( 16 )
+controller_graphic = ExtResource( 15 )
+keyboard_graphic = ExtResource( 14 )
+
+[node name="HUD" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Player Info" parent="HUD" instance=ExtResource( 8 )]
+anchor_left = 0.157
+anchor_top = 1.0
+anchor_right = 0.342
+anchor_bottom = 1.0
+margin_left = 0.231995
+margin_top = -172.0
+margin_right = -0.208008
+margin_bottom = 0.0
+mouse_filter = 2
+player_container = NodePath("../../PlayerContainer")
+
+[node name="Player Info2" parent="HUD" instance=ExtResource( 8 )]
+anchor_left = 0.646
+anchor_top = 1.0
+anchor_right = 0.831
+anchor_bottom = 1.0
+margin_left = 0.495972
+margin_top = -172.0
+margin_right = 0.0559692
+margin_bottom = 0.0
+mouse_filter = 2
+player_id = 1
+player_container = NodePath("../../PlayerContainer")

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 
 public class CharacterSelect : Node2D
 {
@@ -9,51 +10,56 @@ public class CharacterSelect : Node2D
 
 	[Export]
 	public NodePath[] player_portrait_nodes;
-	private Dictionary<PLAYER_CURSOR, PlayerSelectPortrait> player_portraits;
-	private CharacterSlot[] slots;
+	private Dictionary<PLAYER_CURSOR, PlayerSelectPortrait> player_portraits = null;
+	private CharacterSlot[] slots = null;
 
-	private CharacterResources[] hovered_characters;
+	private CharacterResources[] hovered_characters = null;
 
 	[Export]
 	private NodePath ready_to_play_node = "";
 
-	private Control ready_to_play_ui;
+	private Control ready_to_play_ui = null;
 
 	[Export]
 	public NodePath cursor_manager = "";
-	private CursorManager cursors;
+	private CursorManager cursors = null;
 
 	[Export]
 	private string stage_select_menu_file;
-	private PackedScene stage_select_menu;
+	private PackedScene stage_select_menu = null;
 
 	[Export]
-	private LevelResource load_this_level;
+	private LevelResource load_this_level = null;
 
 	[Export]
 	private LevelResource testLevel;
 
 	[Export]
 	private NodePath testButtonNode = "";
-	private Button testButton;
+	private Button testButton = null;
 
 	private bool ready;
 	private bool is_loading;
 
+	private MusicAndSoundManager audio_manager;
+
 	public override void _Ready()
 	{
+		audio_manager = GetNode<MusicAndSoundManager>("/root/AudioManager");
+		audio_manager.PlayBGM("CharacterSelect");
+
 		ready = false;
 		is_loading = false;
 		stage_select_menu = GD.Load<PackedScene>(stage_select_menu_file);
-		
+
 		testButton = GetNodeOrNull<Button>(testButtonNode);
 		testButton?.Connect("button_down", this, "LoadTestLevel");
 		ready_to_play_ui = GetNode<Control>(ready_to_play_node);
 		ready_to_play_ui.Visible = false;
-		
+
 		player_portraits = new Dictionary<PLAYER_CURSOR, PlayerSelectPortrait>();
 		hovered_characters = new CharacterResources[(int)PLAYER_CURSOR.COUNT];
-		for(int i = 0; i < player_portrait_nodes.Length; i++)
+		for (int i = 0; i < player_portrait_nodes.Length; i++)
 		{
 			PlayerSelectPortrait node = GetNode<PlayerSelectPortrait>(player_portrait_nodes[i]);
 			player_portraits.Add(node.GetPlayer(), node);
@@ -63,15 +69,28 @@ public class CharacterSelect : Node2D
 		for (int i = 0; i < slot_nodes.Length; i++)
 		{
 			slots[i] = GetNode<CharacterSlot>(slot_nodes[i]);
-			slots[i].Connect("OnHover", this, "IsHoveredOnCharacter");	
+			slots[i].Connect("OnHover", this, "IsHoveredOnCharacter");
 			slots[i].Connect("HoverExited", this, "UnhoverCharacter");
 		}
 		cursors = GetNode<CursorManager>(cursor_manager);
+
+		cursors.Connect("OnLeaveMenu", this, "OnUnload");
+	}
+
+	private void OnUnload()
+	{
+		Array.Resize<CharacterSlot>(ref slots, slot_nodes.Length);
+		for (int i = 0; i < slot_nodes.Length; i++)
+		{
+			slots[i] = GetNode<CharacterSlot>(slot_nodes[i]);
+			slots[i].Disconnect("OnHover", this, "IsHoveredOnCharacter");
+			slots[i].Disconnect("HoverExited", this, "UnhoverCharacter");
+		}
 	}
 
 	private void LoadTestLevel()
 	{
-		if(ready && testLevel != null)
+		if (ready && testLevel != null)
 		{
 			LoadLevel(cursors.GetUICursors(), testLevel);
 		}
@@ -79,17 +98,20 @@ public class CharacterSelect : Node2D
 
 	private void UnhoverCharacter(CharacterResources character_info, PLAYER_CURSOR cursor)
 	{
-		if(character_info.name == hovered_characters[(int)(cursor)].name)
+		if(character_info != null)
 		{
-			GD.Print("Unhover");
-			hovered_characters[(int)(cursor)] = null;
+			if(character_info.name == hovered_characters[(int)cursor].name)
+			{
+				GD.Print("Unhover");
+				hovered_characters[(int)cursor] = null;
+			}
 		}
 	}
 
 	private void IsHoveredOnCharacter(CharacterResources character, PLAYER_CURSOR cursor)
 	{
 		GD.Print("Hover");
-		hovered_characters[(int)(cursor)] = character;
+		hovered_characters[(int)cursor] = character;
 	}
 
 	private void LoadLevel(UICursor[] a_cursors, LevelResource levelResource)
@@ -97,7 +119,7 @@ public class CharacterSelect : Node2D
 		CharacterResources[] load_character = new CharacterResources[a_cursors.Length];
 		for(int j = 0; j < a_cursors.Length; j++)
 		{
-			load_character[j] = player_portraits[(PLAYER_CURSOR)(j)].GetCharacter();
+			load_character[j] = player_portraits[(PLAYER_CURSOR)j].GetCharacter();
 		} 
 		Node root = GetNode<Node>("../../");
 		Node sceneroot = GetNode<Node>("../");
@@ -128,15 +150,15 @@ public class CharacterSelect : Node2D
 
 	public override void _Process(float delta)
 	{
-		if(Input.IsActionJustPressed("Goto_Trophy_Lottery"))
-		{
-			Node root = GetNode<Node>("../../");
-			Node sceneroot = GetNode<Node>("../");
-			sceneroot.GetChild<AudioStreamPlayer2D>(sceneroot.GetChildCount()-1).Stop();	
-			sceneroot.QueueFree();
-			Node trophy_gallery = GD.Load<PackedScene>("res://Assets/UI/TrophyGallery/TrophyGallery.tscn").Instance<Node>();
-			root.AddChild(trophy_gallery);
-		}
+		// if(Input.IsActionJustPressed("Goto_Trophy_Lottery"))
+		// {
+		// 	Node root = GetNode<Node>("../../");
+		// 	Node sceneroot = GetNode<Node>("../");
+		// 	sceneroot.GetChild<AudioStreamPlayer2D>(sceneroot.GetChildCount()-1).Stop();	
+		// 	sceneroot.QueueFree();
+		// 	Node trophy_gallery = GD.Load<PackedScene>("res://Assets/UI/TrophyGallery/TrophyGallery.tscn").Instance<Node>();
+		// 	root.AddChild(trophy_gallery);
+		// }
 		UICursor[] a_cursors = cursors.GetUICursors();
 		for (int i = 0; i < a_cursors.Length; i++)
 		{
@@ -146,8 +168,9 @@ public class CharacterSelect : Node2D
 				if(click_state == CURSOR_CLICK_STATE.START)
 				{
 					bool test = true;
+					
 					player_portraits[a_cursors[i].player].SetCharacter(hovered_characters[i]);
-
+					audio_manager.PlaySFX(MusicAndSoundManager.SFX.SELECT);
 					GD.Print(hovered_characters[i].name);
 					for(int j = 0; j < a_cursors.Length; j++)
 					{
@@ -161,16 +184,17 @@ public class CharacterSelect : Node2D
 					CharacterResources[] load_character = new CharacterResources[a_cursors.Length];
 					for(int j = 0; j < a_cursors.Length; j++)
 					{
-						load_character[j] = player_portraits[(PLAYER_CURSOR)(j)].GetCharacter();
+						load_character[j] = player_portraits[(PLAYER_CURSOR)j].GetCharacter();
 					}
 					Node root = GetNode<Node>("../../");
 					Node sceneroot = GetNode<Node>("../");
-					sceneroot.GetChild<AudioStreamPlayer2D>(sceneroot.GetChildCount()-1).Stop();
 
 					GD.Print("Unload scene");
 					sceneroot.QueueFree();
 
 					GD.Print("Load Level");
+
+					audio_manager.PlaySFX(MusicAndSoundManager.SFX.CONFIRM, true); 
 
 					if(stage_select_menu != null)
 					{
@@ -199,7 +223,6 @@ public class CharacterSelect : Node2D
 						{
 							slots[j]._ExitTree();
 						}
-						
 						root.AddChild(level);
 						break;
 					}

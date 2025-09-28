@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource( 2 )
+ID = 6
 name = "Olimar"
 sprite = ExtResource( 1 )
 easter_egg_sprite = ExtResource( 3 )
@@ -14,3 +15,4 @@ description = "Another one of my favorite franchises, Captain Olimar joins the f
 For the sake of keeping the scope of this project modest; Olimar is unable to actually throw pikmin.
 He will have to make due with pulling them out of his ass and using them as disjointed attacks."
 franchise = ""
+scale = 1.0

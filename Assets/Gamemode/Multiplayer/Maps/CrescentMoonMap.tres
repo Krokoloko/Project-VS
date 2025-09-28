@@ -1,11 +1,16 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Gamemode/LevelLoader/Scripts/LevelData/LevelResource.cs" type="Script" id=1]
-[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/Crecent Moon Village.jpg" type="Texture" id=2]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/thumbnail_crecent_moon_village.jpg" type="Texture" id=2]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/title_crecent_moon_village.jpg" type="Texture" id=3]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/LOGO_WARIO.jpg" type="Texture" id=4]
 
 [resource]
 script = ExtResource( 1 )
 level_source = "res://Assets/Gamemode/Multiplayer/Maps/Scenes/CrescentMoonScene.tscn"
 ID = 0
 thumbnail = ExtResource( 2 )
+title = ExtResource( 3 )
+logo = ExtResource( 4 )
 player_spawn_positions = PoolVector2Array( -10, 2, 10, 2, 0, 1, 0, 8 )
+song_id = "CrescentMoon"

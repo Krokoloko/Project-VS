@@ -1,0 +1,21 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/034_UnUnUn.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+ID = 34
+name = "Regirock"
+sprite = ExtResource( 2 )
+description = "Rock Peak PKMN
+Height:  5'07\"
+Weight:  507.1 lbs.
+
+Regirock was sealed away by people long ago. If this Pokémon's body is damaged in battle, it is said to seek out suitable rocks on its own to repair itself.
+It is entirely composed of rocks with no sign of a brain or heart. It is a mystery even to modern scientists.
+
+Ün  ün  ün!!
+(Pokédex excerpt)"
+franchise = ""
+scale = 0.2

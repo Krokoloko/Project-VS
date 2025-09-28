@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
+ID = 15
 name = "Geno and Mellow"
 sprite = ExtResource( 2 )
 description = "These two brave heroes aid a plumber, fat turtle and a ditzy princess on a quest to defeat the evil Smithy gang that has invaded the mushroom kingdom.

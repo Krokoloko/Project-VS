@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Cinnabar Island.mp3-19a5991b7bea40a069b7981e75877617.mp3str"
+
+[deps]
+
+source_file="res://Assets/Gamemode/Multiplayer/Maps/Songs/Cinnabar Island.mp3"
+dest_files=[ "res://.import/Cinnabar Island.mp3-19a5991b7bea40a069b7981e75877617.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

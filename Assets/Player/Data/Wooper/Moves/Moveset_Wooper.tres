@@ -1,8 +1,26 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=12 format=2]
 
 [ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/Moveset.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Data/Wooper/Moves/Jab1/HBS_Wooper_Jab1.tres" type="Resource" id=2]
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/Dash Attack/HBS_Wooper_DashAttack.tres" type="Resource" id=3]
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/Back Air/HBS_Wooper_Bair.tres" type="Resource" id=4]
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/Ftilt/HBS_Wooper_Ftilt.tres" type="Resource" id=5]
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/Forward Air/HBS_Wooper_Fair.tres" type="Resource" id=6]
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/Dtilt/HBS_Wooper_DTilt.tres" type="Resource" id=7]
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/Down Air/HBS_Wooper_Dair.tres" type="Resource" id=8]
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/UpTilt/HBS_Wooper_UpTilt.tres" type="Resource" id=9]
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/Nair/HBS_Wooper_Nair.tres" type="Resource" id=10]
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/UpAir/HBS_Wooper_UpAir1.tres" type="Resource" id=11]
 
 [resource]
 script = ExtResource( 1 )
 Jab1 = ExtResource( 2 )
+DashAttack = ExtResource( 3 )
+ForwardTilt = ExtResource( 5 )
+UpTilt = ExtResource( 9 )
+DownTilt = ExtResource( 7 )
+NeutralAerial = ExtResource( 10 )
+ForwardAerial = ExtResource( 6 )
+BackAerial = ExtResource( 4 )
+UpAerial = ExtResource( 11 )
+DownAerial = ExtResource( 8 )

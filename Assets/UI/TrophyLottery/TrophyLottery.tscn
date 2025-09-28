@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Assets/UI/borderUp.png" type="Texture" id=1]
 [ext_resource path="res://Assets/UI/borderDown.png" type="Texture" id=2]
-[ext_resource path="res://Assets/UI/TrophyLottery/capsule-vending-machine-png.png" type="Texture" id=3]
+[ext_resource path="res://Assets/UI/TrophyLottery/Lottery.png" type="Texture" id=3]
 [ext_resource path="res://Assets/UI/TrophyLottery/Scripts/RotateAndDrop.cs" type="Script" id=4]
 [ext_resource path="res://Assets/Trophies/Scripts/CoinsLabelDisplay.cs" type="Script" id=5]
 [ext_resource path="res://Assets/Trophies/Scripts/TrophiesUnlockedLabelDisplay.cs" type="Script" id=6]
@@ -25,8 +25,8 @@ z_index = -1
 texture = ExtResource( 2 )
 
 [node name="VendingMachine" type="Sprite" parent="."]
-position = Vector2( 198, 218 )
-scale = Vector2( 0.164501, 0.164501 )
+position = Vector2( 231, 244 )
+scale = Vector2( 0.119914, 0.119914 )
 texture = ExtResource( 3 )
 script = ExtResource( 4 )
 trophy_node_file = "res://Assets/UI/TrophyLottery/Prefabs/TrophyPhysicsInstance.tscn"

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/036_peteyFlying.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+ID = 36
+name = "Petey Piranha"
+sprite = ExtResource( 2 )
+description = "This puke-happy plant has its first appearance in Super Mario Sunshine. Petey causes trouble in Bianco Hills by flying around and vomiting goop.
+
+He also enjoys playing various sports like tennis or baseball, but above all he enjoys kart racing with his buddy King Boo."
+franchise = ""
+scale = 0.2

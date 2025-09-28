@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Trophies/TrophySprites/001_dk.png" type="Texture" id=1]
-[ext_resource path="res://Assets/UI/TrophyGallery/Music/Trophy Gallery (Brawl) - Super Smash Bros. Wii U.mp3" type="AudioStream" id=2]
 [ext_resource path="res://Assets/UI/Fonts/FOT-RodinHimawariPro-UB.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://Assets/UI/TrophyGallery/Scripts/TrophyGallery.cs" type="Script" id=4]
 [ext_resource path="res://Assets/UI/missingTrophie.png" type="Texture" id=6]
@@ -22,7 +21,7 @@ font_data = ExtResource( 3 )
 script = ExtResource( 4 )
 scrollSpeed = 0.2
 sfxNode = NodePath("SFX")
-musicNode = NodePath("Music")
+musicNode = NodePath("")
 notUnlockedSprite = ExtResource( 6 )
 descriptionLabelNode = NodePath("Control4/Label")
 goBackSceneFile = "res://Assets/UI/MainMenu/MainMenu.tscn"
@@ -166,11 +165,6 @@ align = 1
 autowrap = true
 
 [node name="SFX" type="AudioStreamPlayer" parent="."]
-
-[node name="Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 2 )
-volume_db = -25.078
-autoplay = true
 
 [node name="TrophyNumber" type="Label" parent="."]
 margin_left = 625.0

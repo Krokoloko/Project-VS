@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/[Music] Kirby Super Star - Game Select [aStpcM86jpc].mp3-3239d1dc184020b985e7f0c036a7b1f8.mp3str"
+
+[deps]
+
+source_file="res://Assets/UI/MainMenu/[Music] Kirby Super Star - Game Select [aStpcM86jpc].mp3"
+dest_files=[ "res://.import/[Music] Kirby Super Star - Game Select [aStpcM86jpc].mp3-3239d1dc184020b985e7f0c036a7b1f8.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -5,14 +5,14 @@
 [ext_resource path="res://Assets/UI/StageSelectMultiplayer/Scripts/StageSelectScript.cs" type="Script" id=3]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/ForestAreaMap.tres" type="Resource" id=4]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/CrescentMoonMap.tres" type="Resource" id=5]
-[ext_resource path="res://Assets/UI/CharacterSelectScreen/Kirby 64： The Crystal Shards - Enemy Card Index Theme.mp3" type="AudioStream" id=6]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/DistantSpringMap.tres" type="Resource" id=7]
 [ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=8]
 [ext_resource path="res://Assets/UI/Buttons/Back_Button.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/CinnabarIsland.tres" type="Resource" id=10]
 
 [node name="Node" type="Node"]
 script = ExtResource( 3 )
-stages = [ ExtResource( 5 ), ExtResource( 4 ), ExtResource( 7 ) ]
+stages = [ ExtResource( 5 ), ExtResource( 4 ), ExtResource( 7 ), ExtResource( 10 ) ]
 cursor_manager_nodepath = NodePath("Cursors")
 stage_ui_element_file = "res://Assets/UI/StageSelectMultiplayer/StageSelectThumbnail.tscn"
 parent_path = NodePath("Control/GridContainer")
@@ -25,14 +25,14 @@ __meta__ = {
 }
 
 [node name="GridContainer" type="GridContainer" parent="Control"]
-anchor_left = 1.0
+anchor_left = 0.312
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -584.0
+margin_left = -0.488007
 grow_horizontal = 0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-columns = 3
+columns = 4
 
 [node name="Cursors" type="Node2D" parent="."]
 position = Vector2( 543, 453 )
@@ -62,9 +62,3 @@ script = ExtResource( 8 )
 scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectSceneVersusMode.tscn"
 scene_root = NodePath("../..")
 cursor_manager = NodePath("../../Cursors")
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer2D" parent="."]
-position = Vector2( 550, 307 )
-stream = ExtResource( 6 )
-volume_db = -17.0
-autoplay = true

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/035_kingBoobus.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+ID = 35
+name = "King Boo"
+sprite = ExtResource( 2 )
+description = "Being a boo, haunting mansions is what you do!
+But being King Boo, you gotta kidnap a plumber too!
+Better beware or Luigi will give you the suckeroo!
+
+On the weekends he likes to go kart racing with his bro Petey."
+franchise = ""
+scale = 0.2

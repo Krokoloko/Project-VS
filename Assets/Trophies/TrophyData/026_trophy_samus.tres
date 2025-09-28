@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/026_samus.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+ID = 26
+name = "Samus"
+sprite = ExtResource( 1 )
+description = "This spacefaring bounty hunter has battled cut-throat space pirates and nightmarish monsters. She is responsible for the eradication of the Metroid and X-parasite species.
+If you see her landing on your planet I suggest you leave because your home is sure to explode!!"
+franchise = ""
+scale = 0.2

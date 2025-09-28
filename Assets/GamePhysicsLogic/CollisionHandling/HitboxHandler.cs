@@ -6,7 +6,7 @@ using System.Linq;
 
 public class HitboxHandler : Node
 {
-    public bool HITBOX_VISUALISER = true;
+    public bool HITBOX_VISUALISER = false;
     private Dictionary<int, HitboxSequence> sequences;
     private Dictionary<int, NodePath> nodepaths;
     private Dictionary<int, PLAYER_CURSOR> collision_ids;
@@ -41,6 +41,7 @@ public class HitboxHandler : Node
         intervals = new Dictionary<int, float>();
         reverse_direction = new Dictionary<int, bool>();
     }
+
 
     public override void _Process(float delta)
     {
@@ -124,6 +125,11 @@ public class HitboxHandler : Node
 
     }
 
+    public bool IsDebug()
+    {
+        return HITBOX_VISUALISER;
+    }
+
     public bool SequenceIsFinished(int handle)
     {
         if(!sequences.ContainsKey(handle)) return true;
@@ -134,11 +140,25 @@ public class HitboxHandler : Node
         if(flagged_for_deletion.Count > 0)
         {
             //flagged_for_deletion.Sort(,);
+            
             for(int i = 0; i < flagged_for_deletion.Count; i++)
             {
                 DeleteSequence(flagged_for_deletion[i]);
             }
         }
+    }
+    public void ClearAllSequences()
+    {
+        global_index_counter = 1;
+        sequences.Clear();
+        nodepaths.Clear();
+        timers.Clear();
+        collision_ids.Clear();
+        frame_counters.Clear();
+        previous_frame_counters.Clear();
+        frame_tresholds.Clear();
+        intervals.Clear();
+        reverse_direction.Clear();
     }
 
     public void DeleteSequence(int handle)

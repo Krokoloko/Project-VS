@@ -1,7 +1,7 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Assets/UI/Cursor/Cursor.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Assets/UI/CharacterSelectScreen/The Big 3.png" type="Texture" id=2]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/0kirbo.JPG" type="Texture" id=2]
 [ext_resource path="res://Assets/Player/Data/Wooper/Wooper_Resources.tres" type="Resource" id=3]
 [ext_resource path="res://Assets/UI/Cursor/CursorManager.cs" type="Script" id=4]
 [ext_resource path="res://Assets/Player/Data/LankyKong/LankyKong_Resources.tres" type="Resource" id=5]
@@ -12,21 +12,28 @@
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/CharacterSelect.cs" type="Script" id=10]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/Scripts/CharacterSlot.cs" type="Script" id=11]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/ready.png" type="Texture" id=12]
-[ext_resource path="res://Assets/UI/CharacterSelectScreen/Kirby 64： The Crystal Shards - Enemy Card Index Theme.mp3" type="AudioStream" id=13]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/0wooper.JPG" type="Texture" id=13]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/0wario.JPG" type="Texture" id=14]
 [ext_resource path="res://Assets/UI/CharacterSelectScreen/PlayerCharacterHighlighter.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Assets/UI/CharacterSelectScreen/Visuals/0dk.JPG" type="Texture" id=16]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/ForestAreaMap.tres" type="Resource" id=17]
-[ext_resource path="res://Assets/UI/Controls.png" type="Texture" id=18]
+[ext_resource path="res://Assets/UI/Controls Keyboard.png" type="Texture" id=18]
 [ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=19]
 [ext_resource path="res://Assets/UI/ToggleControlsGraphic.cs" type="Script" id=20]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 493.75, 522.5 )
+[sub_resource type="RectangleShape2D" id=5]
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 391.25, 568.125 )
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 1010, 1011.25 )
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 452.5, 545.558 )
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 900, 937.5 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 977.5, 1010 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 857.402, 857.402 )
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -68,63 +75,13 @@ text = "Press Enter to play"
 position = Vector2( 650, 189 )
 scale = Vector2( 0.2, 0.2 )
 script = ExtResource( 10 )
-slot_nodes = [ NodePath("Slot_DK"), NodePath("Slot_Wario"), NodePath("Slot_Kirby") ]
+slot_nodes = [ NodePath("Slot_DK"), NodePath("Slot_Kirby"), NodePath("Slot_Wario"), NodePath("Slot_Wooper") ]
 player_portrait_nodes = [ NodePath("../Player_Highlighters/Player1_Highlighter"), NodePath("../Player_Highlighters/Player2_Highlighter") ]
 ready_to_play_node = NodePath("../Control")
 cursor_manager = NodePath("../Cursors")
 stage_select_menu_file = "res://Assets/UI/StageSelectMultiplayer/StageSelectMultiplayer.tscn"
 load_this_level = ExtResource( 6 )
 testLevel = ExtResource( 17 )
-
-[node name="Sprite" type="Sprite" parent="CharacterSelectMenu"]
-position = Vector2( 75, -137.295 )
-scale = Vector2( 1.98116, 1.98116 )
-texture = ExtResource( 2 )
-
-[node name="Slot_DK" type="Sprite" parent="CharacterSelectMenu"]
-position = Vector2( -1005, -867.295 )
-script = ExtResource( 11 )
-character_resource = ExtResource( 8 )
-
-[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_DK"]
-position = Vector2( 0.000244141, 0 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_DK/Area2D"]
-position = Vector2( 36.2498, 767.5 )
-shape = SubResource( 1 )
-
-[node name="Slot_Kirby" type="Sprite" parent="CharacterSelectMenu"]
-position = Vector2( -430, -902.295 )
-script = ExtResource( 11 )
-character_resource = ExtResource( 9 )
-
-[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Kirby"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Kirby/Area2D"]
-position = Vector2( 538.75, 756.875 )
-shape = SubResource( 2 )
-
-[node name="Slot_Wario" type="Sprite" parent="CharacterSelectMenu"]
-position = Vector2( 80, -877.295 )
-script = ExtResource( 11 )
-character_resource = ExtResource( 7 )
-
-[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Wario"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Wario/Area2D"]
-position = Vector2( 1092.5, 769.442 )
-shape = SubResource( 3 )
-
-[node name="Slot_Wooper" type="Sprite" parent="CharacterSelectMenu"]
-position = Vector2( 3925, 212.705 )
-script = ExtResource( 11 )
-character_resource = ExtResource( 3 )
-
-[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Wooper"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Wooper/Area2D"]
-position = Vector2( 70, -54.177 )
-shape = SubResource( 2 )
 
 [node name="Slot_LankyKong" type="Sprite" parent="CharacterSelectMenu"]
 position = Vector2( 3500, 507.705 )
@@ -135,7 +92,60 @@ character_resource = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_LankyKong/Area2D"]
 position = Vector2( -85, -27.2952 )
-shape = SubResource( 2 )
+shape = SubResource( 5 )
+
+[node name="Slot_DK" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( -1245, -299.805 )
+scale = Vector2( 0.29931, 0.29931 )
+texture = ExtResource( 16 )
+script = ExtResource( 11 )
+character_resource = ExtResource( 8 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_DK"]
+position = Vector2( 0.000244141, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_DK/Area2D"]
+position = Vector2( 0, 3.74012 )
+shape = SubResource( 6 )
+
+[node name="Slot_Kirby" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( 80, -299.805 )
+scale = Vector2( 0.31687, 0.31687 )
+texture = ExtResource( 2 )
+script = ExtResource( 11 )
+character_resource = ExtResource( 9 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Kirby"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Kirby/Area2D"]
+position = Vector2( 0, -0.00982285 )
+shape = SubResource( 7 )
+
+[node name="Slot_Wario" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( 730, -294.805 )
+scale = Vector2( 0.28699, 0.28699 )
+texture = ExtResource( 14 )
+script = ExtResource( 11 )
+character_resource = ExtResource( 7 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Wario"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Wario/Area2D"]
+position = Vector2( 2.50024, 7.49016 )
+shape = SubResource( 8 )
+
+[node name="Slot_Wooper" type="Sprite" parent="CharacterSelectMenu"]
+position = Vector2( -575, -299.805 )
+scale = Vector2( 0.352593, 0.352593 )
+texture = ExtResource( 13 )
+script = ExtResource( 11 )
+character_resource = ExtResource( 3 )
+
+[node name="Area2D" type="Area2D" parent="CharacterSelectMenu/Slot_Wooper"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterSelectMenu/Slot_Wooper/Area2D"]
+position = Vector2( -1.48242, -1.59839 )
+shape = SubResource( 9 )
 
 [node name="Player_Highlighters" type="Node" parent="."]
 
@@ -162,9 +172,3 @@ texture = ExtResource( 19 )
 script = ExtResource( 20 )
 controller_graphic = ExtResource( 19 )
 keyboard_graphic = ExtResource( 18 )
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer2D" parent="."]
-position = Vector2( 550, 307 )
-stream = ExtResource( 13 )
-volume_db = -17.0
-autoplay = true

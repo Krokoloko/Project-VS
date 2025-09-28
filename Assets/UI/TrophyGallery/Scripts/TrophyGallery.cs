@@ -16,10 +16,6 @@ public class TrophyGallery : Node
     private AudioStreamPlayer sfx;
 
     [Export]
-    private NodePath musicNode;
-    private AudioStreamPlayer musicPlayer;
-
-    [Export]
     private Texture notUnlockedSprite = null;
     private int index;
 
@@ -50,11 +46,14 @@ public class TrophyGallery : Node
     private NodePath trophyNumberNode;
     private Label trophyNumberLabel;
 
-    private Dictionary<int, TrophyData> trophies;
+    private List<KeyValuePair<int, TrophyData>> trophies;
+    private MusicAndSoundManager audio_manager;
     private int totalObtainableTrophies;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        audio_manager = GetNode<MusicAndSoundManager>("/root/AudioManager");
+        audio_manager.PlayBGM("TrophyGallery");
         goBackScene = GD.Load<PackedScene>(goBackSceneFile);
         
         var trophySystem = GetNode<TrophySystem>("/root/TrophySystem");    
@@ -63,9 +62,6 @@ public class TrophyGallery : Node
 
         sfx = GetNode<AudioStreamPlayer>(sfxNode);
         description = GetNode<Label>(descriptionLabelNode);
-
-        musicPlayer = GetNode<AudioStreamPlayer>(musicNode);
-        musicPlayer.PauseMode = PauseModeEnum.Stop;
 
         var highlight = GetNode<Control>(highLightNode);
         highlightTexture = highlight.GetChild<Control>(0).GetChild<TextureRect>(0);
@@ -106,6 +102,7 @@ public class TrophyGallery : Node
 
         if(accumalator >= scrollSpeed)
         {
+            audio_manager.PlaySFX(MusicAndSoundManager.SFX.SCROLL_BUTTON);
             accumalator -= scrollSpeed;
             int move = (go_right)?1:0;
             move -= (go_left)?1:0;
@@ -124,36 +121,30 @@ public class TrophyGallery : Node
         
         if(Input.IsActionJustPressed("Player_Attack_1"))
         {
-            if(trophies.ContainsKey(index))
+            if(trophies[index].Value != null)
             {
                 if(!easterEggActivated)
                 {
-                    if(trophies[index].easter_egg_sprite != null)
+                    if(trophies[index].Value.easter_egg_sprite != null)
                     {
                         easterEggActivated = true;
-                        highlightTexture.Texture = trophies[index].easter_egg_sprite;
+                        highlightTexture.Texture = trophies[index].Value.easter_egg_sprite;
                     }
-                    if(trophies[index].easter_egg_sound != null)
+                    if (trophies[index].Value.easter_egg_sound != null)
                     {
-                        easterEggActivated = true;
-                        sfx.Stream = trophies[index].easter_egg_sound;
-                        sfx.Play();
-
-                        musicPlayer.StreamPaused = true;   
+                        easterEggActivated = true;                    
+                        audio_manager.PlayBGM_Custom(trophies[index].Value.easter_egg_sound, -15, trophies[index].Value.easter_egg_sound.ResourceName);
                     }
                 }else
                 {
-                    if(trophies[index].easter_egg_sprite != null)
+                    if(trophies[index].Value.easter_egg_sprite != null)
                     {
                         easterEggActivated = false;
-                        highlightTexture.Texture = trophies[index].sprite;
+                        highlightTexture.Texture = trophies[index].Value.sprite;
                     }
-                    if(trophies[index].easter_egg_sound != null)
+                    if(trophies[index].Value.easter_egg_sound != null)
                     {
                         easterEggActivated = false;
-                        sfx.Stream = trophies[index].easter_egg_sound;
-                        sfx.Stop();
-                        musicPlayer.StreamPaused = false;
                     }
                 }
             }
@@ -168,39 +159,39 @@ public class TrophyGallery : Node
     {
         int previous_trophy = ((index-1)<0)?totalObtainableTrophies-1:index-1;
         int next_trophy = (index+1)%totalObtainableTrophies;
-        trophyNumberLabel.Text = "#" + (index+1).ToString();
-        
-        if(sfx.Playing)
+        trophyNumberLabel.Text = "#" + (trophies[index].Value.ID).ToString();
+
+        if (audio_manager.Currently_playing != "TrophyGallery")
         {
-            sfx.Stop();
-            musicPlayer.StreamPaused = false;
+            audio_manager.PlayBGM("TrophyGallery");
         }
         easterEggActivated = false;
 
-        if(trophies.ContainsKey(previous_trophy))
+        if(trophies[previous_trophy].Value.sprite != null)
         {
-            previousTexture.Texture = trophies[previous_trophy].sprite;
-            previousLabel.Text = trophies[previous_trophy].name;
+            previousTexture.Texture = trophies[previous_trophy].Value.sprite;
+            previousLabel.Text = trophies[previous_trophy].Value.name;
         }else
         {   
             previousTexture.Texture = notUnlockedSprite;
             previousLabel.Text = "???"; 
         }
-        if(trophies.ContainsKey(index))
+        if(trophies[index].Value.sprite != null)
         {
-            highlightTexture.Texture = trophies[index].sprite;
-            highlightLabel.Text = trophies[index].name;
-            description.Text = trophies[index].description;
+            highlightTexture.Texture = trophies[index].Value.sprite;
+            highlightLabel.Text = trophies[index].Value.name;
+            description.Text = trophies[index].Value.description;
         }else
         {   
             highlightTexture.Texture = notUnlockedSprite;
             highlightLabel.Text = "???"; 
             description.Text = "";
+            trophyNumberLabel.Text = "#???";
         }
-        if(trophies.ContainsKey(next_trophy))
+        if(trophies[next_trophy].Value.sprite != null)
         {
-            nextTexture.Texture = trophies[next_trophy].sprite;
-            nextLabel.Text = trophies[next_trophy].name;
+            nextTexture.Texture = trophies[next_trophy].Value.sprite;
+            nextLabel.Text = trophies[next_trophy].Value.name;
         }else
         {   
             nextTexture.Texture = notUnlockedSprite;

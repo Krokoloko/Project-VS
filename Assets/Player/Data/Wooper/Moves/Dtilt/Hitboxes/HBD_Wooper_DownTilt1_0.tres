@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Player/Data/Wooper/Moves/Dtilt/Hitboxes/Composition/CD_Wooper_DownTilt1_Rampage.tres" type="Resource" id=1]
+[ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/HitboxData.cs" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+composition = [ ExtResource( 1 ) ]
+frames = 1

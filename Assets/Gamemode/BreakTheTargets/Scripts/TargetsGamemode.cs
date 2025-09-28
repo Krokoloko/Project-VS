@@ -59,8 +59,22 @@ public class TargetsGamemode : Node
 	private AudioStream win_sound;
 	[Export]
 	private AudioStream lose_sound;
-	public override void _Ready()
+	private HitboxHandler hitbox_handler;
+
+	private MusicAndSoundManager audio_manager;
+
+    public override void _ExitTree()
 	{
+		hitbox_handler.ClearAllSequences();
+	}
+
+    public override void _Ready()
+	{
+		audio_manager = GetNode<MusicAndSoundManager>("/root/AudioManager");
+
+		audio_manager.PlayBGM("TargetsTest");
+
+		hitbox_handler = GetNode<HitboxHandler>("/root/HitboxHandler");
 		state = GameState.PLAYING;
 
 		focus = GetNode<Control>(focus_node);

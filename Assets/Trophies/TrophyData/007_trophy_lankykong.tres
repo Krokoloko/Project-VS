@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource( 2 )
+ID = 7
 name = "Lanky Kong"
 sprite = ExtResource( 1 )
 easter_egg_sprite = ExtResource( 3 )

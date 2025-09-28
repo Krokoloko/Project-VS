@@ -25,16 +25,25 @@ public class ButtonTransition : Control
 
     private bool transitioning = false;
 
+    private MusicAndSoundManager audio_manager;
+
     public override void _Ready()
     {
+        audio_manager = GetNode<MusicAndSoundManager>(scene_root + "/../AudioManager");
         this.Connect("pressed", this, "TransitionToScene");
         cursors_manager_node = GetNodeOrNull<CursorManager>(cursor_manager);
         if(cursors_manager_node != null)
         {
             cursors = cursors_manager_node.GetUICursors();
         }
+        Connect("focus_entered", this, "OnFocus");
         GetParent().GetChildOrNull<Area2D>(0)?.Connect("area_entered", this, "IsCursorHoverring");
         GetParent().GetChildOrNull<Area2D>(0)?.Connect("area_exited", this, "RemoveCursorHovered");
+    }
+
+    private void OnFocus()
+    {
+        audio_manager.PlaySFX(MusicAndSoundManager.SFX.HOVER);
     }
 
     private void IsCursorHoverring(Area2D body)
@@ -44,6 +53,7 @@ public class ButtonTransition : Control
         {
             uint shift = (uint)(((int)(cursor.player)+1)>>0);
             cursors_hovered |= shift;
+            audio_manager.PlaySFX(MusicAndSoundManager.SFX.HOVER);
         }
     }
 
@@ -67,6 +77,7 @@ public class ButtonTransition : Control
                 {
                     if((cursors_hovered & (uint)(((int)(cursors[i].player)+1)>>0)) > 0)
                     {
+                        audio_manager.PlaySFX(MusicAndSoundManager.SFX.SELECT);
                         TransitionToScene();
                         transitioning = true;
                     }

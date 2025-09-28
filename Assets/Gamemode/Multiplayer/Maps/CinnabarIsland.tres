@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Gamemode/LevelLoader/Scripts/LevelData/LevelResource.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/title_cinnabar_island.jpg" type="Texture" id=2]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/thumbnail_cinnabar_island.jpg" type="Texture" id=3]
+
+[resource]
+script = ExtResource( 1 )
+level_source = "res://Assets/Gamemode/Multiplayer/Maps/Scenes/CinnabarIsland.tscn"
+ID = 3
+thumbnail = ExtResource( 3 )
+title = ExtResource( 2 )
+player_spawn_positions = PoolVector2Array( -5.3, 12.7, 5.3, 12.7 )
+song_id = "CinnabarIsland"

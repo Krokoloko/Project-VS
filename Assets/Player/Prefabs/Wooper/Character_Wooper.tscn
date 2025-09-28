@@ -1,28 +1,30 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Assets/Player/Scripts/Player.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Scripts/PlayerAnimationController.cs" type="Script" id=2]
 [ext_resource path="res://Assets/Player/Visuals/DK/Jab3.anim" type="Animation" id=3]
 [ext_resource path="res://Assets/Player/Visuals/LankyKong/BehindAerial1.anim" type="Animation" id=4]
 [ext_resource path="res://Assets/Player/Visuals/LankyKong/DownTilt1.anim" type="Animation" id=5]
-[ext_resource path="res://Assets/Player/Visuals/LankyKong/UpAerial1.anim" type="Animation" id=6]
-[ext_resource path="res://Assets/Player/Visuals/LankyKong/Jab1.anim" type="Animation" id=7]
+[ext_resource path="res://Assets/Player/Visuals/Wooper/UpAerial1.anim" type="Animation" id=6]
+[ext_resource path="res://Assets/Player/Visuals/Wooper/Jab1.anim" type="Animation" id=7]
 [ext_resource path="res://Assets/Player/Visuals/LankyKong/Idle.anim" type="Animation" id=8]
-[ext_resource path="res://Assets/Player/Visuals/LankyKong/DownAerial1.anim" type="Animation" id=9]
+[ext_resource path="res://Assets/Player/Visuals/Wooper/DownAerial1.anim" type="Animation" id=9]
 [ext_resource path="res://Assets/Player/Visuals/DK/Hit1.anim" type="Animation" id=10]
 [ext_resource path="res://Assets/Player/Visuals/DK/Jab2.anim" type="Animation" id=11]
 [ext_resource path="res://Assets/Player/Visuals/LankyKong/ForwardTilt1.anim" type="Animation" id=12]
-[ext_resource path="res://Assets/Player/Visuals/LankyKong/DashAttack.anim" type="Animation" id=13]
+[ext_resource path="res://Assets/Player/Visuals/Wooper/DashAttack.anim" type="Animation" id=13]
 [ext_resource path="res://Assets/Player/Visuals/LankyKong/ForwardAerial1.anim" type="Animation" id=14]
 [ext_resource path="res://Assets/Player/Scripts/CharacterSpecificScripts/SampleAttackController.cs" type="Script" id=15]
 [ext_resource path="res://Assets/Player/Data/Wooper/Moves/Moveset_Wooper.tres" type="Resource" id=16]
 [ext_resource path="res://Assets/Player/Visuals/LankyKong/Crouch.anim" type="Animation" id=17]
-[ext_resource path="res://Assets/Player/Visuals/LankyKong/UpTilt1.anim" type="Animation" id=18]
+[ext_resource path="res://Assets/Player/Visuals/Wooper/Walk.anim" type="Animation" id=18]
 [ext_resource path="res://Assets/Player/Visuals/Wooper/Wooper_sprite sheet test.png" type="Texture" id=19]
-[ext_resource path="res://Assets/Player/Visuals/LankyKong/NeutralAerial1.tres" type="Animation" id=20]
-[ext_resource path="res://Assets/Player/Visuals/LankyKong/Taunt_1.anim" type="Animation" id=21]
-[ext_resource path="res://Assets/Player/Visuals/LankyKong/Jump.anim" type="Animation" id=22]
-[ext_resource path="res://Assets/Player/Visuals/LankyKong/Walk.anim" type="Animation" id=23]
+[ext_resource path="res://Assets/Player/Visuals/Wooper/Taunt_1.anim" type="Animation" id=20]
+[ext_resource path="res://Assets/Player/Visuals/Wooper/UpTilt1.anim" type="Animation" id=21]
+[ext_resource path="res://Assets/Player/Visuals/Wooper/Jump.anim" type="Animation" id=22]
+[ext_resource path="res://Assets/Player/Visuals/Wooper/NeutralAerial1.tres" type="Animation" id=23]
+[ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/Hurtbox.tscn" type="PackedScene" id=24]
+[ext_resource path="res://Assets/Player/Data/Wooper/Wooper_Resources.tres" type="Resource" id=25]
 
 [sub_resource type="Animation" id=5]
 length = 0.001
@@ -38,9 +40,23 @@ tracks/0/keys = {
 "update": 0,
 "values": [ 7 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1.32332, 1.57877, 0.417969 ) ]
+}
 
 [sub_resource type="BoxShape" id=6]
 extents = Vector3( 1.06463, 1, 1.59362 )
+
+[sub_resource type="BoxShape" id=7]
 
 [node name="Player" type="KinematicBody"]
 collision_layer = 0
@@ -48,13 +64,21 @@ collision_mask = 65537
 axis_lock_motion_z = true
 move_lock_z = true
 script = ExtResource( 1 )
-MOVE_SPEED = 60.673
-RUNSPEED = 146.168
+resource_reference = ExtResource( 25 )
+sfx_player_node = NodePath("AudioStreamPlayer")
+MOVE_SPEED = 160.0
+RUNSPEED = 300.0
 total_jabs = 1
-JUMP_HEIGHT = 14.415
+JUMP_HEIGHT = 140.0
+AIR_ACCELERATION = 120.0
+AIR_SPEED = 100.0
+DOUBLE_JUMPS = PoolRealArray( 120 )
+NEUTRAL_FALL_SPEED = 100.0
+FAST_FALL_SPEED = 200.0
+WEIGHT = 50.0
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform( -1, 0, 0, 0, 1, 8.74228e-08, 0, 8.74228e-08, -1, 0.294727, 2.24397, 0 )
+transform = Transform( -0.617426, 0, 0, 0, 0.617426, 5.39771e-08, 0, 8.74228e-08, -1, 1.32332, 1.57877, 0.417969 )
 offset = Vector2( 210, 175 )
 texture = ExtResource( 19 )
 hframes = 8
@@ -77,12 +101,12 @@ anims/Jab1 = ExtResource( 7 )
 anims/Jab2 = ExtResource( 11 )
 anims/Jab3 = ExtResource( 3 )
 anims/Jump = ExtResource( 22 )
-anims/NeutralAerial1 = ExtResource( 20 )
+anims/NeutralAerial1 = ExtResource( 23 )
 anims/RESET = SubResource( 5 )
-anims/Taunt_1 = ExtResource( 21 )
+anims/Taunt_1 = ExtResource( 20 )
 anims/UpAerial1 = ExtResource( 6 )
-anims/UpTilt1 = ExtResource( 18 )
-anims/Walk = ExtResource( 23 )
+anims/UpTilt1 = ExtResource( 21 )
+anims/Walk = ExtResource( 18 )
 
 [node name="AttackController" type="Node" parent="."]
 script = ExtResource( 15 )
@@ -91,3 +115,16 @@ moveset = ExtResource( 16 )
 [node name="EnvironmentCollision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 2.00823, 0 )
 shape = SubResource( 6 )
+
+[node name="Hurtbox" parent="." instance=ExtResource( 24 )]
+transform = Transform( 1, 0, 0, 0, 1.50843, 0, 0, 0, 1, 0, 1.81915, 0 )
+
+[node name="Area" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+transform = Transform( 0.942239, 0, 0, 0, 0.447277, 0, 0, 0, 1, 0, -0.0128118, 0 )
+shape = SubResource( 7 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer3D" parent="."]

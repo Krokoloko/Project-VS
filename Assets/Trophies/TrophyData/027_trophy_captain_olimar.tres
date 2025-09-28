@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/027_mrPikmin.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+ID = 27
+name = "More About Captain Olimar"
+sprite = ExtResource( 1 )
+description = "Olimar travels through space on his ship the Dolphin as an employee of Hocotate Freight. 
+One day his spaceship is hit by a meteor and he crash-lands on the planet PNF-404.
+The Dolphin is very badly damaged after the crash having most of its vital parts scattered over the planets surface.
+It is at this point that Olimar encounters the Pikmin species and they help him collect his missing ship parts.
+Can the captain fix his ship before his air supply runs out in 30 days!? "
+franchise = ""
+scale = 0.2

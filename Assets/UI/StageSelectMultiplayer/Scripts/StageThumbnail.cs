@@ -14,7 +14,12 @@ public class StageThumbnail : Control
 
     [Export]
     private NodePath thumbnailNode;
+
+    [Export]
+    private NodePath titleNode;
+
     private TextureRect thumbnail;
+    private TextureRect title;
     private Area2D detector;
 
     public LevelResource resource;
@@ -25,6 +30,9 @@ public class StageThumbnail : Control
 
         thumbnail = GetNode<TextureRect>(thumbnailNode);
         thumbnail.Texture = resource.thumbnail;
+
+        title = GetNode<TextureRect>(titleNode);        
+        title.Texture = resource.title;
 
         detector.Connect("area_entered", this, "ActivateHover");
         detector.Connect("area_exited", this, "ActivateUnHover");

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-offset = Vector2( -0.2, 2.3 )
+offset = Vector2( -0.2, 2.8 )
 size = Vector2( 0.25, 0.3 )
 base_damage = 1.0
 base_knockback = 1.0

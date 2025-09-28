@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource( 2 )
+ID = 3
 name = "Wario"
 sprite = ExtResource( 1 )
 easter_egg_sprite = ExtResource( 3 )

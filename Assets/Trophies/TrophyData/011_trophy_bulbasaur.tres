@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
+ID = 11
 name = "Bulbasaur"
 sprite = ExtResource( 2 )
 description = "Seed PKMN
@@ -15,3 +16,4 @@ A strange seed was planted on its back at birth.
 If you are in the market for the devils lettuce, this is your guy. 
 (Pokédex excerpt)"
 franchise = ""
+scale = 1.0

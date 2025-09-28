@@ -4,6 +4,8 @@ using System;
 public class TrophyData : Resource
 {
     [Export]
+    public int ID;
+    [Export]
     public string name;
     [Export]
     public Texture sprite;
@@ -15,15 +17,20 @@ public class TrophyData : Resource
     public string description;
     [Export]
     public string franchise;
-    public TrophyData() : this("",null,null,null,"","") {}
+    [Export]
+    public float scale;
 
-    public TrophyData(string p_name, Texture p_sprite, Texture p_easter_egg_sprite, AudioStream p_easter_egg_sound, string p_description, string p_franchise)
+    public TrophyData() : this(0, "", null, null, null, "", "", 1.0f) { }
+
+    public TrophyData(int p_id, string p_name, Texture p_sprite, Texture p_easter_egg_sprite, AudioStream p_easter_egg_sound, string p_description, string p_franchise, float p_scale)
     {
+        ID = p_id;
         name = p_name;
         sprite = p_sprite;
         easter_egg_sprite = p_easter_egg_sprite;
         easter_egg_sound = p_easter_egg_sound;
         description = p_description;
         franchise = p_franchise;
+        scale = p_scale;
     }
 }

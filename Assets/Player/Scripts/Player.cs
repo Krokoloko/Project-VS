@@ -37,7 +37,9 @@ public class Player : KinematicBody
 		TAUNT2,
 		TAUNT3,
 		LAUNCHED,
-		TUMBLING
+		TUMBLING,
+		DEAD,
+		NONE
 	}
 
 	[Signal]
@@ -81,7 +83,7 @@ public class Player : KinematicBody
 	[Export]
 	public float[] DOUBLE_JUMPS = null;
 
-	public const float GRAVITY = 1.0f;
+	public const float GRAVITY = 1f;
 	
 	[Export]
 	public float NEUTRAL_FALL_SPEED = 1.0f;
@@ -137,9 +139,12 @@ public class Player : KinematicBody
 	private string PLAYER_JUMP;
 
 	//Misc info
+	private Vector3 launch_direction;
+	private Vector2 respawn_location;
 	private string character_name = "";
 	private int stock_count = -1;
 	private bool using_controller = true;
+	private bool flip_back = false;
 	public void SetPlayerID(PLAYER_CURSOR id)
 	{
 		player_id = id;
@@ -165,11 +170,11 @@ public class Player : KinematicBody
 
 	public override void _Ready()
 	{
-		for(int i = 16; i < 32; i++)
+		for (int i = 16; i < 32; i++)
 		{
-			platform_bittracker |= (uint)(1<<i);
+			platform_bittracker |= (uint)(1 << i);
 		}
-		
+		GD.Print(platform_bittracker);
 		sfx_player = GetNode<AudioStreamPlayer3D>(sfx_player_node);
 
 		MOVE_SPEED *= 1.9f;
@@ -181,7 +186,7 @@ public class Player : KinematicBody
 		AIR_ACCELERATION /= 20;
 		WEIGHT /= 60;
 
-		for(int i = 0; i < DOUBLE_JUMPS.Length; i++)
+		for (int i = 0; i < DOUBLE_JUMPS.Length; i++)
 		{
 			DOUBLE_JUMPS[i] /= 3.5f;
 		}
@@ -190,7 +195,7 @@ public class Player : KinematicBody
 		floored = true;
 		double_jumps = DOUBLE_JUMPS.Length;
 		air_drift = 0.0f;
-		weight_divisor = 1/WEIGHT;
+		weight_divisor = 1 / WEIGHT;
 		facing_direction = 1.0f;
 		p_anim_controller = GetNode<PlayerAnimationController>(this.GetPath() + "/Sprite3D");
 		p_anim_controller.FlipSprite(true);
@@ -209,13 +214,31 @@ public class Player : KinematicBody
 		accumalator = 0.0f;
 		track_time = 0.0f;
 		treshold = 0.0f;
+
+		if (player_id == PLAYER_CURSOR.P1)
+		{
+			using_controller = false;	
+		}
+	}
+
+	public void EndPlayer()
+	{
+		state = PlayerState.NONE;
 	}
 
 	public void RespawnToLocation(Vector2 position)
 	{
-		Translation = new Vector3(position.x, position.y, 0.0f);
-		state = PlayerState.AIRBORNE;
-		ResetParameters();
+		respawn_location = position;
+	}
+	private void Respawn()
+	{
+		if(state != PlayerState.NONE)
+		{
+			Translation = new Vector3(respawn_location.x, respawn_location.y, 0.0f);
+			state = PlayerState.AIRBORNE;
+			ResetParameters();
+			sfx_player.Disconnect("finished", this, "Respawn");
+		}
 	}
 
 	private void PlayDieSFX()
@@ -223,6 +246,9 @@ public class Player : KinematicBody
 		sfx_player.Stop();
 		sfx_player.Stream = resource_reference.die_sfx;
 		sfx_player.Play();
+		sfx_player.Connect("finished", this, "Respawn");
+		motion = Vector3.Zero;
+		state = PlayerState.DEAD;
 	}
 
 	public void SetStockCount(int count)
@@ -261,15 +287,14 @@ public class Player : KinematicBody
 	}
 	private void AreaDetected(Node body)
 	{
-		if(IsStateAerial())
+		GD.Print("Platform detected");
+		GD.PrintT(motion, body.Name, CollisionMask);
+		PhysicsBody p_body = (PhysicsBody)(body);
+		if(p_body.Name == "platform")
 		{
-			PhysicsBody p_body = (PhysicsBody)(body);
-			if(p_body.Name != "Player")
-			{
-				detected_go_through_platform = p_body;
-				platform_bittracker |= p_body.CollisionLayer;
-				CollisionMask = platform_bittracker;
-			}
+			detected_go_through_platform = p_body;
+			platform_bittracker |= p_body.CollisionLayer;
+			CollisionMask = platform_bittracker;
 		}
 	}
 	private void AreaExited(Node body)
@@ -277,15 +302,25 @@ public class Player : KinematicBody
 		PhysicsBody p_body = (PhysicsBody)(body);
 		if(p_body == detected_go_through_platform)
 		{
+			GD.Print("Platform exited");
+			GD.PrintT(motion, body.Name, CollisionMask);
 			detected_go_through_platform = null;
 		}
 	}
 	public override void _Process(float delta)
 	{
-		HandleInput();
-		if(state != PlayerState.LAUNCHED && stock_count > 0)
+		if(state != PlayerState.LAUNCHED && state != PlayerState.NONE && state != PlayerState.DEAD && stock_count > 0)
 		{
+			HandleInput();
 			HandleAction(delta);
+		}
+		if(state == PlayerState.DEAD)
+		{
+			var playback_t = sfx_player.GetPlaybackPosition();
+			if(playback_t >= 1.5f)
+			{
+				Respawn();
+			}
 		}
 		ProcessKnockbackState(delta);
 	}
@@ -303,9 +338,10 @@ public class Player : KinematicBody
 	}
 	public void ApplyDamage(Vector2 direction, int frames_hitstun, float knockback_strength, float damage)
 	{
+		launch_direction = new Vector3(direction.x, direction.y, 0);
 		//frames_hitstun in 60fps
 		damage_percantage += damage;
-		float final_knockback = knockback_strength * 1/WEIGHT;
+		float launch_distance = knockback_strength;
 
 		// if(facing_direction < 0)
 		// {
@@ -313,15 +349,23 @@ public class Player : KinematicBody
 		// }
 
 		knockback_timer = frames_hitstun * (1/60.0f);
+		knockback_accumalator = 0;
+
 		state = PlayerState.LAUNCHED;
 
-		applied_knockback = new Vector3(direction.x * final_knockback, direction.y * final_knockback, 0.0f);
+		applied_knockback = new Vector3(direction.x, direction.y, 0.0f) * launch_distance;
 
 		motion = applied_knockback;
+
 		sfx_player.Stop();
 		sfx_player.Stream = resource_reference.gethit_sfx;
 		sfx_player.Play();
 		EmitSignal("OnPlayerDamaged");
+		anim_controller.SetAnimation(PlayerAnimationController.AnimationState.JUMP);
+	}
+	public Vector3 GetMotion()
+	{
+		return motion;
 	}
 	public float GetPercentage()
 	{
@@ -336,28 +380,35 @@ public class Player : KinematicBody
 		if(state == PlayerState.LAUNCHED)
 		{
 			knockback_accumalator += deltaTime;
+			motion += (-applied_knockback*2 + Vector3.Down * GRAVITY * falling_speed) * deltaTime;
 			if(knockback_accumalator > 2*(1.0f/60.0f))
 			{
 				if(floored)
 				{
 					state = PlayerState.IDLE;
+					motion = Vector3.Zero;
 				}
 			}
-			if(knockback_accumalator >= knockback_timer)
+			Vector3 motion_normal = motion.Normalized();
+
+			if (knockback_accumalator >= knockback_timer || motion_normal.Dot(-launch_direction) >= 0.9)
 			{
 				//implement teching here
-				if(floored)
+				if (floored)
 				{
 					//should be knockdown state in the future
 					state = PlayerState.IDLE;
-				}else{
+				}
+				else
+				{
 					//should be tumble state in the future
 					state = PlayerState.AIRBORNE;
+					falling_speed = NEUTRAL_FALL_SPEED;
+
 				}
 				knockback_accumalator = 0;
-
+				motion = Vector3.Zero;
 			}
-			motion = applied_knockback * (knockback_accumalator / knockback_timer);
 		}
 	}
 	private void HandleInput()
@@ -389,24 +440,7 @@ public class Player : KinematicBody
 		if((left_pressed || left_hold) && state == PlayerState.IDLE)
 		{
 			state = PlayerState.WALKING;
-			if(using_controller)
-			{
-				if(Input.GetActionStrength(PLAYER_LEFT) >= 0.9f)
-				{
-					state = PlayerState.RUN;
-					anim_controller.SetAnimationSpeed(2.0f);
-				}else
-				{
-					state = PlayerState.WALKING;
-					treshold = DASH_INPUT_WINDOW_CONTROLLER;
-					track_time = 1;	
-				}
-			}
-		}
-		if((right_pressed || right_hold) && state == PlayerState.IDLE)
-		{
-			state = PlayerState.WALKING;
-			if(Input.GetActionStrength(PLAYER_RIGHT) >= 0.9f)
+			if(using_controller && Input.GetActionStrength(PLAYER_LEFT) >= 0.9f)
 			{
 				state = PlayerState.RUN;
 				anim_controller.SetAnimationSpeed(2.0f);
@@ -415,6 +449,22 @@ public class Player : KinematicBody
 				state = PlayerState.WALKING;
 				treshold = DASH_INPUT_WINDOW_CONTROLLER;
 				track_time = 1;	
+			}
+		}
+		if((right_pressed || right_hold) && state == PlayerState.IDLE)
+		{
+			state = PlayerState.WALKING;
+			
+			if (using_controller && Input.GetActionStrength(PLAYER_RIGHT) >= 0.9f)
+			{
+				state = PlayerState.RUN;
+				anim_controller.SetAnimationSpeed(2.0f);
+			}
+			else
+			{
+				state = PlayerState.WALKING;
+				treshold = DASH_INPUT_WINDOW_CONTROLLER;
+				track_time = 1;
 			}
 		}
 		if(down_hold && (state == PlayerState.IDLE || state == PlayerState.WALKING || state == PlayerState.CROUCHING))
@@ -432,6 +482,7 @@ public class Player : KinematicBody
 			{
 				FallThroughPlatform();
 				double_down_platform_timer_on = false;
+				double_jumps = DOUBLE_JUMPS.Length;
 				double_down_platform_timer = 0;
 			}else
 			{
@@ -440,8 +491,9 @@ public class Player : KinematicBody
 			}
 		}
 
-		if(jump_pressed && !IsStateAerial())
+		if(jump_pressed && (state == PlayerState.IDLE || state == PlayerState.CROUCHING || state == PlayerState.DASH_ATTACK || state == PlayerState.WALKING || state == PlayerState.WALKING_TO_RUN || state == PlayerState.RUN))
 		{
+			anim_controller.SetAnimationSpeed(1.0f);
 			if(state == PlayerState.CROUCHING)
 			{
 				FallThroughPlatform();
@@ -563,6 +615,7 @@ public class Player : KinematicBody
 			
 			if(IsStateGrounded())
 			{
+				p_anim_controller.SetAnimationSpeed(1.0f);
 				if(up_hold)
 				{
 					state = PlayerState.TILT_ATTACK_UP;
@@ -592,7 +645,6 @@ public class Player : KinematicBody
 					var animation_player = anim_controller.GetAnimationPlayer();	
 					float step = animation_player.GetAnimation(anim_controller.animation_names[PlayerAnimationController.AnimationState.DASH_ATTACK]).Step;
 					attack_controller.PreformAction(EACTION_TYPE.DASHATTACK, step, reverse_direction);
-					p_anim_controller.SetAnimationSpeed(1.0f);
 					attack_preformed = true;
 					sfx_player.Stop();
 					sfx_player.Stream = resource_reference.dashattack_sfx;
@@ -708,12 +760,12 @@ public class Player : KinematicBody
 
 		if(state == PlayerState.WALKING || state == PlayerState.RUN)
 		{			
-			if(left_pressed)
+			if(left_pressed || left_hold)
 			{
 				p_anim_controller.FlipSprite(true);
 				facing_direction = -1.0f;
 			}
-			if(right_pressed)
+			if(right_pressed || right_hold)
 			{
 				p_anim_controller.FlipSprite(false);
 				facing_direction = 1.0f;
@@ -761,6 +813,11 @@ public class Player : KinematicBody
 		if(p_anim_controller.GetState() == PlayerAnimationController.AnimationState.NONE)
 		{
 			state = PlayerState.IDLE;
+			if(flip_back)
+			{
+				p_anim_controller.FlipSprite(true);
+				flip_back = false;
+			}
 		}
 		if(p_anim_controller.GetState() == PlayerAnimationController.AnimationState.AERIAL_TO_JUMP)
 		{
@@ -872,6 +929,11 @@ public class Player : KinematicBody
 				break;
 
 			case PlayerState.TAUNT1:
+				if(p_anim_controller.GetFlip())
+				{
+					flip_back = true;
+					p_anim_controller.FlipSprite(false);
+				}
 				p_anim_controller.SetAnimation(PlayerAnimationController.AnimationState.TAUNT1);
 				break;
 		}
@@ -893,7 +955,7 @@ public class Player : KinematicBody
 			{
 				print_once = true;
 				state = PlayerState.IDLE;
-				
+
 				uint keep_bits = 0;
 				for(int i = 0; i < 15; i++)
 				{
@@ -929,6 +991,7 @@ public class Player : KinematicBody
 		{
 			state = PlayerState.AIRBORNE;
 			falling_speed = NEUTRAL_FALL_SPEED;
+			double_jumps = DOUBLE_JUMPS.Length;
 		}
 		if(state == PlayerState.JUMP)
 		{

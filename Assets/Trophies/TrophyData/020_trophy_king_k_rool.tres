@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
+ID = 20
 name = "King K. Rool"
 sprite = ExtResource( 2 )
 description = "This humongous chungus is the leader of the Kremlings. 

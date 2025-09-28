@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/028_klobbusAndKloakus.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+ID = 28
+name = "More About Klobber and Kloak"
+sprite = ExtResource( 1 )
+description = "These two both originate from the game 'Donkey Kong Country 2: Diddy's Kong Quest'. 
+
+Klobber is first encountered in Gangplank Galleon, he hides in barrels and tries to run into unexpecting players trying to push them into a pit.
+
+Kloak is first encountered in 'Krem Quay'. This ghost in a trenchcoat attacks the player by throwing various objecs and enemies."
+franchise = ""
+scale = 0.2

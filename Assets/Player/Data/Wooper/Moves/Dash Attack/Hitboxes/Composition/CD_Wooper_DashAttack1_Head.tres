@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Assets/GamePhysicsLogic/HitBoxData/CollisionData.cs" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+offset = Vector2( 1.5, 1.594 )
+size = Vector3( 0.572339, 1.01278, 1 )
+base_damage = 4.0
+base_knockback = 4.0
+growth_knockback = 1.025
+knockback_angle = 20.0

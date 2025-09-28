@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
+ID = 21
 name = "Louie at the campfire"
 sprite = ExtResource( 2 )
 description = "Louie's notes: 
@@ -15,3 +16,4 @@ Mmmmm... Rich and creamy!
 
 (Maybe the real treasure is the endangered animals we consumed along the way.)"
 franchise = ""
+scale = 1.0

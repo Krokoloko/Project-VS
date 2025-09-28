@@ -3,20 +3,20 @@
 [ext_resource path="res://Assets/UI/GameStatus/Sounds/Complete.wav" type="AudioStream" id=1]
 [ext_resource path="res://Assets/UI/GameStatus/BreakTargetsDie.png" type="Texture" id=2]
 [ext_resource path="res://Assets/GroundTexture.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Gamemode/BreakTheTargets/Sounds/TargetsTestSong.mp3" type="AudioStream" id=4]
 [ext_resource path="res://Assets/UI/GameStatus/BreakTargetsTimeLost.png" type="Texture" id=5]
 [ext_resource path="res://Assets/UI/GameStatus/Sounds/Failure.wav" type="AudioStream" id=6]
 [ext_resource path="res://Assets/UI/GameStatus/BreakTargetsWinMessage.png" type="Texture" id=7]
 [ext_resource path="res://Assets/UI/ToggleControlsGraphic.cs" type="Script" id=8]
 [ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=9]
 [ext_resource path="res://Assets/UI/VS Logo.png" type="Texture" id=10]
-[ext_resource path="res://Assets/UI/Controls.png" type="Texture" id=11]
+[ext_resource path="res://Assets/UI/Controls Keyboard.png" type="Texture" id=11]
 [ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=12]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Maps/BeakTheTargetsLevel.tres" type="Resource" id=13]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Prefabs/Target/Target.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/CameraFollowPlayer.cs" type="Script" id=15]
 [ext_resource path="res://Assets/Gamemode/BreakTheTargets/Scripts/TargetsGamemode.cs" type="Script" id=16]
 [ext_resource path="res://Assets/UI/Buttons/ButtonRestartLevel.cs" type="Script" id=17]
+[ext_resource path="res://Assets/UI/standard_theme.tres" type="Theme" id=18]
 
 [sub_resource type="CubeMesh" id=4]
 
@@ -121,11 +121,11 @@ transform = Transform( 2.99722, 0, 0, 0, 0.058, 0, 0, 0, 1, -9.12425, 3.7945, 0 
 mesh = SubResource( 4 )
 material = SubResource( 5 )
 
-[node name="StaticBody" type="StaticBody" parent="Level/GoThroughPlatformLeft2"]
+[node name="platform" type="StaticBody" parent="Level/GoThroughPlatformLeft2"]
 collision_layer = 65536
 collision_mask = 65536
 
-[node name="CollisionShape" type="CollisionShape" parent="Level/GoThroughPlatformLeft2/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="Level/GoThroughPlatformLeft2/platform"]
 shape = SubResource( 7 )
 
 [node name="GoThroughPlatformLeft3" type="CSGMesh" parent="Level"]
@@ -133,11 +133,11 @@ transform = Transform( 2.99722, 0, 0, 0, 0.058, 0, 0, 0, 1, 4.82117, 4.88772, 0 
 mesh = SubResource( 4 )
 material = SubResource( 5 )
 
-[node name="StaticBody" type="StaticBody" parent="Level/GoThroughPlatformLeft3"]
+[node name="platform" type="StaticBody" parent="Level/GoThroughPlatformLeft3"]
 collision_layer = 131072
 collision_mask = 131072
 
-[node name="CollisionShape" type="CollisionShape" parent="Level/GoThroughPlatformLeft3/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="Level/GoThroughPlatformLeft3/platform"]
 shape = SubResource( 7 )
 
 [node name="GoThroughPlatformLeft4" type="CSGMesh" parent="Level"]
@@ -145,11 +145,11 @@ transform = Transform( 2.99722, 0, 0, 0, 0.058, 0, 0, 0, 1, 4.72503, 11.5687, 0 
 mesh = SubResource( 4 )
 material = SubResource( 5 )
 
-[node name="StaticBody" type="StaticBody" parent="Level/GoThroughPlatformLeft4"]
+[node name="platform" type="StaticBody" parent="Level/GoThroughPlatformLeft4"]
 collision_layer = 262144
 collision_mask = 262144
 
-[node name="CollisionShape" type="CollisionShape" parent="Level/GoThroughPlatformLeft4/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="Level/GoThroughPlatformLeft4/platform"]
 shape = SubResource( 7 )
 
 [node name="MainLevelPlatform" type="CSGMesh" parent="Level"]
@@ -240,11 +240,6 @@ autostart = true
 [node name="NarratorStreamPlayer" type="AudioStreamPlayer" parent="."]
 volume_db = -23.543
 
-[node name="MusicStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
-volume_db = -30.239
-autoplay = true
-
 [node name="TimerDisplay" type="Label" parent="."]
 margin_left = 827.0
 margin_top = 6.0
@@ -330,21 +325,23 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="Button" type="Button" parent="UI/HBoxContainer"]
-margin_right = 83.0
+margin_right = 107.0
 margin_bottom = 40.0
 focus_neighbour_left = NodePath("../Button3")
 focus_neighbour_right = NodePath("../Button2")
+theme = ExtResource( 18 )
 text = "Main Menu"
 script = ExtResource( 9 )
 scene_file = "res://Assets/UI/StartMenu/StartMenuScene.tscn"
 scene_root = NodePath("../../..")
 
 [node name="Button2" type="Button" parent="UI/HBoxContainer"]
-margin_left = 87.0
-margin_right = 164.0
+margin_left = 111.0
+margin_right = 212.0
 margin_bottom = 40.0
 focus_neighbour_left = NodePath("../Button")
 focus_neighbour_right = NodePath("../Button3")
+theme = ExtResource( 18 )
 text = "Play Again"
 script = ExtResource( 17 )
 level = ExtResource( 13 )
@@ -352,11 +349,12 @@ players_nodepath = NodePath("../../../PlayerContainer")
 scene_root = NodePath("../../..")
 
 [node name="Button3" type="Button" parent="UI/HBoxContainer"]
-margin_left = 168.0
-margin_right = 283.0
+margin_left = 216.0
+margin_right = 366.0
 margin_bottom = 40.0
 focus_neighbour_left = NodePath("../Button2")
 focus_neighbour_right = NodePath("../Button")
+theme = ExtResource( 18 )
 text = "Select Character"
 script = ExtResource( 9 )
 scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectSceneTargetsTest.tscn"

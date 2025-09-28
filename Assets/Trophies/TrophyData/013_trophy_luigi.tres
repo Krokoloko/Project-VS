@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource( 2 )
+ID = 13
 name = "Luigi"
 sprite = ExtResource( 1 )
 description = "He looks like a green Mario. 

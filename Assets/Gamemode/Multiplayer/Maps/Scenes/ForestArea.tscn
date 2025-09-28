@@ -6,11 +6,10 @@
 [ext_resource path="res://Assets/UI/Buttons/ButtonRestartLevel.cs" type="Script" id=4]
 [ext_resource path="res://Assets/UI/Buttons/ButtonTransition.cs" type="Script" id=5]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/background.jpg" type="Texture" id=6]
-[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Songs/Forest Area.mp3" type="AudioStream" id=7]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/mainplatform.material" type="Material" id=8]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/mainplatformoutlines.material" type="Material" id=9]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Scripts/MultiplayerGamemode.cs" type="Script" id=10]
-[ext_resource path="res://Assets/UI/Controls.png" type="Texture" id=11]
+[ext_resource path="res://Assets/UI/Controls Keyboard.png" type="Texture" id=11]
 [ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=12]
 [ext_resource path="res://Assets/UI/ToggleControlsGraphic.cs" type="Script" id=13]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/mainplatform.jpg" type="Texture" id=14]
@@ -19,6 +18,7 @@
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/pic_2.jpg" type="Texture" id=17]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/pic_3.jpg" type="Texture" id=18]
 [ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Materials/Forest Area/Sprites/pic_4.jpg" type="Texture" id=19]
+[ext_resource path="res://Assets/UI/standard_theme.tres" type="Theme" id=20]
 
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 14.6842, 1, 1 )
@@ -119,14 +119,48 @@ width = 4.73476
 height = 0.3
 material = ExtResource( 8 )
 
-[node name="StaticBody" type="StaticBody" parent="Stage/CSGBox4"]
+[node name="platform" type="StaticBody" parent="Stage/CSGBox4"]
 collision_layer = 65536
 collision_mask = 65536
 
-[node name="CollisionShape" type="CollisionShape" parent="Stage/CSGBox4/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="Stage/CSGBox4/platform"]
 shape = SubResource( 5 )
 
 [node name="Sprite3D" type="Sprite3D" parent="Stage/CSGBox4"]
+transform = Transform( 0.347498, 0, 0, 0, 0.0279071, 0, 0, 0, 1, -0.0218287, -0.0201025, 1.04119 )
+texture = ExtResource( 15 )
+
+[node name="CSGBox5" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.73487, 5.22872, 0 )
+width = 4.73476
+height = 0.3
+material = ExtResource( 8 )
+
+[node name="platform" type="StaticBody" parent="Stage/CSGBox5"]
+collision_layer = 262144
+collision_mask = 262144
+
+[node name="CollisionShape" type="CollisionShape" parent="Stage/CSGBox5/platform"]
+shape = SubResource( 5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/CSGBox5"]
+transform = Transform( 0.347498, 0, 0, 0, 0.0279071, 0, 0, 0, 1, -0.0218287, -0.0201025, 1.04119 )
+texture = ExtResource( 15 )
+
+[node name="CSGBox6" type="CSGBox" parent="Stage"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.80811, 9.56367, 0 )
+width = 4.73476
+height = 0.3
+material = ExtResource( 8 )
+
+[node name="platform" type="StaticBody" parent="Stage/CSGBox6"]
+collision_layer = 131072
+collision_mask = 131072
+
+[node name="CollisionShape" type="CollisionShape" parent="Stage/CSGBox6/platform"]
+shape = SubResource( 5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Stage/CSGBox6"]
 transform = Transform( 0.347498, 0, 0, 0, 0.0279071, 0, 0, 0, 1, -0.0218287, -0.0201025, 1.04119 )
 texture = ExtResource( 15 )
 
@@ -201,12 +235,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.24852, 31.0698 )
 keep_aspect = 0
 far = 2000.0
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-position = Vector2( 532, 305 )
-stream = ExtResource( 7 )
-volume_db = -17.0
-autoplay = true
-
 [node name="UI" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -244,21 +272,23 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="Button" type="Button" parent="UI/HBoxContainer"]
-margin_right = 83.0
-margin_bottom = 39.0
+margin_right = 107.0
+margin_bottom = 40.0
 focus_neighbour_left = NodePath("../Button3")
 focus_neighbour_right = NodePath("../Button2")
+theme = ExtResource( 20 )
 text = "Main Menu"
 script = ExtResource( 5 )
 scene_file = "res://Assets/UI/MainMenu/MainMenu.tscn"
 scene_root = NodePath("../../..")
 
 [node name="Button2" type="Button" parent="UI/HBoxContainer"]
-margin_left = 87.0
-margin_right = 164.0
-margin_bottom = 39.0
+margin_left = 111.0
+margin_right = 212.0
+margin_bottom = 40.0
 focus_neighbour_left = NodePath("../Button")
 focus_neighbour_right = NodePath("../Button3")
+theme = ExtResource( 20 )
 text = "Play Again"
 script = ExtResource( 4 )
 level = ExtResource( 1 )
@@ -266,11 +296,12 @@ players_nodepath = NodePath("../../../PlayerContainer")
 scene_root = NodePath("../../..")
 
 [node name="Button3" type="Button" parent="UI/HBoxContainer"]
-margin_left = 168.0
-margin_right = 283.0
-margin_bottom = 39.0
+margin_left = 216.0
+margin_right = 366.0
+margin_bottom = 40.0
 focus_neighbour_left = NodePath("../Button2")
 focus_neighbour_right = NodePath("../Button")
+theme = ExtResource( 20 )
 text = "Select Character"
 script = ExtResource( 5 )
 scene_file = "res://Assets/UI/CharacterSelectScreen/CharacterSelectSceneVersusMode.tscn"

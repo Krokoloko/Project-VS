@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
+ID = 17
 name = "Uncomfortable Bowser"
 sprite = ExtResource( 2 )
 description = "\"Please don't touch me big hamster!\""

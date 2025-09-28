@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource( 1 )
+ID = 12
 name = "Mario"
 sprite = ExtResource( 2 )
 description = "Just some Italian plumber guy, you've probably never heard of him. Hence why we didn't bother making him a playable character.

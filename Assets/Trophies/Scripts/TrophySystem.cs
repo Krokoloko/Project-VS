@@ -3,6 +3,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Xml.Serialization;
 
 public class TrophySystem : Node
@@ -39,26 +40,40 @@ public class TrophySystem : Node
         }
 
         //Test Trophy Gallery
-        AddCoins(10);
+        //AddCoins(50);
     }
 
     public int GetTotalUnlockableTrophies()
     {
         return unlockable_trophies.Count;
     }
-    public Dictionary<int, TrophyData> GetAllUnlockedTrophies()
+    public List<KeyValuePair<int, TrophyData>> GetAllUnlockedTrophies()
     {
         Dictionary<int, TrophyData> current_trophy_list = new Dictionary<int, TrophyData>();
 
         for(int i = 0; i < unlockable_trophies.Count; i++)
         {
-            if(unlocked_trophies.ContainsKey(i))
+            TrophyData data = new TrophyData
             {
-                TrophyData data = (TrophyData)GD.Load<Resource>(unlocked_trophies[i]);
-                current_trophy_list.Add(i, data);
+                ID = i+1
+            };
+
+            if (unlocked_trophies.ContainsKey(i))
+            {
+                data = (TrophyData)GD.Load<Resource>(unlocked_trophies[i]);
             }
+            current_trophy_list.Add(i, data);
         }
-        return current_trophy_list;
+        var list = current_trophy_list.ToList();
+        
+        list.Sort(
+            delegate(KeyValuePair<int, TrophyData> pair1,
+            KeyValuePair<int, TrophyData> pair2)
+            {
+                return pair1.Value.ID.CompareTo(pair2.Value.ID);
+            }
+        );       
+        return list;
     }
 
     public TrophyData GetRandomNewTrophy()

@@ -13,13 +13,25 @@ public class ButtonRestartLevel : Button
     [Export]
     private NodePath scene_root = "";
 
+    private MusicAndSoundManager audio_manager;
+    private bool selected = false;
+
     public override void _Ready()
     {
+        selected = this.HasFocus();
         this.Connect("pressed", this, "ReplayLevel");
+        this.Connect("focus_entered", this, "OnFocus");
+        audio_manager = GetNode<MusicAndSoundManager>(scene_root + "/../AudioManager");
+    }
+
+    private void OnFocus()
+    {
+        audio_manager.PlaySFX(MusicAndSoundManager.SFX.HOVER);
     }
 
     public void ReplayLevel()
     {
+        audio_manager.PlaySFX(MusicAndSoundManager.SFX.SELECT);
         Node scene_instance = GD.Load<PackedScene>(level.level_source).Instance<Node>();
         Node scene_node = GetNode<Node>(scene_root);
         Node root_node = scene_node.GetNode<Node>("../");
@@ -36,7 +48,6 @@ public class ButtonRestartLevel : Button
             player.Translation = new Vector3(level.player_spawn_positions[i].x, level.player_spawn_positions[i].y, 0.0f);
             instance_container.AddChild(player);
         }
-
         scene_node.QueueFree();
         root_node.AddChild(scene_instance);
     }

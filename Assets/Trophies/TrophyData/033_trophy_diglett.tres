@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/033_diglett.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+ID = 33
+name = "Diglett"
+sprite = ExtResource( 2 )
+description = "Mole PKMN
+Height: 0'08\"
+Weight: 1.8 lbs.
+
+Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground. Its head pokes up approximately eight inches out of the ground. However, its real size remains a mystery to this day.
+(Pokédex excerpt)"
+franchise = ""
+scale = 0.2

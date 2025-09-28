@@ -1,11 +1,16 @@
-[gd_resource type="Resource" load_steps=3 format=2]
+[gd_resource type="Resource" load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Gamemode/LevelLoader/Scripts/LevelData/LevelResource.cs" type="Script" id=1]
-[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/Distant Spring.jpg" type="Texture" id=2]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/title_distant_spring.jpg" type="Texture" id=2]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/thumnbnail_distant_spring.jpg" type="Texture" id=3]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/LOGO_PIKMIN.jpg" type="Texture" id=4]
 
 [resource]
 script = ExtResource( 1 )
 level_source = "res://Assets/Gamemode/Multiplayer/Maps/Scenes/DistantSpringScene.tscn"
 ID = 2
-thumbnail = ExtResource( 2 )
+thumbnail = ExtResource( 3 )
+title = ExtResource( 2 )
+logo = ExtResource( 4 )
 player_spawn_positions = PoolVector2Array( -10, 9, 9, 9, 0, 1, 0, 8 )
+song_id = "DistantSpring"

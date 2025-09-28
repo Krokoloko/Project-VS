@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophySprites/037_oldLogo.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+ID = 37
+name = "Old Project VS Logo"
+sprite = ExtResource( 1 )
+description = "The actual development of this project started in october 2023.
+
+The first build '0.0' was made in july 2024, the next version '0.1' in august 2024.
+For version '0.2' we made it the Halloween update and added Count Goombula to the then only stage 'Crescent Moon Village' on october 2024.
+
+Pro tip: 
+Try pressing A when looking at the other trophies. 
+Some of them might Hide secrets!"
+franchise = ""
+scale = 0.2

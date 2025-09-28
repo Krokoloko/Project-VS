@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Trophies/TrophyData/TrophyData.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Trophies/TrophySprites/030_elongatedLanky.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+ID = 30
+name = "Cursed Lanky Kong"
+sprite = ExtResource( 2 )
+description = "Kill it with fire!!"
+franchise = ""
+scale = 0.2

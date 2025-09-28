@@ -13,9 +13,12 @@ public class CharacterSlot : Node
     private CharacterResources character_resource;
 
     private bool connected = false;
+    private MusicAndSoundManager audio_manager;
 
     public override void _Ready()
     {
+        audio_manager = GetNode<MusicAndSoundManager>("/root/AudioManager");
+
         GetChild<Area2D>(0).Connect("area_entered", this, "CharacterIsHovered");   
         GetChild<Area2D>(0).Connect("area_exited", this, "CharacterHoverExit");
     }
@@ -23,19 +26,35 @@ public class CharacterSlot : Node
     private void CharacterHoverExit(Area2D area)
     {
         var cursor = area.GetNodeOrNull<UICursor>("../");
-        if(cursor != null)
+        if (cursor != null)
         {
-            GD.Print(this.Name + "Entered");
-            EmitSignal("HoverExited", character_resource, cursor.player);
+            if ((int)cursor.player >= 0 && (int)cursor.player <= 3)
+            {
+                GD.Print(this.Name + "Cursor Exited");
+                EmitSignal("HoverExited", character_resource, cursor.player);
+            }
+            else
+            {
+                GD.PrintErr(this.Name + " has inappropriate cursor ID");   
+            }
+            
         }
     }
     private void CharacterIsHovered(Area2D area)
     {
         var cursor = area.GetNodeOrNull<UICursor>("../");
-        if(cursor != null)
+        audio_manager.PlaySFX(MusicAndSoundManager.SFX.HOVER);
+        if (cursor != null)
         {
-            GD.Print(this.Name + "Entered");
-            EmitSignal("OnHover", character_resource, cursor.player);
+            if ((int)cursor.player >= 0 && (int)cursor.player <= 3)
+            {
+                GD.Print(this.Name + "Cursor Entered");
+                EmitSignal("OnHover", character_resource, cursor.player);
+            }
+            else
+            {
+                GD.PrintErr(this.Name + " has inappropriate cursor ID");   
+            }
         }
     }
 }

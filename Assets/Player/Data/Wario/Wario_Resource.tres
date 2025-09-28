@@ -3,7 +3,7 @@
 [ext_resource path="res://Assets/Player/Scripts/Resources/CharacterResources.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Player/Visuals/Wario/Wario_Portrait.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Player/Visuals/Wario/Wario_Stock_Icon.png" type="Texture" id=3]
-[ext_resource path="res://Assets/SFX/Wario/Die.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/SFX/Wario/OH MY GOD!!! WAAAAAAH!!!!.wav" type="AudioStream" id=4]
 [ext_resource path="res://Assets/SFX/Wario/Up air.wav" type="AudioStream" id=5]
 [ext_resource path="res://Assets/SFX/Wario/Get Hit.wav" type="AudioStream" id=6]
 [ext_resource path="res://Assets/SFX/Wario/Down Air.wav" type="AudioStream" id=7]

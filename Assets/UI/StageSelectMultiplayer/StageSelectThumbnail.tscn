@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/UI/Controls Controller.png" type="Texture" id=1]
 [ext_resource path="res://Assets/UI/StageSelectMultiplayer/Scripts/StageThumbnail.cs" type="Script" id=2]
+[ext_resource path="res://Assets/Gamemode/Multiplayer/Maps/Thumbnails/title_crecent_moon_village.jpg" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 94.5, 60.5 )
@@ -11,18 +12,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -121.0
-margin_top = -77.0
-margin_right = 71.0
-margin_bottom = 45.0
-grow_horizontal = 0
-grow_vertical = 0
+margin_left = -100.0
+margin_top = -92.0
+margin_right = 100.0
+margin_bottom = 73.0
 rect_min_size = Vector2( 192, 122 )
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 2 )
 clickDetector = NodePath("TextureRect/Area2D")
 thumbnailNode = NodePath("TextureRect")
+titleNode = NodePath("Title")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_left = 1.0
@@ -37,3 +37,12 @@ stretch_mode = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TextureRect/Area2D"]
 position = Vector2( 94.5, 60.5 )
 shape = SubResource( 1 )
+
+[node name="Title" type="TextureRect" parent="."]
+margin_left = 20.0
+margin_top = 124.0
+margin_right = 171.0
+margin_bottom = 164.0
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 1
