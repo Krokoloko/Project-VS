@@ -13,3 +13,4 @@ This game contains controller support!
 ## Known issues
 - Cannot control player 1 with a controller unless 2 controllers are plugged in.
 - Maximising the screen doesn't scale the game properly.
+- Wooper is in a broken state
