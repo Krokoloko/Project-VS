@@ -8,7 +8,7 @@ This game contains controller support!
 - Move : WASD
 - Attack : H
 - Jump : Spacebar
-- Taun : L
+- Taunt : L
 
 ## Known issues
 - Cannot control player 1 with a controller unless 2 controllers are plugged in.
